@@ -1,0 +1,29 @@
+{
+  "note": "Schema example only. This file is not read by build.mjs and is not loaded by the portfolio. Do not put real private memories in a public frontend bundle.",
+  "entry": {
+    "id": "private_example",
+    "title": "Example private note",
+    "category": "meta",
+    "subcategory": "privacy",
+    "sec": "contact",
+    "kw": "example private placeholder",
+    "retrieval_tags": ["private", "example"],
+    "related_entities": [],
+    "text": "Placeholder only. Keep real private memories outside the public bundle.",
+    "next": [],
+    "source": "Private source outside the public build",
+    "source_type": "curated_note",
+    "evidence_type": "user_confirmed",
+    "created_at": "2026-10-28",
+    "updated_at": "2026-10-28",
+    "event_date": null,
+    "valid_from": null,
+    "valid_until": null,
+    "status": "current",
+    "confidence": "high",
+    "sensitivity": "private",
+    "is_current": true,
+    "supersedes": null,
+    "public": false
+  }
+}

@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Curiosity Lab · Roshan B</title>
+<meta name="description" content="Six interactive experiments in perception, probability, chaos, algorithms, emergence, and number theory. Built by Roshan B. Client-side only." />
+<meta name="theme-color" content="#050914" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="lab.css" />
+</head>
+<body>
+<a class="skip-link" href="#perception">Skip to the experiments</a>
+
+<header class="site-head">
+  <nav class="nav shell" aria-label="Curiosity Lab navigation">
+    <a class="brand" href="../index.html" aria-label="Roshan B, back to portfolio">RB<span>.</span></a>
+    <span class="nav-title">Curiosity Lab</span>
+    <div class="nav-links">
+      <a href="#perception">Perception</a>
+      <a href="#probability">Probability</a>
+      <a href="#chaos">Chaos</a>
+      <a href="#algorithms">Algorithms</a>
+      <a href="#emergence">Emergence</a>
+      <a href="#numbers">Numbers</a>
+    </div>
+    <a class="back" href="../index.html">← Portfolio</a>
+  </nav>
+</header>
+
+<main id="lab">
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero shell" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="eyebrow">Curiosity Lab · 06 experiments · no backend</p>
+      <h1 id="hero-title">Curiosity is an <em>interactive</em> experience.</h1>
+      <p class="lede">A collection of things worth discovering. Make a prediction, play with the rules, and see what happens.</p>
+      <p class="tagline">Come for a click. Leave with a new perspective.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#perception">Start with perception</a>
+        <a class="btn btn-ghost" href="#index">Browse the lab</a>
+      </div>
+    </div>
+
+    <aside class="hero-specimen" id="hero-specimen" aria-label="Specimen 001: a small perception test">
+      <div class="specimen-head"><span>Specimen 001</span><span class="pulse-dot" aria-hidden="true"></span></div>
+      <div class="specimen-visual" aria-hidden="true">
+        <svg viewBox="0 0 320 170" role="img" aria-label="Two horizontal lines with different arrowheads">
+          <g class="specimen-fins">
+            <line x1="72" y1="58" x2="48" y2="38" />
+            <line x1="72" y1="58" x2="48" y2="78" />
+            <line x1="248" y1="58" x2="272" y2="38" />
+            <line x1="248" y1="58" x2="272" y2="78" />
+            <line x1="72" y1="112" x2="96" y2="92" />
+            <line x1="72" y1="112" x2="96" y2="132" />
+            <line x1="248" y1="112" x2="224" y2="92" />
+            <line x1="248" y1="112" x2="224" y2="132" />
+          </g>
+          <line class="specimen-line" x1="72" y1="58" x2="248" y2="58" />
+          <line class="specimen-line" x1="72" y1="112" x2="248" y2="112" />
+          <g class="specimen-measure">
+            <line x1="72" y1="32" x2="72" y2="138" />
+            <line x1="248" y1="32" x2="248" y2="138" />
+            <line x1="72" y1="150" x2="248" y2="150" />
+            <text x="160" y="165" text-anchor="middle">both 176 px</text>
+          </g>
+        </svg>
+      </div>
+      <div class="specimen-foot">
+        <p>Two lines. One trick.</p>
+        <button class="link-btn" id="specimen-reveal" type="button" aria-pressed="false">Reveal the measurement</button>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ============================================================
+       INDEX
+       ============================================================ -->
+  <section id="index" class="index shell" aria-labelledby="index-title">
+    <p class="section-kicker">The collection</p>
+    <h2 id="index-title">Six small experiments. One question each.</h2>
+    <div class="index-grid">
+      <a class="index-card" href="#perception">
+        <div class="card-top"><span class="card-no">01 / PERCEPTION</span><span class="card-tag">Illusion</span></div>
+        <span class="card-arrow" aria-hidden="true">↗</span>
+        <h3>Your brain is lying to you.</h3>
+        <p>Two lines. Same length. Your visual system will probably disagree.</p>
+        <div class="card-art" aria-hidden="true">
+          <svg viewBox="0 0 120 90">
+            <line x1="18" y1="32" x2="102" y2="32" stroke="#dbeafe" stroke-width="3" stroke-linecap="round" />
+            <line x1="18" y1="32" x2="6" y2="20" stroke="#67e8f9" stroke-width="2" />
+            <line x1="18" y1="32" x2="6" y2="44" stroke="#67e8f9" stroke-width="2" />
+            <line x1="102" y1="32" x2="114" y2="20" stroke="#67e8f9" stroke-width="2" />
+            <line x1="102" y1="32" x2="114" y2="44" stroke="#67e8f9" stroke-width="2" />
+            <line x1="18" y1="60" x2="102" y2="60" stroke="#dbeafe" stroke-width="3" stroke-linecap="round" />
+            <line x1="18" y1="60" x2="30" y2="48" stroke="#67e8f9" stroke-width="2" />
+            <line x1="18" y1="60" x2="30" y2="72" stroke="#67e8f9" stroke-width="2" />
+            <line x1="102" y1="60" x2="90" y2="48" stroke="#67e8f9" stroke-width="2" />
+            <line x1="102" y1="60" x2="90" y2="72" stroke="#67e8f9" stroke-width="2" />
+          </svg>
+        </div>
+      </a>
+
+      <a class="index-card" href="#probability">
+        <div class="card-top"><span class="card-no">02 / PROBABILITY</span><span class="card-tag">Chance</span></div>
+        <span class="card-arrow" aria-hidden="true">↗</span>
+        <h3>The coin is not as fair as you think.</h3>
+        <p>Doors, birthdays, and streaks that feel wrong until you count them.</p>
+        <div class="card-art" aria-hidden="true">
+          <svg viewBox="0 0 120 90">
+            <rect x="14" y="18" width="26" height="56" rx="4" fill="rgba(251,191,36,.08)" stroke="rgba(251,191,36,.45)" />
+            <rect x="47" y="18" width="26" height="56" rx="4" fill="rgba(251,191,36,.08)" stroke="rgba(251,191,36,.45)" />
+            <rect x="80" y="18" width="26" height="56" rx="4" fill="rgba(251,191,36,.18)" stroke="#fbbf24" />
+            <circle cx="93" cy="44" r="3" fill="#fbbf24" />
+            <circle cx="60" cy="44" r="2" fill="rgba(251,191,36,.6)" />
+            <circle cx="27" cy="44" r="2" fill="rgba(251,191,36,.6)" />
+          </svg>
+        </div>
+      </a>
+
+      <a class="index-card" href="#chaos">
+        <div class="card-top"><span class="card-no">03 / CHAOS</span><span class="card-tag">Physics</span></div>
+        <span class="card-arrow" aria-hidden="true">↗</span>
+        <h3>A tiny change. A completely different future.</h3>
+        <p>Two double pendulums. Same rules. A fraction of a degree apart.</p>
+        <div class="card-art" aria-hidden="true">
+          <svg viewBox="0 0 120 90">
+            <path d="M8 78 C24 20, 38 12, 50 42 S70 82, 84 40 S104 8, 114 22" fill="none" stroke="#818cf8" stroke-width="1.6" opacity=".8" />
+            <path d="M8 78 C26 24, 40 18, 54 48 S74 76, 88 34 S106 14, 114 28" fill="none" stroke="#c4b5fd" stroke-width="1.6" stroke-dasharray="3 4" opacity=".8" />
+            <circle cx="8" cy="78" r="2.5" fill="#818cf8" />
+            <circle cx="114" cy="22" r="2.5" fill="#c4b5fd" />
+          </svg>
+        </div>
+      </a>
+
+      <a class="index-card" href="#algorithms">
+        <div class="card-top"><span class="card-no">04 / ALGORITHMS</span><span class="card-tag">Search</span></div>
+        <span class="card-arrow" aria-hidden="true">↗</span>
+        <h3>Can you outsmart an algorithm?</h3>
+        <p>Draw the walls, trace a route, then watch two searches think differently.</p>
+        <div class="card-art" aria-hidden="true">
+          <svg viewBox="0 0 120 90">
+            <g fill="rgba(110,231,183,.10)" stroke="rgba(110,231,183,.3)">
+              <rect x="10" y="10" width="14" height="14" /><rect x="24" y="10" width="14" height="14" /><rect x="38" y="10" width="14" height="14" /><rect x="52" y="10" width="14" height="14" /><rect x="66" y="10" width="14" height="14" /><rect x="80" y="10" width="14" height="14" />
+              <rect x="10" y="24" width="14" height="14" /><rect x="38" y="24" width="14" height="14" /><rect x="66" y="24" width="14" height="14" /><rect x="80" y="24" width="14" height="14" />
+              <rect x="10" y="38" width="14" height="14" /><rect x="24" y="38" width="14" height="14" /><rect x="38" y="38" width="14" height="14" /><rect x="52" y="38" width="14" height="14" /><rect x="66" y="38" width="14" height="14" /><rect x="94" y="38" width="14" height="14" />
+              <rect x="10" y="52" width="14" height="14" /><rect x="52" y="52" width="14" height="14" /><rect x="80" y="52" width="14" height="14" /><rect x="94" y="52" width="14" height="14" />
+              <rect x="10" y="66" width="14" height="14" /><rect x="24" y="66" width="14" height="14" /><rect x="38" y="66" width="14" height="14" /><rect x="52" y="66" width="14" height="14" /><rect x="66" y="66" width="14" height="14" /><rect x="80" y="66" width="14" height="14" /><rect x="94" y="66" width="14" height="14" />
+            </g>
+            <path d="M17 17 L45 17 L45 45 L73 45 L73 73 L101 73" fill="none" stroke="#6ee7b7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="17" cy="17" r="3" fill="#6ee7b7" /><circle cx="101" cy="73" r="3" fill="#fbbf24" />
+          </svg>
+        </div>
+      </a>
+
+      <a class="index-card" href="#emergence">
+        <div class="card-top"><span class="card-no">05 / EMERGENCE</span><span class="card-tag">Complexity</span></div>
+        <span class="card-arrow" aria-hidden="true">↗</span>
+        <h3>The tipping point.</h3>
+        <p>One local rule. No leader. A whole colony of behavior appears.</p>
+        <div class="card-art" aria-hidden="true">
+          <svg viewBox="0 0 120 90">
+            <g fill="rgba(251,113,133,.14)" stroke="rgba(251,113,133,.38)">
+              <rect x="14" y="14" width="14" height="14" /><rect x="28" y="14" width="14" height="14" /><rect x="42" y="14" width="14" height="14" /><rect x="56" y="14" width="14" height="14" /><rect x="70" y="14" width="14" height="14" /><rect x="84" y="14" width="14" height="14" />
+              <rect x="14" y="28" width="14" height="14" /><rect x="84" y="28" width="14" height="14" />
+              <rect x="14" y="42" width="14" height="14" /><rect x="42" y="42" width="14" height="14" /><rect x="56" y="42" width="14" height="14" /><rect x="84" y="42" width="14" height="14" />
+              <rect x="14" y="56" width="14" height="14" /><rect x="28" y="56" width="14" height="14" /><rect x="42" y="56" width="14" height="14" /><rect x="84" y="56" width="14" height="14" />
+              <rect x="14" y="70" width="14" height="14" /><rect x="28" y="70" width="14" height="14" /><rect x="42" y="70" width="14" height="14" /><rect x="56" y="70" width="14" height="14" /><rect x="70" y="70" width="14" height="14" /><rect x="84" y="70" width="14" height="14" />
+            </g>
+            <g fill="#fb7185">
+              <rect x="42" y="42" width="14" height="14" /><rect x="56" y="42" width="14" height="14" /><rect x="70" y="42" width="14" height="14" />
+              <rect x="56" y="28" width="14" height="14" /><rect x="56" y="56" width="14" height="14" />
+            </g>
+          </svg>
+        </div>
+      </a>
+
+      <a class="index-card" href="#numbers">
+        <div class="card-top"><span class="card-no">06 / NUMBERS</span><span class="card-tag">Pattern</span></div>
+        <span class="card-arrow" aria-hidden="true">↗</span>
+        <h3>The world of weird numbers.</h3>
+        <p>Sequences that climb, ratios that settle, and primes that refuse to hide.</p>
+        <div class="card-art" aria-hidden="true">
+          <svg viewBox="0 0 120 90">
+            <rect x="18" y="46" width="18" height="18" fill="rgba(196,181,253,.10)" stroke="rgba(196,181,253,.45)" />
+            <rect x="36" y="46" width="18" height="18" fill="rgba(196,181,253,.10)" stroke="rgba(196,181,253,.45)" />
+            <rect x="18" y="10" width="36" height="36" fill="rgba(196,181,253,.10)" stroke="rgba(196,181,253,.45)" />
+            <rect x="54" y="28" width="36" height="36" fill="rgba(196,181,253,.14)" stroke="rgba(196,181,253,.45)" />
+            <rect x="18" y="64" width="72" height="18" fill="rgba(196,181,253,.08)" stroke="rgba(196,181,253,.45)" />
+            <path d="M18 64 C36 64, 54 46, 54 46 C54 28, 72 28, 72 28" fill="none" stroke="#c4b5fd" stroke-width="1.4" opacity=".8" />
+          </svg>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EXPERIMENT A - PERCEPTION
+       ============================================================ -->
+  <section id="perception" class="experiment shell" style="--accent:#67e8f9" aria-labelledby="perception-title">
+    <header class="exp-head">
+      <div class="exp-number" aria-hidden="true">01</div>
+      <div>
+        <p class="exp-kicker">Perception · cognitive illusion</p>
+        <h2 id="perception-title">Your brain is lying to you.</h2>
+        <p class="exp-hook">Three quick tests. In each one, your visual system uses context to make a guess. The ruler disagrees.</p>
+      </div>
+    </header>
+
+    <div class="exp-grid">
+      <div class="lab-panel">
+        <div class="panel-top">
+          <span class="panel-label">Perception test</span>
+          <div class="seg" role="tablist" aria-label="Perception test rounds">
+            <button class="seg-btn is-on" type="button" data-round="length" role="tab" aria-selected="true">Length</button>
+            <button class="seg-btn" type="button" data-round="size" role="tab" aria-selected="false">Size</button>
+            <button class="seg-btn" type="button" data-round="shade" role="tab" aria-selected="false">Shade</button>
+          </div>
+          <span class="score" id="perception-score">0 / 3 revealed</span>
+        </div>
+
+        <div class="round is-on" data-round-panel="length">
+          <div class="illusion-stage">
+            <svg id="ml-svg" viewBox="0 0 600 240" role="img" aria-label="Two horizontal lines of equal length, with different arrowheads at the ends">
+              <g class="ml-fins">
+                <line class="ml-fin" x1="150" y1="95" x2="120" y2="65" />
+                <line class="ml-fin" x1="150" y1="95" x2="120" y2="125" />
+                <line class="ml-fin" x1="450" y1="95" x2="480" y2="65" />
+                <line class="ml-fin" x1="450" y1="95" x2="480" y2="125" />
+                <line class="ml-fin" x1="150" y1="165" x2="180" y2="135" />
+                <line class="ml-fin" x1="150" y1="165" x2="180" y2="195" />
+                <line class="ml-fin" x1="450" y1="165" x2="420" y2="135" />
+                <line class="ml-fin" x1="450" y1="165" x2="420" y2="195" />
+              </g>
+              <line class="ml-line" x1="150" y1="95" x2="450" y2="95" />
+              <line class="ml-line" x1="150" y1="165" x2="450" y2="165" />
+              <text x="80" y="100" class="eb-label" text-anchor="middle">A</text>
+              <text x="80" y="170" class="eb-label" text-anchor="middle">B</text>
+              <g class="measure">
+                <line x1="150" y1="58" x2="150" y2="202" />
+                <line x1="450" y1="58" x2="450" y2="202" />
+                <line x1="150" y1="215" x2="450" y2="215" />
+                <text x="300" y="234" text-anchor="middle">both exactly 300 px</text>
+              </g>
+            </svg>
+          </div>
+          <p class="prompt">Which horizontal line is longer?</p>
+          <div class="answer-row" data-answer-group="length">
+            <button class="btn btn-choice" type="button" data-answer="a">Line A</button>
+            <button class="btn btn-choice" type="button" data-answer="b">Line B</button>
+            <button class="btn btn-choice" type="button" data-answer="same">They are the same</button>
+          </div>
+          <div class="result" aria-live="polite"></div>
+          <div class="reveal-controls is-hidden">
+            <button class="link-btn" type="button" data-toggle="ml-fins">Hide the fins</button>
+            <button class="link-btn" type="button" data-reset-round="length">Try again</button>
+            <button class="link-btn" type="button" data-next-round="size">Next test →</button>
+          </div>
+        </div>
+
+        <div class="round" data-round-panel="size">
+          <div class="illusion-stage">
+            <svg id="eb-svg" viewBox="0 0 600 240" role="img" aria-label="Two equal center circles surrounded by different sized circles">
+              <g class="eb-surround">
+                <circle cx="258" cy="120" r="30" />
+                <circle cx="219" cy="187.5" r="30" />
+                <circle cx="141" cy="187.5" r="30" />
+                <circle cx="102" cy="120" r="30" />
+                <circle cx="141" cy="52.5" r="30" />
+                <circle cx="219" cy="52.5" r="30" />
+              </g>
+              <g class="eb-surround">
+                <circle cx="488" cy="120" r="13" />
+                <circle cx="454" cy="178.9" r="13" />
+                <circle cx="386" cy="178.9" r="13" />
+                <circle cx="352" cy="120" r="13" />
+                <circle cx="386" cy="61.1" r="13" />
+                <circle cx="454" cy="61.1" r="13" />
+              </g>
+              <circle class="eb-center" cx="180" cy="120" r="32" />
+              <circle class="eb-center" cx="420" cy="120" r="32" />
+              <text x="180" y="124" class="eb-label" text-anchor="middle">A</text>
+              <text x="420" y="124" class="eb-label" text-anchor="middle">B</text>
+              <g class="measure">
+                <circle cx="180" cy="120" r="32" />
+                <circle cx="420" cy="120" r="32" />
+                <text x="300" y="205" text-anchor="middle">both 64 px across</text>
+              </g>
+            </svg>
+          </div>
+          <p class="prompt">Which center circle is larger?</p>
+          <div class="answer-row" data-answer-group="size">
+            <button class="btn btn-choice" type="button" data-answer="a">Circle A</button>
+            <button class="btn btn-choice" type="button" data-answer="b">Circle B</button>
+            <button class="btn btn-choice" type="button" data-answer="same">They are the same</button>
+          </div>
+          <div class="result" aria-live="polite"></div>
+          <div class="reveal-controls is-hidden">
+            <button class="link-btn" type="button" data-toggle="eb-surround">Hide the surroundings</button>
+            <button class="link-btn" type="button" data-reset-round="size">Try again</button>
+            <button class="link-btn" type="button" data-next-round="shade">Next test →</button>
+          </div>
+        </div>
+
+        <div class="round" data-round-panel="shade">
+          <div class="shade-stage" id="shade-stage">
+            <div class="shade-panel dark">
+              <span class="shade-tag">A</span>
+              <div class="shade-inner"></div>
+            </div>
+            <div class="shade-panel light">
+              <span class="shade-tag">B</span>
+              <div class="shade-inner"></div>
+            </div>
+            <div class="shade-strip">Both inner squares are exactly #7b8794</div>
+          </div>
+          <p class="prompt">Which inner square is lighter?</p>
+          <div class="answer-row" data-answer-group="shade">
+            <button class="btn btn-choice" type="button" data-answer="a">Square A</button>
+            <button class="btn btn-choice" type="button" data-answer="b">Square B</button>
+            <button class="btn btn-choice" type="button" data-answer="same">They are the same</button>
+          </div>
+          <div class="result" aria-live="polite"></div>
+          <div class="reveal-controls is-hidden">
+            <button class="link-btn" type="button" data-toggle="shade-neutral">Neutral background</button>
+            <button class="link-btn" type="button" data-reset-round="shade">Try again</button>
+            <button class="link-btn" type="button" data-next-round="length">Back to length →</button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="exp-notes">
+        <div class="note-card">
+          <p class="note-label">The idea</p>
+          <p>Your visual system does not measure pixels. It infers size and lightness from <strong>context</strong>: edges, neighbours, and expected shape.</p>
+          <p>That is usually useful. Here, the context is doing the lying.</p>
+        </div>
+        <details class="deep">
+          <summary>What is actually happening?</summary>
+          <p>The Müller-Lyer illusion changes apparent length with the direction of the arrowheads. The Ebbinghaus illusion changes apparent size through the size of surrounding circles. Simultaneous contrast changes apparent lightness through the background.</p>
+          <p>These are not errors in your eyes. They are by-products of a visual system that is tuned to compare and interpret, not to act as a ruler.</p>
+        </details>
+        <p class="caveat">Illusion strength varies by person, display, and viewing distance. The measurements are the objective part; the perception is not.</p>
+      </aside>
+    </div>
+
+    <div class="takeaway">
+      <div class="takeaway-mark">What did you discover?</div>
+      <div>
+        <p>Your estimate came from context, not a ruler. The lines were identical; the fins changed the guess. Subjective perception is not always a reliable measurement.</p>
+        <p class="try-next">Try this next: hide the fins and look again. Does the correction feel immediate, or does the illusion linger?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EXPERIMENT B - PROBABILITY
+       ============================================================ -->
+  <section id="probability" class="experiment shell" style="--accent:#fbbf24" aria-labelledby="probability-title">
+    <header class="exp-head">
+      <div class="exp-number" aria-hidden="true">02</div>
+      <div>
+        <p class="exp-kicker">Probability · intuition vs. counting</p>
+        <h2 id="probability-title">The coin is not as fair as you think.</h2>
+        <p class="exp-hook">Three situations where the structure of the possibilities matters more than the story your gut tells you.</p>
+      </div>
+    </header>
+
+    <div class="exp-grid">
+      <div class="lab-panel">
+        <div class="panel-top">
+          <span class="panel-label">Probability playground</span>
+          <div class="seg" role="tablist" aria-label="Probability experiments">
+            <button class="seg-btn is-on" type="button" data-prob="monty" role="tab" aria-selected="true">Monty Hall</button>
+            <button class="seg-btn" type="button" data-prob="birthday" role="tab" aria-selected="false">Birthdays</button>
+            <button class="seg-btn" type="button" data-prob="streaks" role="tab" aria-selected="false">Streaks</button>
+          </div>
+        </div>
+
+        <div class="round is-on" data-prob-panel="monty">
+          <div class="doors" role="group" aria-label="Choose a door">
+            <button class="door" type="button" data-door="0" aria-label="Door 1"><span class="door-num">Door 1</span><span class="door-face">?</span></button>
+            <button class="door" type="button" data-door="1" aria-label="Door 2"><span class="door-num">Door 2</span><span class="door-face">?</span></button>
+            <button class="door" type="button" data-door="2" aria-label="Door 3"><span class="door-num">Door 3</span><span class="door-face">?</span></button>
+          </div>
+          <p class="stage-status" id="monty-status" aria-live="polite">Pick a door. One hides a prize.</p>
+          <div class="answer-row" id="monty-choices">
+            <button class="btn btn-choice" type="button" data-monty="stay" disabled>Stay with my door</button>
+            <button class="btn btn-choice" type="button" data-monty="switch" disabled>Switch doors</button>
+          </div>
+          <div class="result" id="monty-reveal" aria-live="polite"></div>
+          <div class="mini-stats" aria-label="Your Monty Hall results">
+            <div><span>Stay wins</span><b id="stay-wins">0</b><small id="stay-rate">0%</small></div>
+            <div><span>Switch wins</span><b id="switch-wins">0</b><small id="switch-rate">0%</small></div>
+          </div>
+          <div class="controls">
+            <button class="btn btn-primary" type="button" id="monty-new">New round</button>
+            <button class="btn btn-ghost" type="button" id="monty-sim">Run 10,000 trials</button>
+            <button class="btn btn-quiet" type="button" id="monty-reset">Reset stats</button>
+          </div>
+          <div class="sim-output" id="monty-sim-output" aria-live="polite"></div>
+        </div>
+
+        <div class="round" data-prob-panel="birthday">
+          <div class="birthday-stage">
+            <div class="big-stat"><span id="birthday-prob">50.7%</span><small>chance of a shared birthday with <b id="birthday-n-label">23</b> people</small></div>
+            <div class="chart-wrap"><svg id="birthday-chart" viewBox="0 0 600 220" role="img" aria-label="Theoretical probability of a shared birthday by group size"></svg></div>
+            <div class="sample-room" id="birthday-sample" aria-live="polite"></div>
+          </div>
+          <label class="slider-label" for="birthday-n-range">People in the room: <output id="birthday-n">23</output></label>
+          <input type="range" id="birthday-n-range" class="slider" min="2" max="60" value="23" step="1" />
+          <div class="controls">
+            <button class="btn btn-primary" type="button" id="birthday-sim">Run 2,000 trials</button>
+            <button class="btn btn-ghost" type="button" id="birthday-sample-btn">Show a sample room</button>
+          </div>
+          <div class="sim-output" id="birthday-output" aria-live="polite"></div>
+        </div>
+
+        <div class="round" data-prob-panel="streaks">
+          <div class="streak-intuition">
+            <p class="prompt">Which exact 10-flip sequence is more likely?</p>
+            <div class="sequence-choice" role="group" aria-label="Choose the more likely sequence">
+              <button class="seq-card" type="button" data-seq="alternating"><code>H T H T H T H T H T</code><span>Sequence A</span></button>
+              <button class="seq-card" type="button" data-seq="clumpy"><code>H H T H T T H H T T</code><span>Sequence B</span></button>
+              <button class="seq-card" type="button" data-seq="same"><code>Both are equally likely</code><span>Sequence C</span></button>
+            </div>
+            <div class="result" id="seq-result" aria-live="polite"></div>
+          </div>
+          <hr class="rule" />
+          <div class="streak-challenge">
+            <p class="prompt">Now predict the longest run of heads in 100 flips.</p>
+            <div class="answer-row" id="streak-predict" role="group" aria-label="Predict the longest run of heads">
+              <button class="btn btn-choice" type="button" data-streak="3">3 or fewer</button>
+              <button class="btn btn-choice" type="button" data-streak="5">4 to 5</button>
+              <button class="btn btn-choice" type="button" data-streak="7">6 to 7</button>
+              <button class="btn btn-choice" type="button" data-streak="9">8 to 9</button>
+              <button class="btn btn-choice" type="button" data-streak="10">10+</button>
+            </div>
+            <div class="coin-grid" id="coin-grid" role="img" aria-label="One hundred coin flips"></div>
+            <div class="result" id="streak-result" aria-live="polite"></div>
+            <div class="controls">
+              <button class="btn btn-primary" type="button" id="streak-flip">Flip 100 coins</button>
+              <button class="btn btn-ghost" type="button" id="streak-sim">Run 1,000 sequences</button>
+            </div>
+            <div class="sim-output" id="streak-output" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="exp-notes">
+        <div class="note-card">
+          <p class="note-label">The idea</p>
+          <p>Probability is about the <strong>structure of possible outcomes</strong>, not just what feels likely. A host who knows where the prize is, or a room full of birthdays, changes what the evidence means.</p>
+        </div>
+        <details class="deep">
+          <summary>Why switching wins two-thirds of the time</summary>
+          <p>Your first pick is right with probability 1/3. The host then opens a losing door that you did not pick, and always can. If your first pick was wrong (2/3 of the time), the remaining unopened door must be the prize. Switching wins exactly in those cases.</p>
+          <p>The host's action is not random. It is constrained by knowledge, and that is where the information comes from.</p>
+        </details>
+        <p class="caveat">Birthday calculations assume 365 equally likely birthdays, independence, and no February 29. Real birthdays are not perfectly uniform.</p>
+      </aside>
+    </div>
+
+    <div class="takeaway">
+      <div class="takeaway-mark">What did you discover?</div>
+      <div>
+        <p>Switching wins about twice as often as staying. Streaks are expected in random data. And 23 people are enough to make a shared birthday more likely than not.</p>
+        <p class="try-next">Try this next: run the Monty Hall simulation again. Does the estimate move closer to 33% and 67%, or does it wobble?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EXPERIMENT C - CHAOS
+       ============================================================ -->
+  <section id="chaos" class="experiment shell" style="--accent:#818cf8" aria-labelledby="chaos-title">
+    <header class="exp-head">
+      <div class="exp-number" aria-hidden="true">03</div>
+      <div>
+        <p class="exp-kicker">Chaos · sensitivity to initial conditions</p>
+        <h2 id="chaos-title">A tiny change. A completely different future.</h2>
+        <p class="exp-hook">Two double pendulums, the same equations, the same masses and lengths. Only the starting angle of B differs. Watch the futures separate.</p>
+      </div>
+    </header>
+
+    <div class="exp-grid">
+      <div class="lab-panel">
+        <div class="panel-top">
+          <span class="panel-label">Double pendulum · RK4</span>
+          <div class="chaos-readout">
+            <span>t = <b id="chaos-time">0.00 s</b></span>
+            <span>separation = <b id="chaos-sep">0.000 m</b></span>
+            <span class="divergence-badge" id="chaos-badge">together</span>
+          </div>
+        </div>
+
+        <div class="pendulum-grid">
+          <div class="pendulum-card">
+            <canvas id="pendulum-a" width="360" height="360" aria-label="Double pendulum A trajectory"></canvas>
+            <div class="pendulum-label"><span><b>A</b> · θ₁</span><span>trail</span></div>
+          </div>
+          <div class="pendulum-card">
+            <canvas id="pendulum-b" width="360" height="360" aria-label="Double pendulum B trajectory"></canvas>
+            <div class="pendulum-label"><span><b>B</b> · θ₁ + Δ</span><span>trail</span></div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn btn-primary" type="button" id="chaos-play" aria-pressed="true">Pause</button>
+          <button class="btn btn-ghost" type="button" id="chaos-reset">Reset</button>
+        </div>
+
+        <div class="control-grid">
+          <label><span>Initial θ₁ <output id="chaos-angle-out">120°</output></span><input id="chaos-angle" type="range" min="60" max="170" value="120" step="1" /></label>
+          <label><span>Initial θ₂ <output id="chaos-angle2-out">90°</output></span><input id="chaos-angle2" type="range" min="30" max="170" value="90" step="1" /></label>
+          <label><span>Difference Δ <output id="chaos-delta-out">0.050°</output></span><input id="chaos-delta" type="range" min="0.001" max="2" value="0.05" step="0.001" /></label>
+          <label><span>Length L₁ <output id="chaos-l1-out">1.00 m</output></span><input id="chaos-l1" type="range" min="0.6" max="1.4" value="1" step="0.05" /></label>
+          <label><span>Length L₂ <output id="chaos-l2-out">1.00 m</output></span><input id="chaos-l2" type="range" min="0.6" max="1.4" value="1" step="0.05" /></label>
+          <label><span>Mass m₁ <output id="chaos-m1-out">1.00 kg</output></span><input id="chaos-m1" type="range" min="0.5" max="3" value="1" step="0.1" /></label>
+          <label><span>Mass m₂ <output id="chaos-m2-out">1.00 kg</output></span><input id="chaos-m2" type="range" min="0.5" max="3" value="1" step="0.1" /></label>
+        </div>
+        <div class="preset-row" aria-label="Quick starting differences">
+          <span class="micro-label">Quick Δ</span>
+          <button class="btn btn-quiet" type="button" data-delta="0.001">0.001°</button>
+          <button class="btn btn-quiet" type="button" data-delta="0.05">0.05°</button>
+          <button class="btn btn-quiet" type="button" data-delta="1">1°</button>
+        </div>
+        <p class="micro-note">Both simulations use the same physics function. Only B's initial θ₁ is offset by Δ. This is an ideal, frictionless model.</p>
+      </div>
+
+      <aside class="exp-notes">
+        <div class="note-card">
+          <p class="note-label">The idea</p>
+          <p>A chaotic system can be <strong>deterministic</strong> and still practically unpredictable. The equations have one exact future, but tiny measurement errors grow exponentially.</p>
+          <p>This is sensitivity to initial conditions, not randomness.</p>
+        </div>
+        <details class="deep">
+          <summary>What makes it chaotic?</summary>
+          <p>The double pendulum is governed by coupled nonlinear equations. Nearby starting states do not stay nearby: the separation grows until the two motions look unrelated.</p>
+          <p>Not every complicated system is chaotic, and not every chaotic system is unpredictable at every timescale. The claim is narrower: long-term prediction needs extremely precise measurements.</p>
+        </details>
+        <p class="caveat">The simulation uses RK4 at a fixed 0.0025 s timestep. Numerical drift is possible over long runs, especially near high-energy configurations.</p>
+      </aside>
+    </div>
+
+    <div class="takeaway">
+      <div class="takeaway-mark">What did you discover?</div>
+      <div>
+        <p>Two trajectories with almost identical starting conditions separated into visibly different paths. The rules did not change; the precision did.</p>
+        <p class="try-next">Try this next: set Δ to 0.001° and watch how long the paths stay together. Then set it to 1° and compare.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EXPERIMENT D - ALGORITHMS
+       ============================================================ -->
+  <section id="algorithms" class="experiment shell" style="--accent:#6ee7b7" aria-labelledby="algorithms-title">
+    <header class="exp-head">
+      <div class="exp-number" aria-hidden="true">04</div>
+      <div>
+        <p class="exp-kicker">Algorithms · search and strategy</p>
+        <h2 id="algorithms-title">Can you outsmart an algorithm?</h2>
+        <p class="exp-hook">Draw walls, trace a route by hand, then watch breadth-first search and A* explore the same maze differently.</p>
+      </div>
+    </header>
+
+    <div class="exp-grid reverse">
+      <aside class="exp-notes">
+        <div class="note-card predict-card">
+          <p class="note-label">Predict first</p>
+          <p>Which search will explore fewer cells on your maze?</p>
+          <div class="answer-row" id="maze-predict" role="group" aria-label="Predict which search will explore fewer cells">
+            <button class="btn btn-choice" type="button" data-predict="bfs">BFS</button>
+            <button class="btn btn-choice" type="button" data-predict="astar">A*</button>
+            <button class="btn btn-choice" type="button" data-predict="same">About the same</button>
+          </div>
+          <div class="result" id="maze-predict-result" aria-live="polite"></div>
+        </div>
+        <div class="note-card">
+          <p class="note-label">The idea</p>
+          <p>BFS expands outward in every direction and finds a shortest path when every step costs the same. A* adds a <strong>heuristic</strong> to bias the search toward the goal.</p>
+          <p>The heuristic changes where the search looks, not the rules of the maze.</p>
+        </div>
+        <details class="deep">
+          <summary>Are the comparisons fair?</summary>
+          <p>Yes: both searches use the same maze, start, destination, and unit step cost. BFS is guaranteed to find a shortest path in an unweighted graph. A* with Manhattan distance is also guaranteed here, because the heuristic never overestimates.</p>
+          <p>A* often explores fewer cells, but that is not a universal law. A weaker heuristic, a weighted graph, or a different representation can change the comparison.</p>
+        </details>
+        <p class="caveat">The timing shown is computation time, not animation time. On a maze this small, both searches are effectively instant.</p>
+      </aside>
+
+      <div class="lab-panel">
+        <div class="panel-top">
+          <span class="panel-label">Grid search · 23 × 13</span>
+          <div class="maze-stats">
+            <span>path: <b id="maze-path">not run</b></span>
+            <span>explored: <b id="maze-explored">not run</b></span>
+          </div>
+        </div>
+
+        <div class="maze-wrap">
+          <canvas id="maze" width="644" height="364" tabindex="0" aria-label="Maze grid. Use draw walls mode to add or remove walls, or trace path mode to solve it by hand."></canvas>
+        </div>
+        <div class="maze-legend" aria-hidden="true">
+          <span><i class="sw sw-start"></i>start</span>
+          <span><i class="sw sw-goal"></i>goal</span>
+          <span><i class="sw sw-wall"></i>wall</span>
+          <span><i class="sw sw-visited"></i>visited</span>
+          <span><i class="sw sw-path"></i>path</span>
+          <span><i class="sw sw-manual"></i>your trace</span>
+        </div>
+
+        <div class="controls">
+          <button class="btn btn-primary" type="button" id="maze-bfs">Run BFS</button>
+          <button class="btn btn-primary" type="button" id="maze-astar">Run A*</button>
+          <button class="btn btn-ghost" type="button" id="maze-compare">Compare both</button>
+          <button class="btn btn-quiet" type="button" id="maze-new">New maze</button>
+          <button class="btn btn-quiet" type="button" id="maze-clear">Clear walls</button>
+          <button class="btn btn-quiet" type="button" id="maze-reset">Reset path</button>
+        </div>
+
+        <div class="mode-row">
+          <span class="micro-label">Mode</span>
+          <div class="seg" id="maze-modes" role="group" aria-label="Maze editing mode">
+            <button class="seg-btn is-on" type="button" data-mode="walls" aria-pressed="true">Draw walls</button>
+            <button class="seg-btn" type="button" data-mode="trace" aria-pressed="false">Trace path</button>
+          </div>
+          <span class="micro-note" id="maze-mode-hint">Click or drag to add walls. Tap start/goal to keep them clear.</span>
+        </div>
+
+        <div class="result" id="maze-status" aria-live="polite">Draw a maze, then race the solvers.</div>
+
+        <div class="table-wrap">
+          <table class="stat-table">
+            <thead><tr><th>Search</th><th>Path</th><th>Explored</th><th>Time</th></tr></thead>
+            <tbody>
+              <tr data-algo="bfs"><td>BFS</td><td data-cell="path">not run</td><td data-cell="explored">not run</td><td data-cell="time">not run</td></tr>
+              <tr data-algo="astar"><td>A*</td><td data-cell="path">not run</td><td data-cell="explored">not run</td><td data-cell="time">not run</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="takeaway">
+      <div class="takeaway-mark">What did you discover?</div>
+      <div>
+        <p>Both searches can find the same shortest path while exploring very different numbers of cells. The algorithm is not magic; its behavior follows from the representation, the constraints, and the rule for choosing what to look at next.</p>
+        <p class="try-next">Try this next: draw a wall that blocks the direct route and compare the explored counts again. Does the gap grow or shrink?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EXPERIMENT E - EMERGENCE
+       ============================================================ -->
+  <section id="emergence" class="experiment shell" style="--accent:#fb7185" aria-labelledby="emergence-title">
+    <header class="exp-head">
+      <div class="exp-number" aria-hidden="true">05</div>
+      <div>
+        <p class="exp-kicker">Emergence · local rules, global behavior</p>
+        <h2 id="emergence-title">The tipping point.</h2>
+        <p class="exp-hook">A grid of cells follows one small rule. No conductor, no plan. Play, pause, and change a single cell to see what the future does.</p>
+      </div>
+    </header>
+
+    <div class="exp-grid">
+      <div class="lab-panel">
+        <div class="panel-top">
+          <span class="panel-label">Conway's Game of Life</span>
+          <div class="life-stats">
+            <span>gen <b id="life-gen">0</b></span>
+            <span>alive <b id="life-pop">0</b></span>
+            <span>density <b id="life-density">0%</b></span>
+          </div>
+        </div>
+
+        <div class="life-wrap">
+          <canvas id="life" width="616" height="364" tabindex="0" aria-label="Game of Life grid. Click cells to toggle them. Arrow keys move a cursor; space toggles."></canvas>
+        </div>
+
+        <div class="controls">
+          <button class="btn btn-primary" type="button" id="life-play" aria-pressed="true">Pause</button>
+          <button class="btn btn-ghost" type="button" id="life-step">Step</button>
+          <button class="btn btn-quiet" type="button" id="life-clear">Clear</button>
+          <button class="btn btn-quiet" type="button" id="life-random">Random seed</button>
+        </div>
+
+        <div class="mode-row">
+          <span class="micro-label">Patterns</span>
+          <div class="seg" id="life-presets" role="group" aria-label="Game of Life presets">
+            <button class="seg-btn" type="button" data-life-preset="glider" aria-pressed="false">Glider</button>
+            <button class="seg-btn is-on" type="button" data-life-preset="pulsar" aria-pressed="true">Pulsar</button>
+            <button class="seg-btn" type="button" data-life-preset="acorn" aria-pressed="false">Acorn</button>
+            <button class="seg-btn" type="button" data-life-preset="random" aria-pressed="false">Random</button>
+          </div>
+          <label class="speed-label" for="life-speed">Speed <output id="life-speed-out">8/s</output>
+            <input id="life-speed" class="slider slider-sm" type="range" min="1" max="20" value="8" step="1" />
+          </label>
+        </div>
+        <p class="micro-note" id="life-note">Pulsar preset. Deterministic: the same start gives the same future.</p>
+      </div>
+
+      <aside class="exp-notes">
+        <div class="note-card">
+          <p class="note-label">The idea</p>
+          <p>Conway's Game of Life has four local rules: a live cell with two or three live neighbours survives; a dead cell with exactly three live neighbours becomes alive; everything else changes to dead.</p>
+          <p>That is all. The motion, oscillation, and decay you see are <strong>emergent</strong>.</p>
+        </div>
+        <details class="deep">
+          <summary>Where is the controller?</summary>
+          <p>There isn't one. Each cell only looks at its eight neighbours. The global pattern is a consequence of many local decisions, not a plan imposed from above.</p>
+          <p>This bounded grid treats cells outside the edges as dead. On an infinite grid, some patterns continue much longer.</p>
+        </details>
+        <p class="caveat">The preset patterns are fixed and deterministic. The random soup uses a seeded generator, so the same seed reproduces the same start.</p>
+      </aside>
+    </div>
+
+    <div class="takeaway">
+      <div class="takeaway-mark">What did you discover?</div>
+      <div>
+        <p>Simple local rules produced motion, oscillation, and decay without a central controller. The complexity is in the interactions, not in any single cell.</p>
+        <p class="try-next">Try this next: load the pulsar, then toggle one cell. Does the symmetry break immediately, or does it take a few generations?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EXPERIMENT F - NUMBERS
+       ============================================================ -->
+  <section id="numbers" class="experiment shell" style="--accent:#c4b5fd" aria-labelledby="numbers-title">
+    <header class="exp-head">
+      <div class="exp-number" aria-hidden="true">06</div>
+      <div>
+        <p class="exp-kicker">Numbers · structure and surprise</p>
+        <h2 id="numbers-title">The world of weird numbers.</h2>
+        <p class="exp-hook">A sequence that may climb forever, primes that fall out of a sieve, a ratio that keeps approaching φ, and the same number in a different alphabet.</p>
+      </div>
+    </header>
+
+    <div class="exp-grid">
+      <div class="lab-panel">
+        <div class="panel-top">
+          <span class="panel-label">Number curiosities</span>
+          <div class="seg" role="tablist" aria-label="Number experiments">
+            <button class="seg-btn is-on" type="button" data-number-tab="collatz" role="tab" aria-selected="true">Collatz</button>
+            <button class="seg-btn" type="button" data-number-tab="primes" role="tab" aria-selected="false">Primes</button>
+            <button class="seg-btn" type="button" data-number-tab="fibonacci" role="tab" aria-selected="false">φ</button>
+            <button class="seg-btn" type="button" data-number-tab="base" role="tab" aria-selected="false">Bases</button>
+          </div>
+        </div>
+
+        <div class="round is-on" data-number-panel="collatz">
+          <div class="number-controls">
+            <label for="collatz-input">Positive integer (1 to 10,000)</label>
+            <div class="input-row">
+              <input id="collatz-input" type="number" min="1" max="10000" value="27" inputmode="numeric" />
+              <button class="btn btn-primary" type="button" id="collatz-run">Run sequence</button>
+              <button class="btn btn-quiet" type="button" id="collatz-random">Random</button>
+            </div>
+          </div>
+          <div class="number-stats">
+            <div><span>Steps to 1</span><b id="collatz-steps">pending</b></div>
+            <div><span>Peak value</span><b id="collatz-peak">pending</b></div>
+            <div><span>Sequence length</span><b id="collatz-length">pending</b></div>
+          </div>
+          <div class="chart-wrap"><svg id="collatz-chart" viewBox="0 0 600 220" role="img" aria-label="Collatz sequence chart"></svg></div>
+          <div class="sequence-strip" id="collatz-seq" aria-live="polite"></div>
+          <div class="controls">
+            <button class="btn btn-ghost" type="button" id="collatz-scan">Scan 1 to 100 for the longest</button>
+          </div>
+          <div class="result" id="collatz-result" aria-live="polite"></div>
+        </div>
+
+        <div class="round" data-number-panel="primes">
+          <label class="slider-label" for="prime-n">Find primes up to <output id="prime-n-out">100</output></label>
+          <input type="range" id="prime-n" class="slider" min="20" max="300" value="100" step="10" />
+          <div class="prime-stats">
+            <span><b id="prime-count">25</b> <span id="prime-count-word">primes</span></span>
+            <span>density <b id="prime-density">25%</b></span>
+            <span>largest <b id="prime-largest">97</b></span>
+          </div>
+          <div class="prime-grid" id="prime-grid" aria-live="polite"></div>
+          <div class="controls">
+            <button class="btn btn-primary" type="button" id="prime-step">Step the sieve</button>
+            <button class="btn btn-ghost" type="button" id="prime-reset">Reset sieve</button>
+          </div>
+          <div class="result" id="prime-result" aria-live="polite"></div>
+        </div>
+
+        <div class="round" data-number-panel="fibonacci">
+          <label class="slider-label" for="fib-n">Fibonacci index <output id="fib-n-out">12</output></label>
+          <input type="range" id="fib-n" class="slider" min="3" max="40" value="12" step="1" />
+          <div class="fib-grid">
+            <div class="fib-stats">
+              <div><span>F(n)</span><b id="fib-value">144</b></div>
+              <div><span>F(n) / F(n−1)</span><b id="fib-ratio">1.61798</b></div>
+              <div><span>distance from φ</span><b id="fib-error">0.000056</b></div>
+            </div>
+            <div class="fib-spiral" id="fib-spiral" aria-hidden="true"></div>
+          </div>
+          <div class="chart-wrap"><svg id="fib-chart" viewBox="0 0 600 200" role="img" aria-label="Fibonacci ratio convergence toward the golden ratio"></svg></div>
+          <div class="result" id="fib-result" aria-live="polite"></div>
+        </div>
+
+        <div class="round" data-number-panel="base">
+          <div class="number-controls">
+            <label for="base-input">Integer (0 to 4,095)</label>
+            <div class="input-row">
+              <input id="base-input" type="number" min="0" max="4095" value="42" inputmode="numeric" />
+              <label class="inline-label" for="base-select">Base</label>
+              <select id="base-select">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+                <option value="16">16</option>
+              </select>
+              <button class="btn btn-primary" type="button" id="base-run">Convert</button>
+            </div>
+          </div>
+          <div class="base-output" id="base-output" aria-live="polite"></div>
+          <div class="base-comparison" id="base-comparison"></div>
+          <div class="result" id="base-result"></div>
+        </div>
+      </div>
+
+      <aside class="exp-notes">
+        <div class="note-card">
+          <p class="note-label">The idea</p>
+          <p>Simple rules can reveal surprising structure. The Collatz rule is almost embarrassingly short, yet no one has proved that every starting number eventually reaches 1.</p>
+          <p>An interesting pattern is not automatically a proof.</p>
+        </div>
+        <details class="deep">
+          <summary>What is the Collatz conjecture?</summary>
+          <p>Start with a positive integer. If it is even, halve it. If it is odd, triple it and add one. The conjecture says every starting value eventually reaches 1.</p>
+          <p>It has been checked for enormous ranges, but a finite check is not a proof for every positive integer. That distinction is the point.</p>
+        </details>
+        <p class="caveat">The sieve and Fibonacci identities shown here are proved mathematics. The Collatz behavior you see is a computed example, not a proof of the conjecture.</p>
+      </aside>
+    </div>
+
+    <div class="takeaway">
+      <div class="takeaway-mark">What did you discover?</div>
+      <div>
+        <p>A four-word rule can produce a long, wildly climbing sequence. A sieve can reveal primes by elimination. A ratio can approach φ without ever landing on it. And a pattern can be real without being proved.</p>
+        <p class="try-next">Try this next: find a number under 100 with more Collatz steps than 27. Then ask whether that proves anything about all numbers.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot shell">
+  <div>
+    <p class="foot-brand">Curiosity Lab <span>by Roshan B</span></p>
+    <p class="foot-note">Six experiments. Client-side only. No accounts, no tracking, no external APIs. The randomness is pseudorandom; the math is real math.</p>
+  </div>
+  <div class="foot-links">
+    <a href="../index.html">Portfolio</a>
+    <a href="../index.html#projects">Projects</a>
+    <a href="../index.html#contact">Contact</a>
+    <a href="#lab">Back to top ↑</a>
+  </div>
+  <details class="lab-notes">
+    <summary>Lab notes, assumptions, and limitations</summary>
+    <ul>
+      <li>Monty Hall simulation: the host always knows the prize location and always opens a losing door that the player did not choose. The simulation runs both strategies on the same trials.</li>
+      <li>Birthday paradox: 365 equally likely birthdays, independent people, no February 29. Real birthday distributions are not uniform.</li>
+      <li>Double pendulum: ideal frictionless model, RK4 integration at a fixed 0.0025 s timestep. Long runs can accumulate numerical drift. The two simulations share one physics implementation.</li>
+      <li>Maze: 23 × 13 bounded grid with unit step costs. BFS and A* use the same maze, start, and goal. A* uses Manhattan distance. A* is not guaranteed to explore fewer nodes on every graph or with every heuristic.</li>
+      <li>Game of Life: bounded 44 × 26 grid; cells outside the edges are dead. Presets are deterministic. The random soup is reproducible from its seed.</li>
+      <li>Coin streaks: each flip is independent with probability 1/2. The exact 10-flip sequences in the comparison are equally likely as exact sequences.</li>
+      <li>All computation happens in your browser. No input is sent anywhere.</li>
+    </ul>
+  </details>
+  <p class="foot-fine">Built with vanilla JavaScript, canvas, SVG, and CSS. © 2026 Roshan B.</p>
+</footer>
+
+<script src="lab.js"></script>
+</body>
+</html>

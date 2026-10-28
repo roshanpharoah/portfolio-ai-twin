@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Roshan B · AI/ML Engineer</title>
+<meta name="description" content="Portfolio of Roshan B, B.Tech CSE (AI & ML) at VIT Bhopal, AIML mentor at VDART Academy." />
+<script>document.documentElement.classList.add('js')</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>
+  tailwind.config = { theme: { extend: {
+    fontFamily: { display: ['Space Grotesk', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+    colors: { neon: { indigo: '#6366f1', cyan: '#22d3ee', emerald: '#34d399' } }
+  } } }
+</script>
+<style>
+  body { background: #020617; color: #e2e8f0; overflow-x: hidden; }
+  @media (hover: hover) and (pointer: fine) { html, body, a, button, input, .hoverable { cursor: none !important; } }
+  @media (hover: none), (pointer: coarse) { #cursor-dot, #cursor-ring { display: none; } }
+  :focus-visible { outline: 2px solid #22d3ee; outline-offset: 3px; border-radius: 8px; }
+  main, nav, footer { position: relative; z-index: 1; }
+  #bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  #progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 70; transform-origin: 0 50%; transform: scaleX(0);
+    background: linear-gradient(90deg, #6366f1, #22d3ee, #34d399); box-shadow: 0 0 12px rgba(34,211,238,.7); }
+  #cursor-dot, #cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; border-radius: 9999px; transform: translate(-50%, -50%); }
+  #cursor-dot { width: 8px; height: 8px; background: #22d3ee; mix-blend-mode: difference; }
+  #cursor-ring { width: 36px; height: 36px; border: 1px solid rgba(34,211,238,.6); mix-blend-mode: difference; }
+  .glass { background: rgba(15,23,42,.6); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(148,163,184,.12); }
+  .glow-text { background: linear-gradient(90deg,#6366f1,#22d3ee,#34d399); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .glow-text.split { background: none; color: inherit; }
+  .js .reveal { opacity: 0; }
+  .rx .w { display: inline-block; white-space: nowrap; }
+  .rx .ch { display: inline-block; will-change: transform; }
+  .lit { color: transparent; -webkit-text-fill-color: transparent;
+    background: radial-gradient(circle 150px at var(--px,-999px) var(--py,-999px), #a5f3fc 0%, #d4dbe6 40%, #aab6c8 100%);
+    -webkit-background-clip: text; background-clip: text; }
+  .lit span, .lit b { -webkit-text-fill-color: currentColor; }
+  .tilt-card { transform-style: preserve-3d; will-change: transform; transition: border-color .3s, box-shadow .3s; }
+  .tilt-card:hover { border-color: rgba(34,211,238,.5); box-shadow: 0 20px 60px -20px rgba(34,211,238,.35); }
+  .tilt-inner { transform: translateZ(40px); }
+  .spotlight { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
+    background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(99,102,241,.22), transparent 60%); }
+  .tilt-card:hover .spotlight, .bento:hover .spotlight { opacity: 1; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: .78rem; padding: .35rem .8rem; border-radius: 9999px; background: rgba(99,102,241,.12); border: 1px solid rgba(99,102,241,.3); color: #c7d2fe; transition: all .25s; }
+  .chip:hover { background: rgba(34,211,238,.15); border-color: #22d3ee; color: #67e8f9; }
+  .timeline-line { background: linear-gradient(to bottom,#6366f1,#22d3ee,transparent); }
+  .nav-btn { font-family: 'JetBrains Mono', monospace; font-size: .7rem; padding: .4rem .75rem; border-radius: 9999px; border: 1px solid rgba(148,163,184,.25); color: #94a3b8; transition: all .25s; white-space: nowrap; }
+  .nav-btn:hover { border-color: #22d3ee; color: #67e8f9; }
+  .nav-btn[aria-pressed="true"] { background: rgba(34,211,238,.15); border-color: #22d3ee; color: #67e8f9; }
+  @media (max-width: 388px) {
+    .nav-btn { font-size: .6rem; padding: .3rem .4rem; }
+    nav .nav-actions { gap: .25rem; }
+  }
+  .nav-link.active { color: #67e8f9; }
+  /* marquee */
+  .mq { overflow: hidden; white-space: nowrap; padding: .6rem 0; }
+  .mq-track { display: inline-flex; gap: 3rem; will-change: transform; font-weight: 700; font-size: clamp(2rem, 6vw, 4.5rem); letter-spacing: -.02em;
+    -webkit-text-stroke: 1px rgba(148,163,184,.35); color: transparent; }
+  .mq-track span:nth-child(3n) { -webkit-text-stroke-color: rgba(34,211,238,.6); }
+  .mq-track span:nth-child(3n+1) { -webkit-text-stroke-color: rgba(99,102,241,.6); }
+  /* certificates */
+  .fchip { font-family: 'JetBrains Mono', monospace; font-size: .75rem; padding: .4rem .85rem; border-radius: 9999px; border: 1px solid rgba(148,163,184,.25); color: #94a3b8; transition: all .25s; }
+  .fchip span { opacity: .6; margin-left: .35rem; }
+  .fchip:hover, .fchip.on { border-color: #22d3ee; color: #67e8f9; background: rgba(34,211,238,.1); }
+  .cert-card { position: relative; padding: .9rem 1rem .9rem 1.1rem; border-radius: 1rem; transition: transform .25s, border-color .25s, background .25s; }
+  .cert-card::before { content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 3px; background: var(--c, #6366f1); box-shadow: 0 0 12px var(--c, #6366f1); }
+  .cert-card:hover { transform: translateY(-3px) scale(1.01); border-color: var(--c, #22d3ee); background: rgba(30,41,59,.7); }
+  /* stepper */
+  .step-btn { font-family: 'JetBrains Mono', monospace; font-size: .78rem; padding: .55rem .9rem; border-radius: .75rem; border: 1px solid rgba(148,163,184,.2); color: #94a3b8; transition: all .25s; text-align: left; }
+  .step-btn b { color: #6366f1; margin-right: .5rem; }
+  .step-btn:hover, .step-btn.on { border-color: #22d3ee; color: #e2e8f0; background: rgba(34,211,238,.08); }
+  .step-btn.on b { color: #22d3ee; }
+  /* robot */
+  #bot { position: fixed; left: 0; bottom: 6px; width: 86px; z-index: 55; pointer-events: none; will-change: transform; }
+  #bot-svg { display: block; width: 100%; height: auto; overflow: visible; pointer-events: auto; transform-origin: 50% 100%; }
+  #bot-bubble { position: absolute; bottom: 100%; left: 0; margin-bottom: 4px; width: max-content; max-width: 210px; padding: .5rem .75rem;
+    border-radius: 14px 14px 14px 4px; background: rgba(15,23,42,.94); border: 1px solid rgba(34,211,238,.4); color: #e2e8f0;
+    font: 500 .8rem/1.35 'Space Grotesk', sans-serif; opacity: 0; transform: translateY(6px) scale(.96); transition: opacity .25s, transform .25s;
+    pointer-events: none; box-shadow: 0 10px 30px -10px rgba(34,211,238,.45); }
+  #bot-bubble.show { opacity: 1; transform: none; }
+  #bot-bubble.right { left: auto; right: 0; border-radius: 14px 14px 4px 14px; }
+  .limb { transform-box: fill-box; transform-origin: 50% 5%; }
+  #head { transform-box: fill-box; transform-origin: 50% 100%; }
+  #eyesHappy, #eyesSleep, #zzz { opacity: 0; transition: opacity .15s; }
+  #eyeShape { transform-box: fill-box; transform-origin: center; transition: transform .12s; }
+  #bot-svg.blink #eyeShape { transform: scaleY(.1); }
+  #bot-svg.m-happy #eyes, #bot-svg.m-sleep #eyes { opacity: 0; }
+  #bot-svg.m-happy #eyesHappy { opacity: 1; }
+  #bot-svg.m-sleep #eyesSleep, #bot-svg.m-sleep #zzz { opacity: 1; }
+  #bot-svg.m-wow #eyeShape { transform: scale(1.35); }
+  #bot-svg.m-think #ant, #bot-svg.m-think #core { fill: #fbbf24; }
+  #core { animation: pulse 2.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  #zzz text { font: 700 11px 'JetBrains Mono', monospace; fill: #67e8f9; animation: zz 2s ease-in-out infinite; }
+  #zzz text:nth-child(2) { animation-delay: .6s; font-size: 8px; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.25); } }
+  @keyframes zz { 0% { transform: translate(0,6px); opacity: 0; } 40% { opacity: 1; } 100% { transform: translate(8px,-10px); opacity: 0; } }
+  @media (max-width: 640px) { #bot { width: 64px; } }
+  /* chat */
+  #chat { position: fixed; right: 16px; bottom: 16px; width: min(380px, calc(100vw - 32px)); height: min(540px, 72vh); z-index: 60; display: flex; flex-direction: column;
+    border-radius: 1.25rem; overflow: hidden; opacity: 0; transform: translateY(24px) scale(.97); pointer-events: none; transition: opacity .3s, transform .3s;
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(34,211,238,.2); background: rgba(2,6,23,.94); backdrop-filter: blur(18px); }
+  #chat.open { opacity: 1; transform: none; pointer-events: auto; }
+  #chat-log { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: .7rem; scrollbar-width: thin; scrollbar-color: #334155 transparent; }
+  .msg { max-width: 88%; padding: .65rem .85rem; border-radius: 1rem; font-size: .88rem; line-height: 1.5; }
+  .msg p + p { margin-top: .5rem; }
+  .msg.bot { align-self: flex-start; background: rgba(30,41,59,.8); border: 1px solid rgba(148,163,184,.15); border-bottom-left-radius: .3rem; }
+  .msg.me { align-self: flex-end; background: linear-gradient(135deg,#4f46e5,#0891b2); color: white; border-bottom-right-radius: .3rem; }
+  .srcs { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .55rem; }
+  .src { font: 400 .66rem 'JetBrains Mono', monospace; color: #64748b; border: 1px dashed #334155; border-radius: 9999px; padding: .1rem .5rem; }
+  .qchip { font-size: .75rem; padding: .35rem .7rem; border-radius: 9999px; border: 1px solid rgba(34,211,238,.35); color: #67e8f9; background: rgba(34,211,238,.06); transition: all .2s; }
+  .qchip:hover { background: rgba(34,211,238,.18); }
+  .chat-modebar { display: flex; align-items: center; gap: .45rem; padding: .45rem .9rem; border-bottom: 1px solid rgba(51,65,85,.7); background: rgba(15,23,42,.55); }
+  .chat-modebar label { font: 600 .58rem 'JetBrains Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: #64748b; }
+  #chat-mode { font: 500 .68rem 'JetBrains Mono', monospace; color: #a5f3fc; background: #0f172a; border: 1px solid rgba(34,211,238,.3); border-radius: 9999px; padding: .18rem .55rem; outline: none; color-scheme: dark; }
+  #chat-mode:focus-visible { border-color: #22d3ee; box-shadow: 0 0 0 2px rgba(34,211,238,.2); }
+  .chat-modebar .privacy-note { margin-left: auto; font: 400 .56rem 'JetBrains Mono', monospace; color: #475569; white-space: nowrap; }
+  .mode-tag { font: 500 .58rem 'JetBrains Mono', monospace; color: #94a3b8; border: 1px solid rgba(148,163,184,.25); border-radius: 9999px; padding: .1rem .45rem; text-transform: uppercase; letter-spacing: .06em; }
+  @media (max-width: 360px) { .chat-modebar .privacy-note { display: none; } }
+  .dots span { display: inline-block; width: 6px; height: 6px; margin: 0 2px; border-radius: 9999px; background: #67e8f9; animation: dot 1s infinite; }
+  .dots span:nth-child(2) { animation-delay: .15s; } .dots span:nth-child(3) { animation-delay: .3s; }
+  @keyframes dot { 0%,60%,100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-4px); opacity: 1; } }
+  #sound-hint { position: fixed; top: 78px; right: 16px; z-index: 55; font: 400 .72rem 'JetBrains Mono', monospace; padding: .5rem .8rem; border-radius: .75rem;
+    background: rgba(15,23,42,.9); border: 1px solid rgba(34,211,238,.4); color: #67e8f9; opacity: 0; transform: translateY(-6px); transition: all .4s; pointer-events: none; }
+  #sound-hint.show { opacity: 1; transform: none; }
+  @media (max-width: 640px) {
+    #home { align-items: flex-start; padding-top: 5.5rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body class="font-display antialiased">
+
+<canvas id="bg" aria-hidden="true"></canvas>
+<div id="progress"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-dot"></div>
+<div id="sound-hint">♪ psst. Sound effects &amp; ambient are off. Try the buttons above.</div>
+
+<!-- NAV -->
+<nav class="fixed top-0 inset-x-0 z-50" style="position:fixed">
+  <div class="max-w-6xl mx-auto mt-4 px-4 sm:px-6 py-3 glass rounded-full flex items-center justify-between gap-3" style="width:calc(100% - 2rem)">
+    <a href="#home" class="font-bold tracking-tight">RB<span class="text-neon-cyan">.</span></a>
+    <div class="hidden lg:flex gap-3 xl:gap-7 text-xs xl:text-sm text-slate-400">
+      <a class="nav-link hover:text-neon-cyan transition" href="#about">About</a>
+      <a class="nav-link hover:text-neon-cyan transition" href="#now">Now</a>
+      <a class="nav-link hover:text-neon-cyan transition" href="#skills">Skills</a>
+      <a class="nav-link hover:text-neon-cyan transition" href="#projects">Projects</a>
+      <a class="nav-link hover:text-neon-cyan transition" href="#think">How I think</a>
+      <a class="nav-link hover:text-neon-cyan transition" href="#experience">Experience</a>
+      <a class="nav-link hover:text-neon-cyan transition" href="#certs">Certs</a>
+      <a class="nav-link hover:text-neon-cyan transition" href="#contact">Contact</a>
+    </div>
+    <div class="flex items-center gap-2 nav-actions">
+      <a href="playground/index.html" class="nav-btn" style="border-color:rgba(52,211,153,.45);color:#6ee7b7" title="Curiosity Lab: six interactive experiments" data-bot="The lab is through there. Six experiments, no backend.">✦ Lab</a>
+      <button id="sfx-btn" class="nav-btn" aria-pressed="false" title="Toggle sound effects">♪ SFX off</button>
+      <button id="amb-btn" class="nav-btn hidden sm:block" aria-pressed="false" title="Toggle ambient sound">≈ Ambient off</button>
+      <button id="ask-btn" class="nav-btn" style="border-color:rgba(99,102,241,.6);color:#c7d2fe">✦ Ask my notes</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+<!-- HERO -->
+<section id="home" class="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
+  <div class="orb orb-a absolute -top-40 -left-40 w-[32rem] h-[32rem] rounded-full bg-neon-indigo/20 blur-[120px]"></div>
+  <div class="orb orb-b absolute bottom-0 -right-40 w-[30rem] h-[30rem] rounded-full bg-neon-cyan/15 blur-[120px]"></div>
+  <div class="relative max-w-5xl text-center">
+    <p class="hero-item font-mono text-sm text-neon-emerald mb-6 tracking-widest">&gt; AI &amp; ML ENGINEER · VIT BHOPAL · VDART ACADEMY</p>
+    <h1 class="hero-item rx text-5xl sm:text-7xl md:text-8xl font-bold leading-[1.05] tracking-tight">Turning <span class="glow-text">curiosity</span><br/>into intelligent systems.</h1>
+    <p class="hero-item lit mt-8 text-lg md:text-xl max-w-2xl mx-auto">I'm <span class="text-white">Roshan B</span>. I build AI that reads, sees, predicts and generates: library recommenders, synthetic data engines, plant-disease vision. I like knowing how a thing works from the very start.</p>
+    <div class="hero-item mt-10 flex flex-wrap gap-4 justify-center">
+      <a href="#projects" class="px-7 py-3 rounded-full bg-neon-indigo text-white font-medium hover:shadow-[0_0_30px_rgba(99,102,241,.6)] transition">View projects</a>
+      <button data-open-chat class="px-7 py-3 rounded-full border border-slate-700 text-slate-200 hover:border-neon-cyan hover:text-neon-cyan transition">Ask my notes ✦</button>
+    </div>
+    <p class="hero-item mt-8 font-mono text-xs text-slate-500">Open to: Software Deployment · Forward Deployed Engineering · AI/ML roles</p>
+    <p id="hero-hint" class="mt-4 font-mono text-xs text-neon-cyan opacity-0">↑ go on, move your cursor over the big text</p>
+  </div>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 font-mono text-xs text-slate-500 animate-pulse">scroll ↓</div>
+</section>
+
+<div class="mq" aria-hidden="true"><div class="mq-track"><span>PYTHON</span><span>PYTORCH</span><span>NLP</span><span>COMPUTER VISION</span><span>RAG</span><span>FASTAPI</span><span>AWS</span><span>SQL</span><span>PYTHON</span><span>PYTORCH</span><span>NLP</span><span>COMPUTER VISION</span><span>RAG</span><span>FASTAPI</span><span>AWS</span><span>SQL</span></div></div>
+
+<!-- ABOUT -->
+<section id="about" class="relative py-28 px-6">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-5 gap-12 items-start">
+    <div class="md:col-span-2 reveal">
+      <p class="font-mono text-neon-cyan text-sm mb-3">// 01 · ABOUT</p>
+      <h2 class="rx text-4xl md:text-5xl font-bold leading-tight">Connecting ideas across disciplines.</h2>
+    </div>
+    <div class="md:col-span-3 space-y-6 text-lg leading-relaxed reveal">
+      <p class="lit">I'm a B.Tech Computer Science student specializing in <span class="text-white">AI &amp; Machine Learning at VIT Bhopal</span>. I learn best from the intuition outward: why a technique was invented, what problem it solves, and then the formalism and the code.</p>
+      <p class="lit">I'm drawn to how computing opens new doors in <span class="text-neon-emerald">computational biology</span>, <span class="text-neon-cyan">space &amp; satellite data</span> and <span class="text-indigo-400">automation</span>. Those are interests I read and build toward, not a claimed research specialization.</p>
+      <div class="grid grid-cols-3 gap-4 pt-2">
+        <div class="glass rounded-2xl p-4"><div class="text-3xl font-bold glow-text">7</div><div class="text-xs text-slate-400 mt-1">AI projects led at VDART</div></div>
+        <div class="glass rounded-2xl p-4"><div class="text-3xl font-bold glow-text" id="stat-certs">0</div><div class="text-xs text-slate-400 mt-1">certificates &amp; badges</div></div>
+        <div class="glass rounded-2xl p-4"><div class="text-3xl font-bold glow-text">2027</div><div class="text-xs text-slate-400 mt-1">B.Tech graduation</div></div>
+      </div>
+      <div class="flex flex-wrap gap-2 pt-2" data-bot="Cricket AND football? He's got range.">
+        <span class="chip">Computational biology</span><span class="chip">Space &amp; satellite data AI</span><span class="chip">Automation</span>
+        <span class="chip">Psychology &amp; EQ</span><span class="chip">Video editing</span><span class="chip">District-level cricket</span><span class="chip">Football</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOW -->
+<section id="now" class="py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal mb-12">
+      <p class="font-mono text-neon-cyan text-sm mb-3">// 02 · RIGHT NOW</p>
+      <h2 class="rx text-4xl md:text-5xl font-bold">What I'm doing this season.</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="reveal bento relative glass rounded-3xl p-7 hoverable overflow-hidden" data-bot="Four hours a day. That's discipline.">
+        <div class="spotlight"></div>
+        <p class="font-mono text-xs text-neon-emerald mb-3">PREPARING</p>
+        <h3 class="text-xl font-bold mb-3">Placements, ~4 focused hours a day</h3>
+        <div class="flex flex-wrap gap-2"><span class="chip">DSA</span><span class="chip">Aptitude</span><span class="chip">SQL</span><span class="chip">Core CS</span><span class="chip">AIML interviews</span><span class="chip">GATE DA</span></div>
+        <p class="text-slate-400 text-sm mt-4">Placements come first; GATE DA rides along on the overlapping subjects instead of becoming a second full-time schedule.</p>
+      </div>
+      <div class="reveal bento relative glass rounded-3xl p-7 hoverable overflow-hidden" data-bot="FDE: engineer meets real users. Makes sense for him.">
+        <div class="spotlight"></div>
+        <p class="font-mono text-xs text-neon-cyan mb-3">TARGETING</p>
+        <h3 class="text-xl font-bold mb-3">Software Deployment &amp; Forward Deployed Engineering</h3>
+        <p class="text-slate-400 text-sm">I'm pulled toward engineering that meets real users: integrating systems, living with ambiguity, and making a solution actually work in a messy real setting.</p>
+      </div>
+      <div class="reveal bento relative glass rounded-3xl p-7 hoverable overflow-hidden" data-bot="Next chapter: job first, study maybe later.">
+        <div class="spotlight"></div>
+        <p class="font-mono text-xs text-neon-indigo mb-3">NEXT CHAPTER</p>
+        <h3 class="text-xl font-bold mb-3">Work first, study later, maybe</h3>
+        <p class="text-slate-400 text-sm">I've looked at MSc AI/ML routes, including in the UK, but that's an option I'm weighing, not a decision. The job comes first.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="py-28 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal mb-14">
+      <p class="font-mono text-neon-cyan text-sm mb-3">// 03 · SKILLS</p>
+      <h2 class="rx text-4xl md:text-5xl font-bold">The toolkit.</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-4 auto-rows-[minmax(170px,auto)]">
+      <div class="bento reveal relative glass rounded-3xl p-7 md:col-span-4 hoverable overflow-hidden" data-bot="GraphSAGE, LSTMs, ViTs… the model zoo is real.">
+        <div class="spotlight"></div>
+        <p class="font-mono text-xs text-neon-indigo mb-3">AI &amp; MACHINE LEARNING</p>
+        <div class="flex flex-wrap gap-2"><span class="chip">Machine Learning</span><span class="chip">Deep Learning</span><span class="chip">NLP</span><span class="chip">Computer Vision</span><span class="chip">Supervised Learning</span><span class="chip">Sentiment Analysis</span></div>
+        <p class="text-slate-400 text-sm mt-5">GraphSAGE, LSTM, DistilBERT, Vision Transformers, CTGAN/TVAE, DiffuseGAN, applied across real projects.</p>
+      </div>
+      <div class="bento reveal relative glass rounded-3xl p-7 md:col-span-2 hoverable overflow-hidden">
+        <div class="spotlight"></div>
+        <p class="font-mono text-xs text-neon-emerald mb-3">LANGUAGES</p>
+        <div class="flex flex-wrap gap-2"><span class="chip">Python</span><span class="chip">C++</span><span class="chip">Java</span><span class="chip">SQL</span></div>
+      </div>
+      <div class="bento reveal relative glass rounded-3xl p-7 md:col-span-2 hoverable overflow-hidden">
+        <div class="spotlight"></div>
+        <p class="font-mono text-xs text-neon-cyan mb-3">CLOUD &amp; INFRA</p>
+        <div class="flex flex-wrap gap-2"><span class="chip">AWS EC2</span><span class="chip">S3</span><span class="chip">RDS</span><span class="chip">VPC</span><span class="chip">IAM</span><span class="chip">EKS</span><span class="chip">REST APIs</span></div>
+      </div>
+      <div class="bento reveal relative glass rounded-3xl p-7 md:col-span-2 hoverable overflow-hidden">
+        <div class="spotlight"></div>
+        <p class="font-mono text-xs text-neon-indigo mb-3">DATA &amp; VIZ</p>
+        <div class="flex flex-wrap gap-2"><span class="chip">Data Analysis</span><span class="chip">Power BI</span><span class="chip">Tableau</span><span class="chip">Excel</span></div>
+      </div>
+      <div class="bento reveal relative glass rounded-3xl p-7 md:col-span-2 hoverable overflow-hidden">
+        <div class="spotlight"></div>
+        <p class="font-mono text-xs text-neon-emerald mb-3">DEV TOOLS</p>
+        <div class="flex flex-wrap gap-2"><span class="chip">Git</span><span class="chip">VS Code</span><span class="chip">OpenCode</span><span class="chip">Antigravity</span><span class="chip">Premiere Pro</span><span class="chip">Pixlr</span></div>
+      </div>
+      <div class="bento reveal relative glass rounded-3xl p-7 md:col-span-6 hoverable overflow-hidden">
+        <div class="spotlight"></div>
+        <p class="font-mono text-xs text-neon-cyan mb-3">CORE COMPETENCIES</p>
+        <div class="flex flex-wrap gap-2"><span class="chip">Technical Mentorship</span><span class="chip">Cross-functional Problem Solving</span><span class="chip">Full-cycle Product Development</span><span class="chip">System Troubleshooting</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="py-28 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal mb-14">
+      <p class="font-mono text-neon-cyan text-sm mb-3">// 04 · PROJECTS</p>
+      <h2 class="rx text-4xl md:text-5xl font-bold">Things I've built.</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6" style="perspective:1200px">
+      <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable md:col-span-2 overflow-hidden" data-bot="Ten models, one confidence score. The flagship!">
+        <div class="spotlight"></div><div class="tilt-inner">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <h3 class="text-2xl md:text-3xl font-bold">AI-Powered Library Management System</h3>
+            <span class="font-mono text-xs text-neon-emerald border border-neon-emerald/40 rounded-full px-3 py-1">FLAGSHIP</span>
+          </div>
+          <p class="text-slate-400 max-w-3xl">Full-stack library platform fusing custom deep-learning modules: GraphSAGE book recommendations, Demand LSTM borrow forecasting, DistilBERT/MiniLM semantic search and an autoencoder anomaly detector for overdue transactions. A weighted Convergence Engine merges every signal into one explainable confidence score on an interactive React dashboard.</p>
+          <div class="mt-6 flex flex-wrap gap-8">
+            <div><div class="text-3xl font-bold glow-text">10</div><div class="text-xs text-slate-400">custom DL modules</div></div>
+            <div><div class="text-3xl font-bold glow-text">4</div><div class="text-xs text-slate-400">model families fused</div></div>
+            <div><div class="text-3xl font-bold glow-text">1</div><div class="text-xs text-slate-400">unified confidence score</div></div>
+          </div>
+          <div class="mt-6 flex flex-wrap gap-2"><span class="chip">FastAPI</span><span class="chip">PyTorch</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">SQLite</span></div>
+        </div>
+      </article>
+      <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="Eligibility rules are deterministic. No hallucinated schemes.">
+        <div class="spotlight"></div><div class="tilt-inner">
+          <h3 class="text-xl font-bold mb-3">PolicyPulse: Scholarship Assistant</h3>
+          <p class="text-slate-400 text-sm">Modular-monolith assistant with a hybrid intake extractor (regex + PII-guarded LLM parsing), TF-IDF RAG over official policy chunks, and a deterministic eligibility engine. Generates application summary PDFs with verification checklists.</p>
+          <div class="mt-5 flex gap-8"><div><div class="text-2xl font-bold glow-text">2+</div><div class="text-xs text-slate-400">schemes (CSSS, PMSSS)</div></div><div><div class="text-2xl font-bold glow-text">PDF</div><div class="text-xs text-slate-400">auto-generated summaries</div></div></div>
+          <div class="mt-5 flex flex-wrap gap-2"><span class="chip">FastAPI</span><span class="chip">SQLAlchemy</span><span class="chip">ReportLab</span><span class="chip">React</span></div>
+        </div>
+      </article>
+      <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="Synthetic data, with differential privacy. Fancy.">
+        <div class="spotlight"></div><div class="tilt-inner">
+          <h3 class="text-xl font-bold mb-3">Unified Synthetic Data Platform</h3>
+          <p class="text-slate-400 text-sm">Enterprise platform for tabular/relational data (banking, healthcare) and image data. CTGAN and TVAE with differential privacy, validated via Kolmogorov-Smirnov tests and correlation matrices; DiffuseGAN for stable image synthesis.</p>
+          <div class="mt-5 flex gap-8"><div><div class="text-2xl font-bold glow-text">3</div><div class="text-xs text-slate-400">generative models</div></div><div><div class="text-2xl font-bold glow-text">DP</div><div class="text-xs text-slate-400">privacy-constrained</div></div></div>
+          <div class="mt-5 flex flex-wrap gap-2"><span class="chip">PyTorch</span><span class="chip">CTGAN</span><span class="chip">TVAE</span><span class="chip">DiffuseGAN</span><span class="chip">SQL</span></div>
+        </div>
+      </article>
+      <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="Wheat, paddy, maize, soybean. Leaves, but make it ViT.">
+        <div class="spotlight"></div><div class="tilt-inner">
+          <h3 class="text-xl font-bold mb-3">Plant Disease Detection &amp; Leaf Classification</h3>
+          <p class="text-slate-400 text-sm">Lightweight computer-vision pipeline with Vision Transformers and automated background removal, optimized for regional agricultural profiles without heavy object-detection models.</p>
+          <div class="mt-5"><div class="text-2xl font-bold glow-text">4</div><div class="text-xs text-slate-400">crops: wheat, paddy, maize, soybean</div></div>
+          <div class="mt-5 flex flex-wrap gap-2"><span class="chip">PyTorch</span><span class="chip">ViT</span><span class="chip">OpenCV</span></div>
+        </div>
+      </article>
+      <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="A whole timetable solver with no backend. Respect.">
+        <div class="spotlight"></div><div class="tilt-inner">
+          <h3 class="text-xl font-bold mb-3">College Timetable &amp; Absence Manager</h3>
+          <p class="text-slate-400 text-sm">100% client-side SPA with a constraint-satisfaction timetable generator (backtracking + greedy fallback), automated faculty-absence substitution, and a BM25 RAG chatbot with voice I/O for scheduling and Anna University regulation queries.</p>
+          <div class="mt-5 flex gap-8"><div><div class="text-2xl font-bold glow-text">30+</div><div class="text-xs text-slate-400">chatbot intents</div></div><div><div class="text-2xl font-bold glow-text">0</div><div class="text-xs text-slate-400">backend required</div></div></div>
+          <div class="mt-5 flex flex-wrap gap-2"><span class="chip">JavaScript</span><span class="chip">CSP Solver</span><span class="chip">BM25 RAG</span><span class="chip">Web Speech API</span></div>
+        </div>
+      </article>
+      <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="Little buses crawling along a map. I love that one.">
+        <div class="spotlight"></div><div class="tilt-inner">
+          <h3 class="text-xl font-bold mb-3">Smart Bus Tracker &amp; QR Attendance</h3>
+          <p class="text-slate-400 text-sm">Bus-tracking prototype with real-time GPS simulation interpolated along route polylines on a Leaflet map, plus a cryptographic QR attendance pipeline with duplicate-scan guards, trip validation and CSV reports.</p>
+          <div class="mt-5 flex gap-8"><div><div class="text-2xl font-bold glow-text">Live</div><div class="text-xs text-slate-400">GPS simulation</div></div><div><div class="text-2xl font-bold glow-text">CSV</div><div class="text-xs text-slate-400">automated reports</div></div></div>
+          <div class="mt-5 flex flex-wrap gap-2"><span class="chip">Node.js</span><span class="chip">Express</span><span class="chip">Leaflet</span><span class="chip">HTML5-QR</span></div>
+        </div>
+      </article>
+      <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="A Snake game that reads your mood. Wild.">
+        <div class="spotlight"></div><div class="tilt-inner">
+          <h3 class="text-xl font-bold mb-3">Emotion-Driven Activity Launcher</h3>
+          <p class="text-slate-400 text-sm">Desktop app running sentiment analysis on journal entries to classify emotional state and recommend activities, playlists or chatbot interactions, with an adaptive Snake game whose speed scales to your mood.</p>
+          <div class="mt-5"><div class="text-2xl font-bold glow-text">Real-time</div><div class="text-xs text-slate-400">adaptive difficulty</div></div>
+          <div class="mt-5 flex flex-wrap gap-2"><span class="chip">Python</span><span class="chip">NLP</span><span class="chip">CustomTkinter</span><span class="chip">Pygame</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- HOW I THINK -->
+<section id="think" class="py-28 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal mb-12">
+      <p class="font-mono text-neon-cyan text-sm mb-3">// 05 · HOW I THINK</p>
+      <h2 class="rx text-4xl md:text-5xl font-bold">Intuition first. Then the math. Then the code.</h2>
+      <p class="lit mt-4 max-w-2xl text-slate-400">This is the order I use to learn, and to teach, a technical topic. Click through it with an illustrative example: a Bayes spam detector.</p>
+    </div>
+    <div class="reveal grid lg:grid-cols-5 gap-6">
+      <div id="steps" class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2"></div>
+      <div id="step-card" class="lg:col-span-3 glass rounded-3xl p-8 min-h-[260px] flex flex-col justify-between" aria-live="polite">
+        <div><p id="step-n" class="font-mono text-xs text-neon-cyan mb-2"></p><h3 id="step-t" class="text-2xl font-bold mb-3"></h3><p id="step-d" class="text-slate-300 leading-relaxed"></p></div>
+        <p class="font-mono text-xs text-slate-500 mt-6">Illustrative walkthrough · same order whether it's Bayes, LSTMs or SQL joins</p>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-3 gap-4 mt-6">
+      <div class="reveal glass rounded-2xl p-5"><p class="font-mono text-xs text-neon-indigo mb-2">I QUESTION THE FIRST EXPLANATION</p><p class="text-sm text-slate-400">If it doesn't match my mental model, I push back until the logic between steps is clear.</p></div>
+      <div class="reveal glass rounded-2xl p-5"><p class="font-mono text-xs text-neon-emerald mb-2">PRECISE &gt; POLITE</p><p class="text-sm text-slate-400">Tell me which part is right, which is wrong, and why. Vague praise teaches me nothing.</p></div>
+      <div class="reveal glass rounded-2xl p-5"><p class="font-mono text-xs text-neon-cyan mb-2">IDEA ≠ BUILT ≠ TESTED</p><p class="text-sm text-slate-400">I keep proposed, in-progress and demonstrated work separate. No inflated claims.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="py-28 px-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="reveal mb-14">
+      <p class="font-mono text-neon-cyan text-sm mb-3">// 06 · EXPERIENCE</p>
+      <h2 class="rx text-4xl md:text-5xl font-bold">Where I've worked &amp; learned.</h2>
+    </div>
+    <div class="relative pl-8 md:pl-12">
+      <div class="timeline-line absolute left-0 top-2 bottom-0 w-px"></div>
+      <div class="reveal relative mb-14">
+        <span class="absolute -left-[37px] md:-left-[53px] top-2 w-4 h-4 rounded-full bg-neon-cyan shadow-[0_0_20px_#22d3ee]"></span>
+        <p class="font-mono text-xs text-neon-cyan">05/2026 to 10/2026</p>
+        <h3 class="text-2xl font-bold mt-1">AIML Intern · Core Team Member &amp; Mentor</h3>
+        <p class="text-slate-400 mb-4">VDART Academy, Tiruchirappalli</p>
+        <ul class="space-y-3 text-slate-300">
+          <li class="flex gap-3"><span class="text-neon-emerald">▹</span>Led AI-driven projects spanning resume analysis, timetable management, faculty absence tracking, AI sheet analysis, EOD email classification, library management and bus tracking.</li>
+          <li class="flex gap-3"><span class="text-neon-emerald">▹</span>Mentored beginner AIML interns in AI, ML, NLP and computer vision: Python, NumPy, pandas, Bayes' theorem, word-frequency analysis and a basic spam detector built without NLTK.</li>
+          <li class="flex gap-3"><span class="text-neon-emerald">▹</span>Showcased eye-tracking and synthetic data generation projects to industry-visit students, introducing AIML through real applications.</li>
+          <li class="flex gap-3"><span class="text-neon-emerald">▹</span>Resolved technical blockers, including API integration issues, for core team members and mentees.</li>
+        </ul>
+      </div>
+      <div class="reveal relative">
+        <span class="absolute -left-[37px] md:-left-[53px] top-2 w-4 h-4 rounded-full bg-neon-indigo shadow-[0_0_20px_#6366f1]"></span>
+        <p class="font-mono text-xs text-indigo-300">Expected 05/2027</p>
+        <h3 class="text-2xl font-bold mt-1">B.Tech, CSE (AI &amp; ML)</h3>
+        <p class="text-slate-400">VIT Bhopal University, Bhopal · School: Kamala Niketan (CBSE), Trichy, 2023</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTS -->
+<section id="certs" class="py-28 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal mb-10">
+      <p class="font-mono text-neon-cyan text-sm mb-3">// 07 · CERTIFICATE WALL</p>
+      <h2 class="rx text-4xl md:text-5xl font-bold">Always be learning.</h2>
+      <p class="lit mt-4 max-w-2xl text-slate-400">Courses, badges and certificates across ML, cloud, math, human skills, and a few detours into psychology. Filter by area.</p>
+    </div>
+    <div id="cert-filters" class="reveal flex flex-wrap gap-2 mb-8"></div>
+    <div id="cert-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+    <div class="text-center mt-8"><button id="cert-more" class="nav-btn" style="font-size:.8rem;padding:.6rem 1.2rem"></button></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="relative py-32 px-6 overflow-hidden">
+  <div class="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-neon-indigo/20 to-transparent"></div>
+  <div class="relative max-w-3xl mx-auto text-center reveal">
+    <p class="font-mono text-neon-cyan text-sm mb-3">// 08 · CONTACT</p>
+    <h2 class="rx text-5xl md:text-7xl font-bold leading-tight">Let's build something <span class="glow-text">intelligent</span>.</h2>
+    <p class="lit mt-6 text-lg">Open to placements, internships, collaborations and ideas at the edge of AI, biology and space.</p>
+    <div class="mt-10 flex flex-wrap justify-center gap-4">
+      <a href="mailto:balakumarpushparaj2016@gmail.com" data-bot="Go on, say hi. He replies." class="px-7 py-3 rounded-full bg-neon-indigo text-white font-medium hover:shadow-[0_0_30px_rgba(99,102,241,.6)] transition">Email me</a>
+      <a href="https://linkedin.com/in/roshan-b-432812219" target="_blank" rel="noopener" class="px-7 py-3 rounded-full border border-slate-700 hover:border-neon-cyan hover:text-neon-cyan transition">LinkedIn</a>
+      <a href="tel:+918072552456" class="px-7 py-3 rounded-full border border-slate-700 hover:border-neon-emerald hover:text-neon-emerald transition">+91 80725 52456</a>
+      <button data-open-chat class="px-7 py-3 rounded-full border border-neon-indigo/60 text-indigo-200 hover:bg-neon-indigo/20 transition">Ask my notes ✦</button>
+    </div>
+    <p class="mt-16 font-mono text-xs text-slate-600">Trichy, India · © 2026 Roshan B</p>
+  </div>
+</section>
+</main>
+
+<!-- ROBOT -->
+<div id="bot">
+  <div id="bot-bubble" role="status" aria-live="polite"></div>
+  <svg id="bot-svg" viewBox="0 0 100 130" role="button" tabindex="0" aria-label="Bit the robot. Click to open the chat" data-hover data-bot="That tickles. Click me for the notes.">
+    <defs>
+      <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1e293b"/><stop offset="1" stop-color="#0b1222"/></linearGradient>
+      <filter id="glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <ellipse cx="50" cy="125" rx="24" ry="3.5" fill="#000" opacity=".45"/>
+    <g id="bot-main">
+      <g id="legL" class="limb"><rect x="35" y="96" width="10" height="22" rx="5" fill="#334155" stroke="#22d3ee" stroke-opacity=".5"/><rect x="32" y="114" width="16" height="8" rx="4" fill="#1e293b" stroke="#22d3ee" stroke-opacity=".5"/></g>
+      <g id="legR" class="limb"><rect x="55" y="96" width="10" height="22" rx="5" fill="#334155" stroke="#22d3ee" stroke-opacity=".5"/><rect x="52" y="114" width="16" height="8" rx="4" fill="#1e293b" stroke="#22d3ee" stroke-opacity=".5"/></g>
+      <g id="armL" class="limb"><rect x="13" y="62" width="10" height="28" rx="5" fill="#334155" stroke="#6366f1" stroke-opacity=".7"/></g>
+      <g id="armR" class="limb"><rect x="77" y="62" width="10" height="28" rx="5" fill="#334155" stroke="#6366f1" stroke-opacity=".7"/></g>
+      <rect x="26" y="58" width="48" height="42" rx="14" fill="url(#g1)" stroke="#6366f1" stroke-width="1.5"/>
+      <circle id="core" cx="50" cy="79" r="6" fill="#22d3ee" filter="url(#glow)"/>
+      <g id="head">
+        <line x1="50" y1="16" x2="50" y2="7" stroke="#64748b" stroke-width="2"/>
+        <circle id="ant" cx="50" cy="5" r="3.5" fill="#34d399" filter="url(#glow)"/>
+        <rect x="20" y="16" width="60" height="42" rx="17" fill="url(#g1)" stroke="#22d3ee" stroke-width="1.5"/>
+        <rect x="28" y="24" width="44" height="26" rx="11" fill="#020617"/>
+        <g id="eyes"><g id="eyeShape"><ellipse cx="41" cy="37" rx="4.5" ry="6" fill="#22d3ee"/><ellipse cx="59" cy="37" rx="4.5" ry="6" fill="#22d3ee"/></g></g>
+        <g id="eyesHappy" fill="none" stroke="#22d3ee" stroke-width="3" stroke-linecap="round"><path d="M36 40 Q41 31 46 40"/><path d="M54 40 Q59 31 64 40"/></g>
+        <g id="eyesSleep" fill="none" stroke="#22d3ee" stroke-width="3" stroke-linecap="round"><path d="M36 38 H46"/><path d="M54 38 H64"/></g>
+        <path d="M44 45.5 Q50 48.5 56 45.5" fill="none" stroke="#22d3ee" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>
+        <g id="zzz"><text x="72" y="20">z</text><text x="80" y="12">z</text></g>
+      </g>
+    </g>
+  </svg>
+</div>
+
+<!-- CHAT -->
+<aside id="chat" role="dialog" aria-label="Ask Roshan's public notes" aria-modal="false">
+  <div class="px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+    <div>
+      <p class="font-bold text-sm">Ask my notes <span class="text-neon-cyan">✦</span></p>
+      <p id="chat-engine" class="font-mono text-[10px] text-slate-500">local RAG · public notes only</p>
+    </div>
+    <button id="chat-close" class="text-slate-400 hover:text-white px-2" aria-label="Close chat">✕</button>
+  </div>
+  <div class="chat-modebar">
+    <label for="chat-mode">Mode</label>
+    <select id="chat-mode" aria-label="Conversation mode">
+      <option value="auto">Auto</option>
+      <option value="portfolio">Portfolio</option>
+      <option value="technical">Technical</option>
+      <option value="personal">Personal</option>
+      <option value="interview">Interview</option>
+      <option value="learning">Learning</option>
+    </select>
+    <span class="privacy-note">public notes only</span>
+  </div>
+  <div id="chat-log" aria-live="polite"></div>
+  <div id="chat-chips" class="px-4 pb-2 flex flex-wrap gap-2"></div>
+  <form id="chat-form" class="p-3 border-t border-slate-800 flex gap-2" autocomplete="off">
+    <input id="chat-input" type="text" maxlength="200" placeholder="Ask about projects, how I learn…" aria-label="Your question"
+      class="flex-1 bg-slate-900 border border-slate-700 rounded-full px-4 py-2 text-sm outline-none focus:border-neon-cyan" />
+    <button class="px-4 rounded-full bg-neon-indigo text-white text-sm hover:shadow-[0_0_20px_rgba(99,102,241,.6)] transition">Send</button>
+  </form>
+</aside>
+
+<script src="rag/knowledge-public.js"></script>
+<script src="rag/rag-core.js"></script>
+<script>
+(() => {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FINE = matchMedia('(hover: hover) and (pointer: fine)').matches;
+const State = { vel: 0, progress: 0, mx: innerWidth / 2, my: innerHeight / 2, chatOpen: false, section: 'home', lastInput: performance.now(), hasMoved: false };
+
+/*RAG-START*/
+// ================= DATA: certificates (name|issuer) =================
+const CERTS = [
+"AWS Educate Machine Learning Foundations - Training Badge|Amazon Web Services (AWS)",
+"AWS Educate Introduction to Generative AI - Training Badge|Amazon Web Services (AWS)",
+"AI Skills Fest 2026|Microsoft",
+"PYTHON AI DEVELOPER|Mimo",
+"AWS Educate Getting Started with Storage - Training Badge|Amazon Web Services (AWS)",
+"AWS Educate Getting Started with Networking - Training Badge|Amazon Web Services (AWS)",
+"AWS Educate Getting Started with Databases - Training Badge|Amazon Web Services (AWS)",
+"AWS Educate Getting Started with Compute - Training Badge|Amazon Web Services (AWS)",
+"PYTHON ENGINEER|Mimo",
+"SQL|Mimo",
+"Introduction to Programming Using Python|Mimo",
+"Fundamentals of AI and ML|Vityarthi",
+"Python Essentials|Vityarthi",
+"Computer Vision|Vityarthi",
+"Schizophrenia|Wesleyan University",
+"Introduction to Psychology|Yale University",
+"Reels, Shorts, and TikToks: Telling Engaging Stories with Your Smartphone|LinkedIn",
+"Reinforcement Learning Foundations|LinkedIn",
+"Deep Learning and Computer Vision: Object Detection with PyTorch|LinkedIn",
+"Practice Exam 1 for Microsoft Azure Fundamentals (AZ-900)|LinkedIn",
+"Microsoft Azure Fundamentals (AZ-900) Cert Prep by Microsoft Press|LinkedIn",
+"AWS Certified Cloud Practitioner (CLF-C02) Cert Prep|LinkedIn",
+"What Is Generative AI?|LinkedIn",
+"Introduction to Artificial Intelligence|LinkedIn",
+"Ethics in the Age of Generative AI|LinkedIn",
+"Learning Microsoft 365 Copilot for Work (2024)|LinkedIn",
+"Machine Learning Statistical Foundations Professional Certificate by Wolfram Research|Wolfram",
+"Artificial Intelligence Foundations: Machine Learning|LinkedIn",
+"Foundational Math for Machine Learning|LinkedIn",
+"Machine Learning Foundations: Statistics|LinkedIn",
+"Machine Learning Foundations: Linear Algebra|LinkedIn",
+"Built-in Machine Learning in the Wolfram Language|LinkedIn",
+"Machine Learning Foundations: Probability|LinkedIn",
+"Machine Learning Foundations: Calculus|LinkedIn",
+"Integrating Generative AI into the Creative Process|LinkedIn",
+"Strengthen Your Decision-Making with Generative AI|LinkedIn",
+"Amplify Your Critical Thinking with Generative AI|LinkedIn",
+"Leveraging the Power of Social Intelligence in the Age of AI|LinkedIn",
+"Building an Adaptability Mindset in the Age of AI|LinkedIn",
+"Investing in Human Skills in the Age of AI|LinkedIn",
+"Improve Your Organizational Skills|LinkedIn",
+"Getting Organized for Peak Performance|LinkedIn",
+"Getting Things Done|LinkedIn",
+"Negotiation Professional Certificate by American Negotiation Institute|American Negotiation Institute",
+"Negotiation Foundations|LinkedIn",
+"Critical Thinking and Problem Solving|LinkedIn",
+"Using Brain Science to Find Your Calling|LinkedIn",
+"When Negotiation's about More than Money: How to Negotiate (Almost) Anything|LinkedIn",
+"Strategic Negotiation|LinkedIn",
+"How to Be Both Assertive and Likable|LinkedIn",
+"Negotiating with Agility|LinkedIn",
+"How to Prepare for Your Negotiations|LinkedIn",
+"Career Essentials in Generative AI by Microsoft and LinkedIn|Microsoft",
+"Human Skills in the Age of AI by Microsoft and LinkedIn|Microsoft",
+"Cloud Computing|NPTEL",
+"Introduction to Internet of Things|NPTEL",
+"Premiere Pro 2025 Essential Training|Adobe",
+"Applied Machine Learning in Python|University of Michigan",
+"Foundational MATLAB|MathWorks",
+"Microsoft Certified: Azure Fundamentals|Microsoft",
+"Google IT Support Certificate|Google"
+].map(s => { const [name, org] = s.split('|'); return { name, org }; });
+
+// ================= RAG data and engine =================
+const KB = window.RoshanKnowledge;
+if (!KB) throw new Error('Public knowledge bundle failed to load.');
+const RAG = window.RoshanRAG.create(KB, { certCount: CERTS.length });
+const DEFAULT_CHIPS = RAG.defaultChips;
+const answer = (q, opts) => RAG.answer(q, opts);
+/*RAG-END*/
+
+// ================= Sound engine (synthesized, no files) =================
+const SFX = (() => {
+  let ctx, master, noiseGain, noiseFilt, fx = false, amb = null, lastTick = 0;
+  function init() {
+    if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain(); master.gain.value = .9; master.connect(ctx.destination);
+    const len = ctx.sampleRate * 2, buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+    noiseFilt = ctx.createBiquadFilter(); noiseFilt.type = 'bandpass'; noiseFilt.frequency.value = 600; noiseFilt.Q.value = .8;
+    noiseGain = ctx.createGain(); noiseGain.gain.value = 0;
+    src.connect(noiseFilt).connect(noiseGain).connect(master); src.start();
+  }
+  function tone(f, d, type = 'sine', v = .05, slide, delay = 0) {
+    if (!fx || !ctx) return;
+    const t = ctx.currentTime + delay, o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t);
+    if (slide) o.frequency.exponentialRampToValueAtTime(slide, t + d);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(v, t + .012); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+    o.connect(g).connect(master); o.start(t); o.stop(t + d + .03);
+  }
+  const api = {
+    get fx() { return fx; }, get amb() { return !!amb; },
+    setFx(on) { fx = on; if (on) { init(); api.chime(1); } else if (noiseGain) noiseGain.gain.value = 0; },
+    tick() { const n = performance.now(); if (n - lastTick < 45) return; lastTick = n; tone(1500 + Math.random() * 300, .04, 'sine', .025); },
+    click() { tone(520, .09, 'square', .035, 220); },
+    pop() { tone(380, .12, 'sine', .05, 760); },
+    pop2() { tone(760, .12, 'sine', .04, 380); },
+    type() { tone(900 + Math.random() * 200, .025, 'square', .012); },
+    send() { tone(500, .08, 'triangle', .05, 900); },
+    receive() { tone(660, .1, 'sine', .05); tone(990, .14, 'sine', .05, null, .09); },
+    chime(i = 0) { const base = [523.25, 587.33, 659.25, 698.46, 783.99, 880][i % 6]; [1, 1.25, 1.5].forEach((m, k) => tone(base * m, .35, 'triangle', .035, null, k * .07)); },
+    voice(len) { const n = Math.min(7, Math.ceil(len / 11)); for (let i = 0; i < n; i++) tone(480 + Math.random() * 700, .055, 'square', .018, null, i * .075); },
+    sleep() { tone(520, .5, 'sine', .035, 180); },
+    wake() { tone(300, .2, 'sine', .05, 700); tone(700, .12, 'square', .02, null, .15); },
+    burst() { tone(300, .18, 'sawtooth', .025, 900); tone(1200, .1, 'sine', .03, 400, .03); },
+    whoosh(v) {
+      if (!fx || !ctx) return;
+      const a = clamp(Math.abs(v) / 4200, 0, 1);
+      noiseGain.gain.setTargetAtTime(a * a * .09, ctx.currentTime, .05);
+      noiseFilt.frequency.setTargetAtTime(300 + a * 2600, ctx.currentTime, .06);
+    },
+    setAmb(on) {
+      if (on) {
+        init(); if (amb) return;
+        const g = ctx.createGain(); g.gain.value = 0;
+        const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 420; f.Q.value = 2;
+        const oscs = [110, 164.81, 220, 277.18].map((fr, i) => {
+          const o = ctx.createOscillator(); o.type = i % 2 ? 'triangle' : 'sine'; o.frequency.value = fr; o.detune.value = (i - 1.5) * 7;
+          const og = ctx.createGain(); og.gain.value = .25; o.connect(og).connect(f); o.start(); return o;
+        });
+        const lfo = ctx.createOscillator(); lfo.frequency.value = .07; const lg = ctx.createGain(); lg.gain.value = 160;
+        lfo.connect(lg).connect(f.frequency); lfo.start(); oscs.push(lfo);
+        f.connect(g).connect(master); g.gain.linearRampToValueAtTime(.055, ctx.currentTime + 3);
+        amb = { g, f, oscs };
+      } else if (amb) {
+        const a = amb; amb = null; a.g.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.2);
+        setTimeout(() => a.oscs.forEach(o => { try { o.stop(); } catch (e) {} }), 1400);
+      }
+    },
+    scrollAmb(p) { if (amb) amb.f.frequency.setTargetAtTime(380 + p * 900, ctx.currentTime, .6); }
+  };
+  return api;
+})();
+
+// ================= master ticker =================
+const ticks = [];
+let lastY = scrollY;
+gsap.registerPlugin(ScrollTrigger);
+gsap.ticker.add((time, dt) => {
+  const v = (scrollY - lastY) / Math.max(dt, 1) * 1000; lastY = scrollY;
+  State.vel += (v - State.vel) * .12;
+  const max = document.documentElement.scrollHeight - innerHeight;
+  State.progress = max > 0 ? clamp(scrollY / max, 0, 1) : 0;
+  $('#progress').style.transform = 'scaleX(' + State.progress + ')';
+  SFX.whoosh(State.vel); SFX.scrollAmb(State.progress);
+  for (const f of ticks) f(dt, time);
+});
+['mousemove', 'keydown', 'pointerdown', 'scroll', 'touchstart'].forEach(e => addEventListener(e, () => { State.lastInput = performance.now(); Bot.wake(); }, { passive: true }));
+addEventListener('mousemove', e => { State.mx = e.clientX; State.my = e.clientY; State.hasMoved = true; }, { passive: true });
+
+// ================= cursor (delegated) =================
+const dot = $('#cursor-dot'), ring = $('#cursor-ring');
+if (FINE) {
+  const dX = gsap.quickTo(dot, 'x', { duration: .1, ease: 'power3' }), dY = gsap.quickTo(dot, 'y', { duration: .1, ease: 'power3' });
+  const rX = gsap.quickTo(ring, 'x', { duration: .45, ease: 'power3' }), rY = gsap.quickTo(ring, 'y', { duration: .45, ease: 'power3' });
+  addEventListener('mousemove', e => { dX(e.clientX); dY(e.clientY); rX(e.clientX); rY(e.clientY); });
+  const SEL = 'a, button, input, .hoverable, [data-hover], .cert-card';
+  let hovEl = null;
+  document.addEventListener('mouseover', e => {
+    const t = e.target.closest ? e.target.closest(SEL) : null;
+    if (t === hovEl) return;
+    hovEl = t;
+    if (t) { gsap.to(ring, { scale: 1.8, backgroundColor: 'rgba(255,255,255,1)', borderColor: '#fff', duration: .3 }); gsap.to(dot, { scale: 0, duration: .2 }); SFX.tick(); }
+    else { gsap.to(ring, { scale: 1, backgroundColor: 'rgba(255,255,255,0)', borderColor: 'rgba(34,211,238,.6)', duration: .3 }); gsap.to(dot, { scale: 1, duration: .2 }); }
+  });
+}
+
+// ================= text splitting + cursor reaction =================
+const rxList = $$('.rx').map(el => {
+  el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
+  const chars = [];
+  (function walk(node) {
+    [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(tok => {
+          if (!tok) return;
+          if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(' ')); return; }
+          const w = document.createElement('span'); w.className = 'w'; w.setAttribute('aria-hidden', 'true');
+          [...tok].forEach(c => { const s = document.createElement('span'); s.className = 'ch'; s.textContent = c; w.appendChild(s); chars.push({ el: s }); });
+          frag.appendChild(w);
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1 && n.tagName !== 'BR') walk(n);
+    });
+  })(el);
+  $$('.glow-text', el).forEach(g => {
+    g.classList.add('split');
+    const cs = $$('.ch', g), A = [99, 102, 241], B = [34, 211, 238], C = [52, 211, 153];
+    cs.forEach((c, i) => { const t = cs.length > 1 ? i / (cs.length - 1) : 0; const [p, q, u] = t < .5 ? [A, B, t * 2] : [B, C, (t - .5) * 2];
+      c.style.color = `rgb(${p.map((x, k) => Math.round(lerp(x, q[k], u))).join(',')})`; c.dataset.glow = '1'; });
+  });
+  chars.forEach(c => { const m = getComputedStyle(c.el).color.match(/\d+/g).map(Number); c.base = m; c.tgt = c.el.dataset.glow ? [255, 255, 255] : [103, 232, 249]; c.v = 0; c.on = false; });
+  return { el, chars, vis: false, measured: false };
+});
+function measureRx(h) {
+  h.chars.forEach(c => { c.el.style.transform = ''; });
+  const hr = h.el.getBoundingClientRect();
+  h.chars.forEach(c => { const r = c.el.getBoundingClientRect(); c.cx = r.left - hr.left + r.width / 2; c.cy = r.top - hr.top + r.height / 2; });
+  h.measured = true;
+}
+const rxIO = new IntersectionObserver(es => es.forEach(e => { const h = rxList.find(x => x.el === e.target); h.vis = e.isIntersecting; if (e.isIntersecting && !h.measured) measureRx(h); }));
+rxList.forEach(h => rxIO.observe(h.el));
+let rzT; addEventListener('resize', () => { clearTimeout(rzT); rzT = setTimeout(() => rxList.forEach(h => { h.measured = false; if (h.vis) measureRx(h); }), 200); });
+document.fonts && document.fonts.ready.then(() => rxList.forEach(h => { h.measured = false; if (h.vis) measureRx(h); }));
+let rxAnnounced = false;
+if (FINE && !RM) ticks.push(dt => {
+  const R = 130, mx = State.mx, my = State.my, k = 1 - Math.exp(-dt / 70);
+  for (const h of rxList) {
+    if (!h.vis || !h.measured) continue;
+    const hr = h.el.getBoundingClientRect();
+    const near = mx > hr.left - R && mx < hr.right + R && my > hr.top - R && my < hr.bottom + R;
+    for (const c of h.chars) {
+      let target = 0, dx = 0, dy = 0, d = 0;
+      if (near) { dx = hr.left + c.cx - mx; dy = hr.top + c.cy - my; d = Math.hypot(dx, dy); if (d < R) target = Math.pow(1 - d / R, 2); }
+      if (!target && !c.on) continue;
+      c.v += (target - c.v) * k;
+      if (c.v < .003 && !target) { c.v = 0; c.on = false; c.el.style.transform = ''; c.el.style.color = c.el.dataset.glow ? '' : ''; if (c.el.dataset.glow) c.el.style.color = c.gc; else c.el.style.color = ''; continue; }
+      if (!c.on) { c.on = true; if (c.el.dataset.glow && !c.gc) c.gc = c.el.style.color; }
+      const nd = d || 1, v = c.v;
+      const tx = dx / nd * v * 16, ty = dy / nd * v * 10 - v * 8, rot = clamp(dx / R, -1, 1) * v * -14, sc = 1 + v * .5;
+      c.el.style.transform = `translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px) rotate(${rot.toFixed(1)}deg) scale(${sc.toFixed(2)})`;
+      const bc = c.el.dataset.glow && c.gc ? c.gc.match(/\d+/g).map(Number) : c.base;
+      c.el.style.color = `rgb(${bc.map((x, i) => Math.round(lerp(x, c.tgt[i], Math.min(1, v * 1.3)))).join(',')})`;
+      if (v > .5 && !rxAnnounced) { rxAnnounced = true; Bot.say("Ha. The letters dodge your cursor. Nice, right?", { ms: 3200 }); }
+    }
+  }
+});
+// paragraph spotlight
+const litEls = $$('.lit').map(el => ({ el, vis: false }));
+const litIO = new IntersectionObserver(es => es.forEach(e => { litEls.find(x => x.el === e.target).vis = e.isIntersecting; }));
+litEls.forEach(l => litIO.observe(l.el));
+if (FINE) ticks.push(() => {
+  for (const l of litEls) {
+    if (!l.vis) continue;
+    const r = l.el.getBoundingClientRect();
+    if (State.mx > r.left - 200 && State.mx < r.right + 200 && State.my > r.top - 200 && State.my < r.bottom + 200) {
+      l.el.style.setProperty('--px', (State.mx - r.left) + 'px'); l.el.style.setProperty('--py', (State.my - r.top) + 'px'); l.on = true;
+    } else if (l.on) { l.el.style.setProperty('--px', '-999px'); l.on = false; }
+  }
+});
+else litEls.forEach(l => l.el.style.setProperty('--px', '50%'));
+
+// ================= background canvas =================
+const BG = (() => {
+  const cv = $('#bg'), c = cv.getContext('2d');
+  let W, H, dpr;
+  const N = innerWidth < 700 ? 55 : 110;
+  const P = Array.from({ length: N }, () => ({ x: Math.random(), y: Math.random(), z: .2 + Math.random() * .8, vx: (Math.random() - .5) * .00005, vy: (Math.random() - .5) * .00005 }));
+  const sparks = [];
+  const pal = [[99, 102, 241], [34, 211, 238], [52, 211, 153], [168, 85, 247], [34, 211, 238], [99, 102, 241]];
+  function size() { dpr = Math.min(devicePixelRatio || 1, 1.5); W = cv.width = innerWidth * dpr; H = cv.height = innerHeight * dpr; }
+  size(); addEventListener('resize', size);
+  const col = p => { const f = p * (pal.length - 1), i = Math.floor(f), t = f - i, a = pal[i], b = pal[Math.min(i + 1, pal.length - 1)]; return a.map((x, k) => Math.round(lerp(x, b[k], t))); };
+  let sv = 0;
+  ticks.push(dt => {
+    sv += (State.vel - sv) * .1;
+    const [r, g, b] = col(State.progress), s = dt / 16.7;
+    c.clearRect(0, 0, W, H);
+    // parallax glows
+    for (let k = 0; k < 3; k++) {
+      const gx = (.25 + .5 * Math.sin(scrollY * .0007 + k * 2.1)) * W, gy = ((k * .45 + .1) * H - scrollY * .12 * (k + 1) * dpr) % (H * 1.4);
+      const rad = (260 + k * 90) * dpr, gr = c.createRadialGradient(gx, gy, 0, gx, gy, rad);
+      gr.addColorStop(0, `rgba(${r},${g},${b},.10)`); gr.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = gr; c.fillRect(0, 0, W, H);
+    }
+    const mx = State.mx * dpr, my = State.my * dpr, speed = RM ? 0 : sv;
+    for (const p of P) {
+      p.x += p.vx * s; p.y += p.vy * s - speed * .000012 * p.z * s * 10;
+      if (p.y < -.05) p.y += 1.1; if (p.y > 1.05) p.y -= 1.1; if (p.x < -.05) p.x += 1.1; if (p.x > 1.05) p.x -= 1.1;
+      let x = p.x * W, y = p.y * H;
+      const dx = mx - x, dy = my - y, d = Math.hypot(dx, dy);
+      if (d < 200 * dpr) { p.x += dx / W * .004 * s; p.y += dy / H * .004 * s; }
+      c.strokeStyle = `rgba(${r},${g},${b},${.25 + p.z * .5})`; c.fillStyle = c.strokeStyle; c.lineWidth = p.z * 1.4 * dpr;
+      const streak = clamp(Math.abs(speed) * .018 * p.z, 0, 70) * dpr;
+      if (streak > 3) { c.beginPath(); c.moveTo(x, y); c.lineTo(x, y + Math.sign(speed) * streak); c.stroke(); }
+      else { c.beginPath(); c.arc(x, y, p.z * 1.8 * dpr, 0, 6.283); c.fill(); }
+      if (d < 150 * dpr) { c.strokeStyle = `rgba(${r},${g},${b},${(1 - d / (150 * dpr)) * .35})`; c.lineWidth = dpr * .8; c.beginPath(); c.moveTo(x, y); c.lineTo(mx, my); c.stroke(); }
+    }
+    c.lineWidth = dpr * .6;
+    for (let i = 0; i < N; i++) { const a = P[i]; if (a.z < .55) continue;
+      for (let j = i + 1; j < N; j++) { const q = P[j]; if (q.z < .55) continue;
+        const dx = (a.x - q.x) * W, dy = (a.y - q.y) * H, d2 = dx * dx + dy * dy, lim = (110 * dpr) ** 2;
+        if (d2 < lim) { c.strokeStyle = `rgba(${r},${g},${b},${(1 - d2 / lim) * .18})`; c.beginPath(); c.moveTo(a.x * W, a.y * H); c.lineTo(q.x * W, q.y * H); c.stroke(); } } }
+    for (let i = sparks.length - 1; i >= 0; i--) { const sp = sparks[i]; sp.x += sp.vx * s; sp.y += sp.vy * s; sp.vy += .05 * s; sp.life -= .02 * s;
+      if (sp.life <= 0) { sparks.splice(i, 1); continue; }
+      c.fillStyle = `rgba(${r},${g},${b},${sp.life})`; c.beginPath(); c.arc(sp.x, sp.y, 2.2 * dpr * sp.life, 0, 6.283); c.fill(); }
+  });
+  return { burst(x, y) { for (let i = 0; i < 18; i++) { const a = Math.random() * 6.283, sp = 1.5 + Math.random() * 4; sparks.push({ x: x * dpr, y: y * dpr, vx: Math.cos(a) * sp * dpr, vy: Math.sin(a) * sp * dpr, life: 1 }); } } };
+})();
+addEventListener('pointerdown', e => { BG.burst(e.clientX, e.clientY); if (e.target.closest && !e.target.closest('input')) SFX.click(); });
+
+// ================= scroll animations =================
+gsap.from('.hero-item', { y: 50, opacity: 0, duration: 1, stagger: .15, ease: 'power4.out', delay: .2 });
+gsap.to('.orb-a', { y: -260, x: 120, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1 } });
+gsap.to('.orb-b', { y: -380, x: -160, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1 } });
+gsap.to('.orb', { scale: 1.15, duration: 6, repeat: -1, yoyo: true, ease: 'sine.inOut', stagger: 2 });
+$$('.reveal').forEach(el => gsap.fromTo(el, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' } }));
+// marquee reacts to scroll speed and direction
+const rows = $$('.mq').map((el, i) => ({ t: el.firstElementChild, x: 0, dir: -1, w: 0 }));
+rows.forEach(r => { r.w = r.t.scrollWidth / 2; });
+addEventListener('resize', () => rows.forEach(r => { r.w = r.t.scrollWidth / 2; }));
+ticks.push(dt => rows.forEach(r => {
+  const sp = 40 + Math.min(Math.abs(State.vel) * .4, 900);
+  r.x += (State.vel < -80 ? 1 : -1) * sp * dt / 1000; if (r.x <= -r.w) r.x += r.w; if (r.x >= 0) r.x -= r.w;
+  r.t.style.transform = `translateX(${r.x}px) skewX(${clamp(-State.vel * .004, -12, 12)}deg)`;
+}));
+// 3D tilt + spotlight
+$$('.tilt-card, .bento').forEach(card => {
+  const tilt = card.classList.contains('tilt-card');
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    card.style.setProperty('--mx', x + 'px'); card.style.setProperty('--my', y + 'px');
+    if (tilt) gsap.to(card, { rotationX: ((y / r.height) - .5) * -10, rotationY: ((x / r.width) - .5) * 10, scale: 1.02, transformPerspective: 1000, duration: .4, ease: 'power2.out' });
+  });
+  card.addEventListener('mouseleave', () => { if (tilt) gsap.to(card, { rotationX: 0, rotationY: 0, scale: 1, duration: .6, ease: 'elastic.out(1,.6)' }); });
+});
+$$('a[href^="#"]').forEach(a => a.addEventListener('click', e => { const t = $(a.getAttribute('href')); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); } }));
+// count-up
+$('#stat-certs').textContent = '0';
+ScrollTrigger.create({ trigger: '#stat-certs', start: 'top 90%', once: true, onEnter: () => { const o = { v: 0 }; gsap.to(o, { v: CERTS.length, duration: 1.6, ease: 'power2.out', onUpdate: () => { $('#stat-certs').textContent = Math.round(o.v); } }); } });
+setTimeout(() => { if (!State.hasMoved || scrollY < 200) gsap.to('#hero-hint', { opacity: 1, duration: 1 }); }, 3500);
+
+// ================= certificates =================
+const CATS = [
+  { k: 'AI & ML', c: '#6366f1' }, { k: 'GenAI', c: '#a855f7' }, { k: 'Cloud & IoT', c: '#22d3ee' }, { k: 'Programming', c: '#34d399' },
+  { k: 'Math for ML', c: '#f59e0b' }, { k: 'Human skills', c: '#f472b6' }, { k: 'Psychology', c: '#fb7185' }, { k: 'Media', c: '#60a5fa' }
+];
+function catOf(n) {
+  if (/psychology|schizophrenia|brain science/i.test(n)) return 'Psychology';
+  if (/negotiat|assertive|critical thinking|organiz|getting things|decision-making|social intelligence|adaptab|human skills/i.test(n)) return 'Human skills';
+  if (/foundational math|foundations: (statistics|linear algebra|probability|calculus)/i.test(n)) return 'Math for ML';
+  if (/generative ai|copilot|ai skills fest|ethics/i.test(n)) return 'GenAI';
+  if (/machine learning|deep learning|reinforcement|computer vision|artificial intelligence|fundamentals of ai|python ai|object detection/i.test(n)) return 'AI & ML';
+  if (/aws|azure|cloud|internet of things|google it/i.test(n)) return 'Cloud & IoT';
+  if (/python|\bsql\b|programming|matlab/i.test(n)) return 'Programming';
+  if (/premiere|reels/i.test(n)) return 'Media';
+  return 'Programming';
+}
+CERTS.forEach(c => { c.cat = catOf(c.name); c.color = CATS.find(x => x.k === c.cat).c; });
+const certState = { cat: 'all', all: false }, SHOW = 12;
+function renderCerts(animate) {
+  const list = CERTS.filter(c => certState.cat === 'all' || c.cat === certState.cat);
+  const shown = certState.all || certState.cat !== 'all' ? list : list.slice(0, SHOW);
+  const grid = $('#cert-grid'); grid.innerHTML = '';
+  shown.forEach(c => {
+    const d = document.createElement('div'); d.className = 'cert-card glass'; d.style.setProperty('--c', c.color); d.dataset.cat = c.cat;
+    const t = document.createElement('p'); t.className = 'text-sm font-medium leading-snug'; t.textContent = c.name;
+    const o = document.createElement('p'); o.className = 'font-mono text-[11px] text-slate-500 mt-1'; o.textContent = c.org + ' · ' + c.cat;
+    d.append(t, o); grid.appendChild(d);
+  });
+  if (animate) gsap.fromTo(grid.children, { opacity: 0, y: 24, scale: .96 }, { opacity: 1, y: 0, scale: 1, duration: .5, stagger: .02, ease: 'power3.out' });
+  const more = $('#cert-more');
+  if (certState.cat === 'all') { more.style.display = ''; more.textContent = certState.all ? 'Show fewer ↑' : `Show all ${CERTS.length} ↓`; } else more.style.display = 'none';
+  $$('.fchip').forEach(b => b.classList.toggle('on', b.dataset.cat === certState.cat));
+}
+(() => {
+  const f = $('#cert-filters');
+  const mk = (k, n) => { const b = document.createElement('button'); b.className = 'fchip'; b.dataset.cat = k; b.innerHTML = `${k === 'all' ? 'All' : k}<span>${n}</span>`; b.addEventListener('click', () => { certState.cat = k; renderCerts(true); SFX.pop(); Bot.say(k === 'all' ? "Everything. All " + CERTS.length + "." : k + ": " + CERTS.filter(c => c.cat === k).length + " of them.", { ms: 2600 }); }); f.appendChild(b); };
+  mk('all', CERTS.length); CATS.forEach(c => mk(c.k, CERTS.filter(x => x.cat === c.k).length));
+  $('#cert-more').addEventListener('click', () => { certState.all = !certState.all; renderCerts(true); SFX.pop(); });
+  renderCerts(false);
+})();
+
+// ================= how I think =================
+const STEPS = [
+  ['Question', "How can a program decide a message is spam without a hand-written list of banned words?"],
+  ['Intuition', "Some words show up more in spam than in normal mail. Treat each word as a clue and weigh the clues together, like a detective, not a rulebook."],
+  ['Example', "Take ten tiny messages. Count how often 'free' appears in spam vs. not-spam, and compute the odds by hand with small numbers."],
+  ['Reasoning', "Bayes' theorem flips 'how likely is this word given spam' into 'how likely is spam given this word'. That flip is the whole trick."],
+  ['Formalism', "P(spam | words) ∝ P(spam) · ∏ P(word | spam). Now name the assumption hiding in the product: the words are treated as independent."],
+  ['Implementation', "Word-frequency counts in plain Python dictionaries, no NLTK, so every line is visible and nothing is a black box."],
+  ['Limitations', "Words aren't independent, and a word never seen in training zeroes out the product, hence smoothing. Know where it breaks."],
+  ['Connections', "Same 'weigh independent evidence' idea shows up in medical test interpretation and in fusing sensor signals."],
+  ['Practice', "Try to break it: write a message the model gets wrong, then explain exactly why it fails."]
+];
+(() => {
+  const box = $('#steps');
+  const show = i => { $$('.step-btn').forEach((b, k) => b.classList.toggle('on', k === i));
+    $('#step-n').textContent = `STEP ${i + 1} / ${STEPS.length}`; $('#step-t').textContent = STEPS[i][0]; $('#step-d').textContent = STEPS[i][1];
+    gsap.fromTo('#step-d', { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .35 }); };
+  STEPS.forEach((s, i) => { const b = document.createElement('button'); b.className = 'step-btn'; b.innerHTML = `<b>${String(i + 1).padStart(2, '0')}</b>${s[0]}`;
+    b.addEventListener('click', () => { show(i); SFX.tick(); SFX.pop(); }); b.addEventListener('mouseenter', () => show(i)); box.appendChild(b); });
+  show(0);
+})();
+
+// ================= Robot =================
+const Bot = (() => {
+  const wrap = $('#bot'), svg = $('#bot-svg'), bubble = $('#bot-bubble');
+  const legL = $('#legL'), legR = $('#legR'), armL = $('#armL'), armR = $('#armR'), eyes = $('#eyes'), head = $('#head');
+  const S = { x: 16, target: 16, face: 1, w: 0, phase: 0, wave: 0, lookX: null, lookY: 0, lookUntil: 0, sleeping: false,
+    nextDecision: performance.now() + 1400, nextThought: performance.now() + 16000, lastReact: 0, walks: 0 };
+  const J = { y: 0 };
+  let lastSay = 0, hideT, moodT, mood = 'idle';
+  const size = () => innerWidth < 640 ? 64 : 86;
+  const THOUGHTS = [
+    "I wonder what's in the lab.",
+    "This page has good bones.",
+    "I'm going for a little walk.",
+    "Hmm. That heading is doing something.",
+    "I should stretch my legs.",
+    "You can ask the notes anything, you know.",
+    "I'm keeping an eye on that cursor.",
+    "Seven projects, one flagship. I counted.",
+    "Grounded notes, no guesswork.",
+    "I like it here."
+  ];
+  function setMood(m, ms) {
+    svg.classList.remove('m-happy', 'm-sleep', 'm-wow', 'm-think'); mood = m; if (m !== 'idle') svg.classList.add('m-' + m);
+    clearTimeout(moodT); if (ms) moodT = setTimeout(() => setMood('idle'), ms);
+  }
+  function say(text, o = {}) {
+    const { ms = 3800, force = false, m = 'happy' } = o, now = performance.now();
+    if (!force && now - lastSay < 2600) return false;
+    if (S.sleeping && !force) return false;
+    if (State.chatOpen && !force) return false;
+    lastSay = now; bubble.textContent = text; bubble.classList.add('show');
+    clearTimeout(hideT); hideT = setTimeout(() => bubble.classList.remove('show'), ms);
+    if (m) setMood(m, ms * .6); SFX.voice(text.length); return true;
+  }
+  function jump() { gsap.fromTo(J, { y: 0 }, { y: -34, duration: .2, ease: 'power2.out', yoyo: true, repeat: 1 }); }
+  function doWave() { gsap.fromTo(S, { wave: 0 }, { wave: -150, duration: .22, yoyo: true, repeat: 5, ease: 'sine.inOut', onComplete: () => { S.wave = 0; } }); }
+  function wake() { if (!S.sleeping) return; S.sleeping = false; setMood('wow', 900); SFX.wake(); say("Oh, hi again!", { force: true, m: 'wow' }); jump(); S.nextDecision = performance.now() + 1200; S.nextThought = performance.now() + 14000; }
+  function lookAt(x, y, ms) { S.lookX = x; S.lookY = y; S.lookUntil = performance.now() + ms; }
+  function pickWanderTarget() {
+    const sz = size(), min = 14, max = Math.max(min, innerWidth - sz - 14);
+    let t = min + Math.random() * (max - min);
+    if (Math.abs(t - S.x) < innerWidth * .16) t = S.x + (Math.random() < .5 ? -1 : 1) * (innerWidth * .16 + Math.random() * innerWidth * .22);
+    return clamp(t, min, max);
+  }
+  // blink
+  (function blink() { svg.classList.add('blink'); setTimeout(() => svg.classList.remove('blink'), 120); setTimeout(blink, 2200 + Math.random() * 3200); })();
+  // main loop
+  let walkSfxT = 0;
+  ticks.push((dt, time) => {
+    const W = innerWidth, sz = size(), now = performance.now();
+    const minX = 14, maxX = Math.max(minX, W - sz - 14);
+    const cx = S.x + sz / 2, cy = innerHeight - 6 - sz * .72;
+    // The chat panel is the only thing that gets right of way.
+    if (State.chatOpen && W >= 640) {
+      S.target = clamp(W - 380 - 16 - sz - 6, minX, maxX);
+      S.nextDecision = now + 900;
+    } else if (!S.sleeping) {
+      // Autonomous roaming: a new decision every few seconds, plus curiosity about the cursor.
+      const cursorNear = FINE && Math.hypot(State.mx - cx, State.my - cy) < 150;
+      if (cursorNear && now - S.lastReact > 9000) {
+        S.lastReact = now;
+        S.target = clamp(State.mx - sz / 2, minX, maxX);
+        S.nextDecision = now + 2600;
+        setMood('wow', 900);
+        if (Math.random() < .35) say("I see you.", { ms: 1800, m: 'wow' });
+      } else if (now > S.nextDecision) {
+        const r = Math.random();
+        if (r < .52) {
+          S.target = pickWanderTarget(); S.walks++;
+          S.nextDecision = now + 1700 + Math.abs(S.target - S.x) * 4.2 + Math.random() * 2400;
+          if (Math.random() < .2) say(THOUGHTS[Math.floor(Math.random() * THOUGHTS.length)], { ms: 2600, m: 'think' });
+        } else if (r < .72) {
+          S.target = S.x; S.nextDecision = now + 1800 + Math.random() * 3200;
+        } else if (r < .88) {
+          S.target = S.x; lookAt(14 + Math.random() * (W - 28), innerHeight * (.4 + Math.random() * .5), 1100);
+          S.nextDecision = now + 1300 + Math.random() * 1000;
+        } else {
+          S.target = S.x; doWave(); S.nextDecision = now + 2200;
+        }
+      }
+    } else {
+      S.target = S.x;
+    }
+    S.target = clamp(S.target, minX, maxX);
+    const diff = S.target - S.x;
+    S.x += diff * (1 - Math.exp(-dt / (Math.abs(diff) > 180 ? 620 : 430)));
+    if (Math.abs(S.target - S.x) < 1.2) S.x = S.target;
+    const moving = Math.abs(diff) > 6;
+    S.w += ((moving ? 1 : 0) - S.w) * (1 - Math.exp(-dt / 120));
+    S.phase += dt * .014 * S.w;
+    const dir = moving ? Math.sign(diff) : S.face;
+    S.face += (dir - S.face) * (1 - Math.exp(-dt / (moving ? 160 : 400)));
+    if (moving && Math.sin(S.phase) > .98 && now - walkSfxT > 180) { walkSfxT = now; SFX.tick(); }
+    const sw = Math.sin(S.phase), bob = -Math.abs(sw) * 4 * S.w;
+    wrap.style.transform = `translate3d(${S.x.toFixed(1)}px,${(J.y + bob).toFixed(1)}px,0)`;
+    svg.style.transform = `scaleX(${S.face.toFixed(3)})`;
+    bubble.classList.toggle('right', S.x > W * .5);
+    legL.style.transform = `rotate(${sw * 30 * S.w}deg)`; legR.style.transform = `rotate(${-sw * 30 * S.w}deg)`;
+    const idleSway = Math.sin(time * 1.4) * 3;
+    armL.style.transform = `rotate(${-sw * 26 * S.w + idleSway}deg)`; armR.style.transform = `rotate(${sw * 26 * S.w - idleSway + S.wave}deg)`;
+    // eyes follow cursor (or a look target)
+    let tX = State.mx, tY = State.my; if (S.lookX !== null && now < S.lookUntil) { tX = S.lookX; tY = S.lookY; }
+    let ex = clamp((tX - cx) / 90, -1, 1) * 3.4 * Math.sign(S.face || 1), ey = clamp((tY - cy) / 220, -1, 1) * 3;
+    if (mood === 'think') { ex = -2; ey = -3.2; } if (S.sleeping) { ex = 0; ey = 2; }
+    eyes.style.transform = `translate(${ex.toFixed(2)}px,${ey.toFixed(2)}px)`;
+    head.style.transform = `rotate(${(S.sleeping ? 9 : clamp((tX - cx) / 400, -1, 1) * 6 * Math.sign(S.face || 1) + (moving ? dir * 3 : 0)).toFixed(2)}deg)`;
+    // idle → sleep
+    if (!S.sleeping && now - State.lastInput > 14000 && !State.chatOpen) { S.sleeping = true; setMood('sleep'); SFX.sleep(); bubble.classList.remove('show'); }
+    // occasional, quiet inner monologue
+    if (!S.sleeping && !State.chatOpen && now > S.nextThought) {
+      S.nextThought = now + 20000 + Math.random() * 18000;
+      if (Math.random() < .65) say(THOUGHTS[Math.floor(Math.random() * THOUGHTS.length)], { ms: 2800, m: 'think' });
+    }
+    // cursor very close → personal-space hello
+    if (FINE && Math.hypot(State.mx - cx, State.my - cy) < 70 && now - lastSay > 14000 && !S.sleeping) { say("Hey you! Click me. I do chat.", { ms: 3200 }); doWave(); }
+  });
+  svg.addEventListener('click', () => { jump(); SFX.voice(20); Chat.toggle(); });
+  svg.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); Chat.toggle(); } });
+  addEventListener('pointerdown', e => { if (!svg.contains(e.target)) lookAt(e.clientX, e.clientY, 700); });
+  // sections
+  const LINES = {
+    home: ["Hi! I'm Bit. I'll roam around while you read.", "Welcome. I'll keep an eye on your cursor."],
+    about: ["That's the short version of Roshan. The chat knows more.", "Curious mind, as you can see."],
+    now: ["Placement season. He's grinding ~4 hours a day.", "This is what he's up to right now."],
+    skills: ["Python is the big one. PyTorch right behind.", "Bento box of skills. Hover them!"],
+    projects: ["Ooh, projects. Hover a card. They tilt!", "The good stuff. Seven projects, one flagship."],
+    think: ["This is how he actually learns. Click the steps!", "Intuition first, always."],
+    experience: ["VDART! Mentoring AIML interns.", "Real work, real mentees."],
+    certs: ["Sixty-one of these. Yes. Sixty-one.", "Filter by area. Psychology's in there, too."],
+    contact: ["Say hi! Or ask the chat something.", "End of the line. Email's right there."]
+  };
+  const seen = new Set();
+  function section(id) { if (!LINES[id] || seen.has(id) || S.sleeping) return; seen.add(id); setTimeout(() => say(LINES[id][Math.floor(Math.random() * LINES[id].length)], { ms: 4200 }), 350); }
+  // hover reactions
+  const hovered = new Map(); let certAt = 0;
+  document.addEventListener('mouseover', e => {
+    const d = e.target.closest && e.target.closest('[data-bot]');
+    if (d) { const last = hovered.get(d) || 0, now = performance.now(); if (now - last > 25000) { if (say(d.dataset.bot, { ms: 3400 })) { hovered.set(d, now); if (Math.random() < .5) jump(); } } }
+    const cc = e.target.closest && e.target.closest('.cert-card');
+    if (cc && performance.now() - certAt > 14000) {
+      certAt = performance.now();
+      const L = { 'Psychology': "Psychology? He's curious about people too.", 'Cloud & IoT': "Cloud badges. AWS and Azure.", 'Math for ML': "Calculus, algebra, probability, the unglamorous bits that matter.", 'Human skills': "Negotiation courses. Yes, really.", 'GenAI': "GenAI certs, with ethics included.", 'AI & ML': "Core ML. Wolfram, Michigan, LinkedIn…", 'Programming': "Python, SQL and friends.", 'Media': "Premiere Pro. He edits video too." };
+      say(L[cc.dataset.cat] || "Nice one.", { ms: 3000 });
+    }
+  });
+  // fast scroll
+  let fastAt = 0;
+  ticks.push(() => { if (Math.abs(State.vel) > 3000 && performance.now() - fastAt > 12000 && !S.sleeping) { fastAt = performance.now(); say("Whoa, slow down, I'm walking!", { ms: 2600, m: 'wow' }); } });
+  return { say, setMood, jump, wave: doWave, wake, section, lookAt };
+})();
+
+// section observer: nav highlight, chime, robot lines, chart shift
+(() => {
+  const ids = ['home', 'about', 'now', 'skills', 'projects', 'think', 'experience', 'certs', 'contact'];
+  let lastChime = 0;
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const id = e.target.id; State.section = id;
+    $$('.nav-link').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    const now = performance.now(); if (now - lastChime > 1400) { lastChime = now; SFX.chime(ids.indexOf(id)); }
+    Bot.section(id);
+  }), { rootMargin: '-45% 0px -45% 0px' });
+  ids.forEach(id => io.observe($('#' + id)));
+})();
+
+// ================= Chat UI =================
+const Chat = (() => {
+  const panel = $('#chat'), log = $('#chat-log'), form = $('#chat-form'), input = $('#chat-input'), chipsEl = $('#chat-chips'), modeSel = $('#chat-mode'), engineNote = $('#chat-engine');
+  let open = false, greeted = false, busy = false, lastContext = null;
+  let ai = { enabled: false, model: '' };
+  const scroll = () => { log.scrollTop = log.scrollHeight; };
+  async function loadAiStatus() {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 1500);
+      const res = await fetch('/api/status.json', { signal: controller.signal, headers: { Accept: 'application/json' } });
+      clearTimeout(timer);
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && data.ai) {
+        ai = { enabled: true, model: data.model || '' };
+        if (engineNote) engineNote.textContent = 'OpenRouter · grounded public notes';
+      }
+    } catch (_) {}
+  }
+  loadAiStatus();
+  const MODE_CHIPS = {
+    auto: DEFAULT_CHIPS,
+    portfolio: ["What are you preparing for?", "Which roles do you want?", "What have you built?", "What certificates do you have?"],
+    technical: ["Tell me about the library project", "Explain the architecture of PolicyPulse", "Why use synthetic data?", "What's your tech stack?"],
+    personal: ["How do you learn?", "What communication style do you prefer?", "What career trade-offs have you discussed?", "What are your interests?"],
+    interview: ["Interview me on projects", "Walk me through your flagship project", "Tell me about a technical trade-off", "How did you mentor interns?"],
+    learning: ["Explain Bayes theorem", "How do you learn?", "Teach me the intuition behind BM25", "Tell me about mentoring"]
+  };
+  const selectedMode = () => modeSel ? modeSel.value : 'auto';
+  const currentChips = () => MODE_CHIPS[selectedMode()] || DEFAULT_CHIPS;
+  function setChips(list) { chipsEl.innerHTML = ''; (list || []).slice(0, 4).forEach(q => { const b = document.createElement('button'); b.type = 'button'; b.className = 'qchip'; b.textContent = q; b.addEventListener('click', () => ask(q)); chipsEl.appendChild(b); }); }
+  function addUser(t) { const d = document.createElement('div'); d.className = 'msg me'; d.textContent = t; log.appendChild(d); scroll(); }
+  function addBot(paras, sources, sec, mode) {
+    return new Promise(res => {
+      const d = document.createElement('div'); d.className = 'msg bot'; if (mode) d.dataset.mode = mode; log.appendChild(d);
+      const els = paras.map(() => { const p = document.createElement('p'); d.appendChild(p); return p; });
+      const words = paras.map(p => p.split(' ')); let pi = 0, wi = 0;
+      (function step() {
+        if (pi >= words.length) {
+          if ((sources && sources.length) || mode) {
+            const s = document.createElement('div'); s.className = 'srcs';
+            if (mode) { const m = document.createElement('span'); m.className = 'mode-tag'; m.textContent = RAG.modeLabels[mode] || mode; s.appendChild(m); }
+            (sources || []).forEach(n => {
+              const a = document.createElement('span'); a.className = 'src';
+              const label = RAG.evidenceLabel(n.evidence_type);
+              a.textContent = '↳ ' + n.title + (label ? ' · ' + label : '');
+              a.title = [n.source, n.category, n.status, n.confidence ? n.confidence + ' confidence' : '', n.updated_at].filter(Boolean).join(' · ');
+              s.appendChild(a);
+            });
+            if (sec) { const j = document.createElement('button'); j.type = 'button'; j.className = 'src'; j.style.cssText = 'color:#67e8f9;border-color:#155e75'; j.textContent = '↗ jump to section'; j.addEventListener('click', () => { const t = $('#' + sec); if (t) t.scrollIntoView({ behavior: 'smooth' }); SFX.pop(); }); s.appendChild(j); }
+            d.appendChild(s);
+          }
+          scroll(); res(); return;
+        }
+        const chunk = words[pi].slice(wi, wi + 3); els[pi].textContent += (wi ? ' ' : '') + chunk.join(' '); wi += 3; if ((wi / 3) % 2 === 0) SFX.type();
+        if (wi >= words[pi].length) { pi++; wi = 0; } scroll(); setTimeout(step, 22);
+      })();
+    });
+  }
+  async function ask(q) {
+    q = q.trim(); if (!q || busy) return;
+    const askMode = selectedMode();
+    busy = true; input.value = ''; setChips([]);
+    addUser(q); SFX.send(); Bot.setMood('think');
+    const typing = document.createElement('div'); typing.className = 'msg bot dots'; typing.innerHTML = '<span></span><span></span><span></span>'; log.appendChild(typing); scroll();
+    await new Promise(r => setTimeout(r, 500 + Math.random() * 400));
+    let r = answer(q, { mode: askMode, last: lastContext });
+    const unknownPrefs = r.sources && r.sources[0] && r.sources[0].id === 'unknown_prefs';
+    if (ai.enabled && !RAG.privacyCheck(q) && !unknownPrefs) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 35000);
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ message: q, mode: askMode, last: lastContext }),
+          signal: controller.signal
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && Array.isArray(data.text) && data.text.join('').trim()) {
+            r = Object.assign({}, r, {
+              kind: data.kind || 'hit',
+              text: data.text,
+              sources: Array.isArray(data.sources) && data.sources.length ? data.sources : r.sources,
+              next: Array.isArray(data.next) && data.next.length ? data.next : r.next,
+              sec: data.sec || r.sec,
+              mode: data.mode || r.mode,
+              ai: Boolean(data.ai)
+            });
+          }
+        }
+      } catch (_) {
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+    typing.remove(); SFX.receive(); Bot.setMood(r.kind === 'miss' ? 'idle' : 'happy', 1800);
+    await addBot(r.text, r.sources, r.sec || null, r.mode);
+    if (selectedMode() === askMode) {
+      lastContext = r.sources && r.sources[0] ? { id: r.sources[0].id, mode: r.mode } : null;
+      setChips(r.next);
+    }
+    busy = false; input.focus();
+  }
+  function greet() { greeted = true; addBot(["Hey! I'm a grounded retrieval assistant over Roshan's public notes: projects, how he learns, what he's preparing for, and safe career context. Use the mode selector for technical, personal, interview, or learning answers. Sensitive memories are not in this public build."], null, null, 'portfolio').then(() => setChips(currentChips())); }
+  function toggle(force) {
+    open = typeof force === 'boolean' ? force : !open; State.chatOpen = open; panel.classList.toggle('open', open); $('#ask-btn').setAttribute('aria-pressed', open);
+    if (open) { if (!greeted) greet(); setTimeout(() => input.focus(), 300); SFX.pop(); Bot.setMood('happy', 1500); Bot.jump(); } else SFX.pop2();
+  }
+  form.addEventListener('submit', e => { e.preventDefault(); ask(input.value); });
+  input.addEventListener('input', () => { SFX.type(); Bot.setMood(input.value ? 'think' : 'idle'); });
+  if (modeSel) modeSel.addEventListener('change', () => { lastContext = null; setChips(currentChips()); SFX.tick(); });
+  $('#chat-close').addEventListener('click', () => toggle(false));
+  $('#ask-btn').addEventListener('click', () => toggle());
+  document.addEventListener('click', e => { if (e.target.closest && e.target.closest('[data-open-chat]')) toggle(true); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && open) toggle(false);
+    if (e.key === '/' && !open && !/input|textarea/i.test(document.activeElement.tagName)) { e.preventDefault(); toggle(true); }
+  });
+  return { toggle, ask };
+})();
+
+// ================= sound buttons =================
+(() => {
+  const sfx = $('#sfx-btn'), amb = $('#amb-btn'), hint = $('#sound-hint');
+  sfx.addEventListener('click', () => { const on = !SFX.fx; SFX.setFx(on); sfx.setAttribute('aria-pressed', on); sfx.textContent = on ? '♪ SFX on' : '♪ SFX off'; if (on) Bot.say("Sound on! Beep boop.", { force: true }); });
+  amb.addEventListener('click', () => { const on = !SFX.amb; SFX.setAmb(on); amb.setAttribute('aria-pressed', on); amb.textContent = on ? '≈ Ambient on' : '≈ Ambient off'; if (on) SFX.setFx(SFX.fx || false); });
+  setTimeout(() => hint.classList.add('show'), 2500); setTimeout(() => hint.classList.remove('show'), 9000);
+  sfx.addEventListener('click', () => hint.classList.remove('show'));
+})();
+})();
+</script>
+</body>
+</html>

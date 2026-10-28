@@ -1,0 +1,6 @@
+{
+  "ai": false,
+  "model": null,
+  "retrieval": "bm25",
+  "privacy": "public-only"
+}
