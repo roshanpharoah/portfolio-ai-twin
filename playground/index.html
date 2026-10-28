@@ -5,19 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Curiosity Lab · Roshan B</title>
 <meta name="description" content="Six interactive experiments in perception, probability, chaos, algorithms, emergence, and number theory. Built by Roshan B. Client-side only." />
-<meta name="theme-color" content="#050914" />
+<meta name="theme-color" content="#040a15" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="lab.css" />
 </head>
 <body>
+<canvas class="snowfall" id="snowfall" aria-hidden="true"></canvas>
 <a class="skip-link" href="#perception">Skip to the experiments</a>
 
 <header class="site-head">
   <nav class="nav shell" aria-label="Curiosity Lab navigation">
     <a class="brand" href="../index.html" aria-label="Roshan B, back to portfolio">RB<span>.</span></a>
-    <span class="nav-title">Curiosity Lab</span>
+    <span class="nav-title">Curiosity Lab <span class="nav-snow" aria-hidden="true">❄</span></span>
     <div class="nav-links">
       <a href="#perception">Perception</a>
       <a href="#probability">Probability</a>
@@ -40,9 +41,21 @@
       <h1 id="hero-title">Curiosity is an <em>interactive</em> experience.</h1>
       <p class="lede">A collection of things worth discovering. Make a prediction, play with the rules, and see what happens.</p>
       <p class="tagline">Come for a click. Leave with a new perspective.</p>
+      <div class="winter-mood" aria-hidden="true">
+        <span class="winter-flake">❄</span>
+        <span>Atmosphere</span>
+        <span class="winter-dot"></span>
+        <span>light snow</span>
+        <span class="winter-dot"></span>
+        <span class="winter-quiet">quiet air</span>
+      </div>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#perception">Start with perception</a>
         <a class="btn btn-ghost" href="#index">Browse the lab</a>
+        <button class="btn btn-ghost snow-toggle" id="snow-toggle" type="button" aria-pressed="true" hidden>
+          <span class="snow-toggle-icon" aria-hidden="true">❄</span>
+          <span class="snow-toggle-label">Snowfall on</span>
+        </button>
       </div>
     </div>
 
@@ -887,6 +900,7 @@
   <p class="foot-fine">Built with vanilla JavaScript, canvas, SVG, and CSS. © 2026 Roshan B.</p>
 </footer>
 
+<script src="snow.js"></script>
 <script src="lab.js"></script>
 </body>
 </html>

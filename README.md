@@ -5,7 +5,7 @@ A static portfolio for Roshan B with a grounded public knowledge base, a Curiosi
 ## What is included
 
 - `index.html`: the portfolio, certificate wall, chat UI, and Curiosity Lab entry point.
-- `playground/`: the Curiosity Lab experiments and responsive styles.
+- `playground/`: the Curiosity Lab experiments, responsive styles, and a page-specific snowfall atmosphere with a pause control and reduced-motion support.
 - `rag/`: the structured public knowledge source, BM25 retrieval engine, build validation, evaluation tests, and system prompt.
 - `server.mjs`: a zero-dependency Node server that serves the portfolio and proxies `/api/chat` to OpenRouter.
 - `api/status.json`: the static fallback status file. It keeps a static deployment on the local RAG path.
