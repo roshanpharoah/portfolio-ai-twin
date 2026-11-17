@@ -1,8 +1,8 @@
 {
   "name": "roshan-portfolio",
   "private": true,
-  "version": "2.1.0",
-  "description": "Static portfolio with a local RAG fallback and an optional OpenRouter proxy.",
+  "version": "2.2.0",
+  "description": "Static portfolio with a local RAG fallback, a free-feed Articles shelf, and an optional OpenRouter proxy.",
   "scripts": {
     "start": "node server.mjs",
     "build:rag": "node rag/build.mjs",

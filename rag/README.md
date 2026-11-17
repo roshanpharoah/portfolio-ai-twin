@@ -29,6 +29,9 @@ Without a server, the portfolio remains fully static and uses lexical BM25 in th
 - `source/private.example.json`: schema example only. It is not loaded by the site.
 - `../server.mjs`: optional zero-dependency Node server that serves the site and proxies `/api/chat`.
 - `../api/status.json`: static fallback status file that keeps a static deployment on the local RAG path.
+- `../articles/index.html`: optional standalone Live AI and Tech Shelf, linked from the portfolio contact footer.
+- `../articles.js`: shelf logic fed by free Hacker News and DEV Community APIs.
+- `../api/articles.json`: static reading list used when the live article feeds are unavailable.
 - `../.env.example`: environment variable template for the optional AI layer.
 - `../package.json`: convenience scripts for the server, build, and tests.
 
@@ -42,7 +45,7 @@ python -m http.server 8765
 
 Then open `http://127.0.0.1:8765/`.
 
-For the optional AI layer, copy `.env.example` to `.env`, add your real `OPENROUTER_API_KEY`, choose an `OPENROUTER_MODEL`, and start the included server:
+For the optional AI layer, copy `.env.example` to `.env`, add your real `OPENROUTER_API_KEY`, choose an `OPENROUTER_MODEL`, and start the included server. For Grok, the example model is `x-ai/grok-4.7`; check OpenRouter for the current ID. Use an OpenRouter key, not a raw xAI key:
 
 ```powershell
 Copy-Item .env.example .env
@@ -72,6 +75,20 @@ An OpenRouter key is an inference credential. It does not train a model on the p
 2. Per-request retrieval of relevant public notes, appended as context.
 
 That is enough to make the model sound like a grounded portfolio twin. It is not fine-tuning, and the model does not remember a visitor between requests. Fine-tuning would require a separate training dataset, a fine-tuning-capable provider, and an evaluation process for forgetting, privacy leakage, and stale facts.
+
+The system prompt also includes a voice calibration section. It describes the public writing style, the order Roshan uses to explain a topic, the preference for precise corrections, and the boundary between general knowledge and personal evidence. This is prompt conditioning, not a trained copy of the person.
+
+## Grok through OpenRouter
+
+The proxy is model-agnostic within OpenRouter. To use Grok, keep the existing architecture and set:
+
+```powershell
+OPENROUTER_MODEL=x-ai/grok-4.7
+```
+
+Use the OpenRouter model ID that is current for your account. OpenRouter's model list is the source of truth. A raw xAI API key is not interchangeable with an OpenRouter key; this build calls the OpenRouter chat-completions endpoint. Direct xAI support would require a separate adapter and its own tests.
+
+The API key stays in the server environment. The browser only sees the status response and the generated answer. The status response includes the model name, never the key.
 
 ## Entry schema
 
@@ -161,7 +178,7 @@ Those tests use a local mock OpenRouter endpoint, so they do not need a real key
 
 ## Deployment
 
-For the static fallback, upload `index.html`, `rag/knowledge-public.js`, `rag/rag-core.js`, and `api/status.json`. The status file tells the browser to stay on the local RAG path. The public source JSON and build scripts can also be deployed because the build rejects private entries in the public source. Keep any private source file outside the deployed folder.
+For the static fallback, upload `index.html`, the `articles/` folder, `articles.js`, `rag/knowledge-public.js`, `rag/rag-core.js`, `api/status.json`, and `api/articles.json`. The status file tells the browser to stay on the local RAG path. The optional Live Shelf uses free public feeds directly and needs no key, so it also works on GitHub Pages. The public source JSON and build scripts can also be deployed because the build rejects private entries in the public source. Keep any private source file outside the deployed folder.
 
 For the AI layer, deploy the whole folder to a Node host such as Render, Railway, Fly.io, or a VPS, set `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` in the host's environment settings, and set `HOST=0.0.0.0` if the host requires it. Set `PUBLIC_SITE_URL` to the deployed URL. Do not commit `.env` or deploy it as a static asset. A static-only host such as GitHub Pages cannot keep an OpenRouter key secret, so use the local fallback there.
 
@@ -175,6 +192,7 @@ No environment variables are required for static-only mode. The optional AI mode
 - There is no authenticated private mode. The public AI can be asked by any visitor.
 - There is no automatic PDF or document ingestion. Updates are manual JSON edits followed by the build.
 - Source freshness depends on manual `updated_at` and `is_current` maintenance.
+- The optional Live Shelf depends on the free Hacker News Algolia and DEV Community APIs. The bundled fallback is a static reading list, not live news.
 - The chat does not log queries or retrieved passages. Server errors are logged without the key or user question.
 - AI cost, latency, model availability, and provider data handling depend on OpenRouter and the selected model.
 - Basic in-memory rate limiting is per process and is not a substitute for authentication or a distributed rate limiter.

@@ -372,6 +372,21 @@
       "next": ["Tell me about the timetable manager", "Who are you?"]
     },
     {
+      "id": "articles",
+      "title": "Optional live shelf",
+      "category": "meta",
+      "subcategory": "articles",
+      "sec": "contact",
+      "source_type": "reference",
+      "evidence_type": "reference",
+      "source": "Portfolio Live Shelf page",
+      "kw": "articles article news feed feeds hacker news dev community ai tech updates reading live free api shelf sources optional page side",
+      "retrieval_tags": ["articles", "news", "feeds", "ai", "tech", "free-api", "optional"],
+      "related_entities": ["Hacker News", "DEV Community", "free APIs", "contact footer"],
+      "text": "The portfolio has an optional Live AI and Tech Shelf page linked from the contact footer. It pulls recent AI and technology links from free, keyless public feeds: Hacker News through Algolia and DEV Community. It caches results in the browser for 15 minutes and falls back to a static reading list if the feeds are unreachable. It is a public side shelf, not a personal reading log or a claim that I have read every item.",
+      "next": ["Where is the live shelf?", "How does this chat work?"]
+    },
+    {
       "id": "communication",
       "title": "How I prefer to communicate",
       "category": "learning",

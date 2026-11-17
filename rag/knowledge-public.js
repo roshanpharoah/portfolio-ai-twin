@@ -1091,6 +1091,48 @@
       ]
     },
     {
+      "source": "Portfolio Live Shelf page",
+      "source_type": "reference",
+      "evidence_type": "reference",
+      "created_at": "2026-10-28",
+      "updated_at": "2026-10-28",
+      "event_date": null,
+      "valid_from": null,
+      "valid_until": null,
+      "status": "current",
+      "confidence": "high",
+      "sensitivity": "public",
+      "is_current": true,
+      "supersedes": null,
+      "public": true,
+      "related_entities": [
+        "Hacker News",
+        "DEV Community",
+        "free APIs",
+        "contact footer"
+      ],
+      "id": "articles",
+      "title": "Optional live shelf",
+      "category": "meta",
+      "subcategory": "articles",
+      "sec": "contact",
+      "kw": "articles article news feed feeds hacker news dev community ai tech updates reading live free api shelf sources optional page side",
+      "retrieval_tags": [
+        "articles",
+        "news",
+        "feeds",
+        "ai",
+        "tech",
+        "free-api",
+        "optional"
+      ],
+      "text": "The portfolio has an optional Live AI and Tech Shelf page linked from the contact footer. It pulls recent AI and technology links from free, keyless public feeds: Hacker News through Algolia and DEV Community. It caches results in the browser for 15 minutes and falls back to a static reading list if the feeds are unreachable. It is a public side shelf, not a personal reading log or a claim that I have read every item.",
+      "next": [
+        "Where is the live shelf?",
+        "How does this chat work?"
+      ]
+    },
+    {
       "source": "Inferred from repeated writing and explanation preferences",
       "source_type": "curated_note",
       "evidence_type": "assistant_inference",

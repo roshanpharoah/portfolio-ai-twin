@@ -1,0 +1,66 @@
+{
+  "updated_at": "2026-10-28",
+  "note": "Static reading list used only when the free live feeds are unavailable. It is not a news feed.",
+  "items": [
+    {
+      "title": "Attention Is All You Need",
+      "url": "https://arxiv.org/abs/1706.03762",
+      "source": "arXiv",
+      "category": "AI",
+      "date": "2017-06-12",
+      "summary": "The Transformer paper: self-attention, no recurrence, and the architecture behind modern language models.",
+      "tags": ["transformers", "nlp", "paper"],
+      "reading_time": 15
+    },
+    {
+      "title": "The Illustrated Transformer",
+      "url": "https://jalammar.github.io/illustrated-transformer/",
+      "source": "Jay Alammar",
+      "category": "AI",
+      "date": "2018-06-27",
+      "summary": "A visual walkthrough of attention, encoder-decoder blocks, and how a Transformer processes a sentence.",
+      "tags": ["transformers", "intuition", "visual"],
+      "reading_time": 20
+    },
+    {
+      "title": "The Unreasonable Effectiveness of Recurrent Neural Networks",
+      "url": "https://karpathy.github.io/2015/05/21/rnn-effectiveness/",
+      "source": "Andrej Karpathy",
+      "category": "AI",
+      "date": "2015-05-21",
+      "summary": "Why sequence models are surprisingly capable, with character-level examples and a clear intuition-first style.",
+      "tags": ["rnn", "intuition", "sequence"],
+      "reading_time": 25
+    },
+    {
+      "title": "Hugging Face NLP Course",
+      "url": "https://huggingface.co/learn/nlp-course/chapter1/1",
+      "source": "Hugging Face",
+      "category": "AI",
+      "date": null,
+      "summary": "A practical course on Transformers, datasets, tokenizers, fine-tuning, and sharing models.",
+      "tags": ["transformers", "course", "practice"],
+      "reading_time": 0
+    },
+    {
+      "title": "The Missing Semester of Your CS Education",
+      "url": "https://missing.csail.mit.edu/",
+      "source": "MIT",
+      "category": "Tech",
+      "date": "2020-01-01",
+      "summary": "Practical computing skills that often fall outside the CS curriculum: shell, editors, Git, debugging, and more.",
+      "tags": ["tools", "shell", "git"],
+      "reading_time": 0
+    },
+    {
+      "title": "The Twelve-Factor App",
+      "url": "https://12factor.net/",
+      "source": "12factor.net",
+      "category": "Tech",
+      "date": "2011-01-01",
+      "summary": "A concise set of principles for building portable, observable, and deployable services.",
+      "tags": ["deployment", "architecture", "devops"],
+      "reading_time": 0
+    }
+  ]
+}

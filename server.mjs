@@ -48,6 +48,7 @@ const MIME = {
   ".txt": "text/plain; charset=utf-8"
 };
 
+const DEFAULT_MODEL = "x-ai/grok-4.7";
 const ALLOWED_MODES = new Set(["auto", "portfolio", "technical", "personal", "interview", "learning"]);
 const DENY_SEGMENTS = new Set([".git", ".env", "node_modules"]);
 const DENY_FILES = new Set(["server.mjs", "package.json", "package-lock.json", "system_prompt.md"]);
@@ -195,7 +196,7 @@ export function createAppServer(overrides = {}) {
   const root = path.resolve(overrides.root || __dirname);
   const apiKey = String(overrides.apiKey !== undefined ? overrides.apiKey : (process.env.OPENROUTER_API_KEY || "")).trim();
   const aiEnabled = Boolean(apiKey) && !/replace-me|your-key/i.test(apiKey);
-  const model = String(overrides.model !== undefined ? overrides.model : (process.env.OPENROUTER_MODEL || "openai/gpt-4o-mini"));
+  const model = String(overrides.model !== undefined ? overrides.model : (process.env.OPENROUTER_MODEL || DEFAULT_MODEL));
   const openrouterUrl = String(overrides.openrouterUrl !== undefined ? overrides.openrouterUrl : (process.env.OPENROUTER_URL || "https://openrouter.ai/api/v1/chat/completions"));
   const siteUrl = String(overrides.siteUrl !== undefined ? overrides.siteUrl : (process.env.PUBLIC_SITE_URL || "http://127.0.0.1:8765"));
   const certCount = Number(overrides.certCount !== undefined ? overrides.certCount : (process.env.CERT_COUNT || 61));
@@ -337,7 +338,7 @@ export function createAppServer(overrides = {}) {
       });
     }
 
-    if (pathname.startsWith("/api/")) return sendJson(res, 404, { error: "Not found." });
+    if (pathname.startsWith("/api/") && pathname !== "/api/articles.json") return sendJson(res, 404, { error: "Not found." });
     if (req.method !== "GET" && req.method !== "HEAD") return sendJson(res, 405, { error: "Method not allowed." });
 
     const file = staticPath(root, pathname);
@@ -387,6 +388,6 @@ if (isMain) {
     const key = String(process.env.OPENROUTER_API_KEY || "").trim();
     const enabled = Boolean(key) && !/replace-me|your-key/i.test(key);
     console.log("Portfolio server: http://" + (host === "0.0.0.0" ? "127.0.0.1" : host) + ":" + port + "/");
-    console.log(enabled ? "OpenRouter AI: enabled (" + (process.env.OPENROUTER_MODEL || "openai/gpt-4o-mini") + ")" : "OpenRouter AI: disabled (local RAG fallback)");
+    console.log(enabled ? "OpenRouter AI: enabled (" + (process.env.OPENROUTER_MODEL || DEFAULT_MODEL) + ")" : "OpenRouter AI: disabled (local RAG fallback)");
   });
 }

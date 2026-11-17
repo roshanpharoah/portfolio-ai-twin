@@ -190,6 +190,12 @@ test("answers the communication preference question", () => {
   expectText(result, "direct");
 });
 
+test("answers where the optional live shelf lives", () => {
+  const result = rag.answer("Where is the live shelf?");
+  expectSource(result, "articles");
+  expectText(result, "contact footer");
+});
+
 test("answers the career uncertainty question", () => {
   const result = rag.answer("What career uncertainties has he discussed?");
   assert.ok(ids(result).some((id) => id === "career_tradeoffs" || id === "study"), "expected a career uncertainty source, got " + ids(result).join(", "));

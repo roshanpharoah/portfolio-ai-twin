@@ -101,9 +101,21 @@ await test("serves the portfolio and local RAG scripts", async () => {
   assert.equal(home.status, 200);
   const html = await home.text();
   assert.ok(html.includes("Ask my notes"));
+  assert.ok(html.includes("articles/index.html"));
   assert.ok(!html.includes("test-key"));
   const script = await fetch(base + "/rag/rag-core.js");
   assert.equal(script.status, 200);
+  const shelf = await fetch(base + "/articles/index.html");
+  assert.equal(shelf.status, 200);
+  const shelfHtml = await shelf.text();
+  assert.ok(shelfHtml.includes("../articles.js"));
+  assert.ok(shelfHtml.includes('data-fallback="../api/articles.json"'));
+  const articles = await fetch(base + "/articles.js");
+  assert.equal(articles.status, 200);
+  const fallback = await fetch(base + "/api/articles.json");
+  assert.equal(fallback.status, 200);
+  const fallbackData = await json(fallback);
+  assert.ok(Array.isArray(fallbackData.items) && fallbackData.items.length >= 6);
 });
 
 await test("does not serve secrets or server internals", async () => {
@@ -129,6 +141,9 @@ await test("returns a grounded AI answer with source metadata", async () => {
   assert.ok(mockState.lastSystem.includes("RETRIEVED PUBLIC CONTEXT"));
   assert.ok(mockState.lastSystem.includes("PolicyPulse"));
   assert.ok(mockState.lastSystem.includes("61 certificates"));
+  assert.ok(mockState.lastSystem.includes("Voice calibration"));
+  assert.ok(mockState.lastSystem.includes("General questions"));
+  assert.ok(mockState.lastSystem.includes("Articles:"));
   assert.equal(mockState.lastUser, "Tell me about PolicyPulse");
 });
 

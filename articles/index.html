@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Live AI &amp; Tech Shelf · Roshan B</title>
+<meta name="description" content="An optional live shelf of recent AI and technology links from public feeds. A side shelf by Roshan B." />
+<meta name="author" content="Roshan B" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#020617" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23020617'/%3E%3Cpath d='M16 5l8 20-8-4-8 4z' fill='%2322d3ee'/%3E%3C/svg%3E" />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>
+  tailwind.config = { theme: { extend: {
+    fontFamily: { display: ['Space Grotesk', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+    colors: { neon: { indigo: '#6366f1', cyan: '#22d3ee', emerald: '#34d399' } }
+  } } }
+</script>
+<style>
+  :root { color-scheme: dark; }
+  body {
+    background:
+      radial-gradient(circle at 15% 0%, rgba(99,102,241,.14), transparent 38%),
+      radial-gradient(circle at 85% 10%, rgba(34,211,238,.08), transparent 34%),
+      #020617;
+    color: #e2e8f0;
+    overflow-x: hidden;
+  }
+  :focus-visible { outline: 2px solid #22d3ee; outline-offset: 3px; border-radius: 8px; }
+  .glass { background: rgba(15,23,42,.6); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(148,163,184,.12); }
+  .nav-btn { font-family: 'JetBrains Mono', monospace; font-size: .7rem; padding: .4rem .75rem; border-radius: 9999px; border: 1px solid rgba(148,163,184,.25); color: #94a3b8; transition: all .25s; white-space: nowrap; }
+  .nav-btn:hover { border-color: #22d3ee; color: #67e8f9; }
+  .fchip { font-family: 'JetBrains Mono', monospace; font-size: .75rem; padding: .4rem .85rem; border-radius: 9999px; border: 1px solid rgba(148,163,184,.25); color: #94a3b8; transition: all .25s; }
+  .fchip span { opacity: .6; margin-left: .35rem; }
+  .fchip:hover, .fchip.on { border-color: #22d3ee; color: #67e8f9; background: rgba(34,211,238,.1); }
+  .articles-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; min-height: 200px; }
+  @media (max-width: 1023px) { .articles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 639px) { .articles-grid { grid-template-columns: 1fr; } }
+  .article-card { --ac: #6366f1; position: relative; display: flex; flex-direction: column; gap: .7rem; min-height: 210px; padding: 1.1rem 1.15rem; border-radius: 1.25rem; overflow: hidden; text-decoration: none; color: inherit; transition: transform .25s, border-color .25s, box-shadow .25s, background .25s; animation: article-in .45s ease both; animation-delay: calc(var(--i, 0) * 45ms); }
+  .article-card::after { content: ''; position: absolute; inset: auto 0 0; height: 2px; background: linear-gradient(90deg, transparent, var(--ac), transparent); opacity: .35; transition: opacity .25s; }
+  .article-card:hover { transform: translateY(-4px); border-color: var(--ac); box-shadow: 0 18px 50px -24px var(--ac); background: rgba(15,23,42,.78); }
+  .article-card:hover::after { opacity: .9; }
+  .article-top { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+  .article-source, .article-cat, .article-meta, .article-tag { font-family: 'JetBrains Mono', monospace; }
+  .article-source { font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ac); }
+  .article-cat { font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; color: #a5b4fc; border: 1px solid rgba(99,102,241,.35); border-radius: 9999px; padding: .12rem .5rem; white-space: nowrap; }
+  .article-card[data-cat="AI"] { --ac: #34d399; }
+  .article-card[data-cat="AI"] .article-cat { color: #6ee7b7; border-color: rgba(52,211,153,.35); }
+  .article-card[data-cat="Tech"] { --ac: #22d3ee; }
+  .article-card[data-cat="Tech"] .article-cat { color: #67e8f9; border-color: rgba(34,211,238,.35); }
+  .article-card h3 { font-size: 1.02rem; line-height: 1.35; font-weight: 700; color: #e2e8f0; }
+  .article-card .article-desc { color: #94a3b8; font-size: .83rem; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .article-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: auto; color: #64748b; font-size: .64rem; }
+  .article-meta .dot { width: 3px; height: 3px; border-radius: 9999px; background: #475569; }
+  .article-meta .domain { color: #64748b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+  .article-tags { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .article-tag { font-size: .58rem; color: #94a3b8; border: 1px solid rgba(148,163,184,.18); border-radius: 9999px; padding: .1rem .45rem; }
+  .article-arrow { color: var(--ac); font-size: .75rem; }
+  .article-skel { min-height: 210px; border-radius: 1.25rem; border: 1px solid rgba(148,163,184,.1); background: linear-gradient(110deg, rgba(15,23,42,.55) 8%, rgba(30,41,59,.8) 18%, rgba(15,23,42,.55) 33%); background-size: 200% 100%; animation: article-shimmer 1.4s linear infinite; }
+  .articles-empty { grid-column: 1 / -1; padding: 2rem; text-align: center; color: #94a3b8; font-size: .9rem; border: 1px dashed rgba(148,163,184,.25); border-radius: 1.25rem; }
+  .live-dot { display: inline-block; width: 6px; height: 6px; border-radius: 9999px; background: #34d399; box-shadow: 0 0 10px #34d399; margin-right: .4rem; animation: live-pulse 2s ease-in-out infinite; }
+  .live-dot[data-off="true"] { background: #64748b; box-shadow: none; animation: none; }
+  #articles-updated { display: inline-flex; align-items: center; }
+  #articles-refresh[disabled] { opacity: .55; cursor: wait; }
+  @keyframes article-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes article-shimmer { to { background-position: -200% 0; } }
+  @keyframes live-pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .article-card, .article-skel, .live-dot { animation: none !important; transition: none !important; }
+    .article-card:hover { transform: none; }
+  }
+</style>
+</head>
+<body class="font-display antialiased min-h-screen">
+<header class="max-w-6xl mx-auto px-6 pt-8 flex items-center justify-between gap-4">
+  <a href="../index.html" class="font-bold tracking-tight">RB<span class="text-neon-cyan">.</span></a>
+  <a href="../index.html" class="nav-btn" aria-label="Back to the portfolio">← Back to portfolio</a>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 py-14 md:py-20">
+  <div class="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+    <div>
+      <p class="font-mono text-neon-cyan text-sm mb-3">// OPTIONAL · LIVE SHELF</p>
+      <h1 class="text-4xl md:text-6xl font-bold leading-tight">What's moving in AI &amp; tech.</h1>
+      <p class="mt-4 max-w-2xl text-slate-400">Recent AI and technology links from Hacker News and DEV Community, cached in your browser for 15 minutes.</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="font-mono text-[11px] text-slate-500" aria-live="polite"><span id="articles-dot" class="live-dot" aria-hidden="true"></span><span id="articles-updated">Loading live feeds…</span></span>
+      <button id="articles-refresh" class="nav-btn" type="button" aria-label="Refresh articles">↻ Refresh</button>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-2 mb-6" id="articles-filters" role="group" aria-label="Filter articles">
+    <button class="fchip on" data-filter="all" type="button" aria-pressed="true">All<span>0</span></button>
+    <button class="fchip" data-filter="ai" type="button" aria-pressed="false">AI<span>0</span></button>
+    <button class="fchip" data-filter="tech" type="button" aria-pressed="false">Tech<span>0</span></button>
+  </div>
+
+  <div id="articles-grid" class="articles-grid" data-fallback="../api/articles.json" aria-busy="true"></div>
+
+  <noscript>
+    <p class="mt-4 text-sm text-slate-400">Live articles need JavaScript. Read the sources directly: <a class="text-neon-cyan" href="https://hn.algolia.com/?q=AI" target="_blank" rel="noopener noreferrer">Hacker News AI</a> and <a class="text-neon-cyan" href="https://dev.to/t/ai" target="_blank" rel="noopener noreferrer">DEV Community AI</a>.</p>
+  </noscript>
+
+  <p id="articles-foot" class="mt-6 font-mono text-[10px] leading-relaxed text-slate-600">Sources: <a class="text-slate-400 hover:text-neon-cyan" href="https://hn.algolia.com/" target="_blank" rel="noopener noreferrer">Hacker News Algolia</a> · <a class="text-slate-400 hover:text-neon-cyan" href="https://dev.to/" target="_blank" rel="noopener noreferrer">DEV Community</a> · <a class="text-slate-400 hover:text-neon-cyan" href="https://arxiv.org/list/cs.AI/recent" target="_blank" rel="noopener noreferrer">arXiv cs.AI</a>. External links open in a new tab. The static reading list is bundled for offline or blocked feeds.</p>
+</main>
+
+<footer class="max-w-6xl mx-auto px-6 pb-12 pt-8 border-t border-slate-800/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+  <div>
+    <p class="font-display text-sm font-semibold text-slate-200">Live AI &amp; Tech Shelf <span class="font-normal text-slate-500">by Roshan B</span></p>
+  </div>
+  <a href="../index.html" class="font-mono text-[10px] text-slate-500 hover:text-neon-cyan transition">← Back to the portfolio</a>
+</footer>
+
+<script src="../articles.js"></script>
+</body>
+</html>

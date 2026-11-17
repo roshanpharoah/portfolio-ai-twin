@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Neon Drift · Roshan B</title>
+<meta name="description" content="Neon Drift — a fast, playable 3D endless flyer through a procedural neon tunnel. Collect the stack, dodge the geometry, beat your best. Built with Three.js by Roshan B." />
+<meta name="author" content="Roshan B" />
+<meta name="theme-color" content="#040a15" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23020617'/%3E%3Cpath d='M16 5l8 20-8-4-8 4z' fill='%2322d3ee'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="game.css" />
+</head>
+<body>
+<div id="game-root" data-state="loading">
+  <canvas id="gl" aria-label="Neon Drift game canvas" role="img"></canvas>
+  <div class="fx-shade" aria-hidden="true"></div>
+  <div class="fx-vignette" aria-hidden="true"></div>
+  <div class="fx-scanlines" aria-hidden="true"></div>
+  <div class="fx-flash" id="fx-flash" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="Roshan B, back to portfolio">RB<span>.</span></a>
+    <div class="topbar-title" aria-hidden="true">
+      <span class="topbar-mark">NEON DRIFT</span>
+      <span class="topbar-sub">ENDLESS FLYER · v1.0</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" type="button" data-action="sound" aria-pressed="true" title="Toggle sound">
+        <span class="icon" aria-hidden="true">♪</span><span class="btn-text" data-sound-label>SOUND ON</span>
+      </button>
+      <button class="icon-btn" type="button" data-action="quality" title="Toggle render quality">
+        <span class="icon" aria-hidden="true">◈</span><span class="btn-text" data-quality-label>HIGH</span>
+      </button>
+      <button class="icon-btn icon-only" type="button" data-action="fullscreen" title="Toggle fullscreen" aria-label="Toggle fullscreen">
+        <span class="icon" aria-hidden="true">⛶</span>
+      </button>
+      <button class="icon-btn icon-only pause-btn" type="button" data-action="pause" title="Pause (Esc)" aria-label="Pause game">
+        <span class="icon" aria-hidden="true">Ⅱ</span>
+      </button>
+      <a class="icon-btn back-btn" href="../index.html" title="Back to portfolio">
+        <span class="icon" aria-hidden="true">←</span><span class="btn-text">PORTFOLIO</span>
+      </a>
+    </div>
+  </header>
+
+  <section id="hud" class="hud" aria-label="Game status">
+    <div class="hud-block hud-score">
+      <p class="hud-kicker">SCORE</p>
+      <p class="score-value" id="hud-score">0</p>
+      <p class="hud-sub">BEST <b id="hud-best">0</b></p>
+      <div class="combo" id="combo-wrap">
+        <div class="combo-line"><span id="combo-label">CHAIN ×1</span><span id="combo-count">0 ORBS</span></div>
+        <div class="meter combo-meter"><i id="combo-bar"></i></div>
+      </div>
+    </div>
+
+    <div class="hud-block hud-speed">
+      <p class="hud-kicker">VELOCITY</p>
+      <p class="speed-value"><span id="hud-speed">0</span><small>KM/H</small></p>
+      <div class="meter speed-meter"><i id="speed-bar"></i></div>
+      <p class="hud-sub">SECTOR <b id="hud-sector">01</b> · <span id="hud-distance">0 m</span></p>
+    </div>
+
+    <div class="hud-block hud-shield" id="shield-wrap">
+      <p class="hud-kicker">SHIELD</p>
+      <div class="shield-line">
+        <span class="shield-glyph" aria-hidden="true">◈</span>
+        <span id="shield-state">STANDBY</span>
+        <span class="shield-pips" id="shield-pips" aria-label="Shield charges"></span>
+      </div>
+      <div class="meter shield-meter"><i id="shield-bar"></i></div>
+      <p class="hud-sub" id="shield-hint">SPACE / TAP ◈ TO DEPLOY</p>
+    </div>
+
+    <button class="power-btn" type="button" data-action="power" aria-label="Deploy shield">
+      <span class="power-glyph" aria-hidden="true">◈</span>
+      <span class="power-label">SHIELD</span>
+      <span class="power-count" id="power-count">0</span>
+    </button>
+  </section>
+
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <span class="toast-tag">COLLECTED</span>
+    <b class="toast-label">Python</b>
+    <span class="toast-points">+25</span>
+  </div>
+  <div id="callout" class="callout" aria-live="polite"></div>
+  <div id="countdown" class="countdown" aria-live="assertive"></div>
+
+  <section id="screen-start" class="screen screen-start" aria-labelledby="start-title">
+    <div class="start-inner">
+      <div class="start-copy">
+        <p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span> SIDE QUEST · PLAYABLE</p>
+        <h1 id="start-title" class="game-title"><span>NEON</span><span class="grad">DRIFT</span></h1>
+        <p class="game-byline">Neon Drift <span>by Roshan B</span></p>
+        <p class="start-sub">Thread a procedurally generated neon tunnel. Collect the stack. Dodge the geometry. Don’t blink.</p>
+        <div class="start-actions">
+          <button class="btn btn-primary" type="button" data-action="start">
+            <span>LAUNCH RUN</span><b aria-hidden="true">▶</b>
+          </button>
+          <a class="btn btn-ghost" href="../index.html">← BACK TO PORTFOLIO</a>
+        </div>
+        <p class="best-line">PERSONAL BEST <b id="menu-best">0</b> <span class="dot">·</span> <span id="menu-runs">0 RUNS</span></p>
+        <p class="start-touch">DRAG TO FLY · TAP ◈ FOR SHIELD</p>
+        <p class="audio-line" id="audio-line">Sound starts when you do · headphones recommended</p>
+      </div>
+
+      <aside class="start-side" aria-label="Controls and skills">
+        <div class="side-card">
+          <div class="side-head"><span>FLIGHT MANUAL</span><span class="side-live"><i></i>READY</span></div>
+          <div class="control-row"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>or arrow keys — steer</span></div>
+          <div class="control-row"><kbd class="wide">SPACE</kbd><span>deploy shield</span></div>
+          <div class="control-row"><kbd class="wide">ESC</kbd><span>pause / resume</span></div>
+          <div class="control-row touch-only"><span class="touch-pill">DRAG</span><span>drag anywhere to fly · tap ◈ for shield</span></div>
+          <div class="side-divider"></div>
+          <p class="side-label">COLLECT THE STACK</p>
+          <div class="skill-cloud" id="menu-skills" aria-label="Skills in the game"></div>
+          <div class="side-divider"></div>
+          <p class="side-foot">Three.js · procedural geometry · Web Audio<br />No external assets. No install. Just flight.</p>
+        </div>
+      </aside>
+    </div>
+    <p class="start-foot">MUTED UNTIL YOU INTERACT · QUALITY <b data-quality-label>HIGH</b> · WEBGL</p>
+  </section>
+
+  <section id="screen-loading" class="screen screen-loading" aria-live="polite">
+    <div class="loading-box">
+      <p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span> NEON DRIFT</p>
+      <p class="loading-title">WARMING UP THE TUNNEL</p>
+      <div class="loading-track"><i></i></div>
+      <p class="loading-note" id="loading-note">Compiling shaders · calibrating drift</p>
+    </div>
+  </section>
+
+  <section id="screen-pause" class="screen screen-modal screen-pause" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+    <div class="modal-card">
+      <p class="eyebrow">RUN SUSPENDED</p>
+      <h2 id="pause-title" class="modal-title">PAUSED<span>.</span></h2>
+      <p class="modal-sub">The tunnel can wait. Your score is safe.</p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" type="button" data-action="resume"><span>RESUME</span><b aria-hidden="true">▶</b></button>
+        <button class="btn btn-ghost" type="button" data-action="restart">RESTART RUN</button>
+        <a class="btn btn-ghost" href="../index.html">BACK TO PORTFOLIO</a>
+      </div>
+      <div class="settings-row">
+        <span class="settings-label">RENDER</span>
+        <div class="segmented" role="group" aria-label="Render quality">
+          <button type="button" data-quality="low">LOW</button>
+          <button type="button" data-quality="high">HIGH</button>
+        </div>
+        <span class="settings-label">SOUND</span>
+        <button class="mini-btn" type="button" data-action="sound" aria-pressed="true" data-sound-mini>ON</button>
+      </div>
+      <p class="modal-foot">ESC to resume · auto-pauses when the tab loses focus</p>
+    </div>
+  </section>
+
+  <section id="screen-over" class="screen screen-modal screen-over" role="dialog" aria-modal="true" aria-labelledby="over-title">
+    <div class="modal-card over-card">
+      <p class="eyebrow" id="over-kicker">RUN TERMINATED</p>
+      <h2 id="over-title" class="modal-title">SIGNAL LOST<span>.</span></h2>
+      <div class="over-scoreline">
+        <div>
+          <p class="hud-kicker">FINAL SCORE</p>
+          <p class="over-score" id="over-score">0</p>
+        </div>
+        <div class="over-best">
+          <p class="hud-kicker">PERSONAL BEST</p>
+          <p class="over-best-value" id="over-best">0</p>
+          <p class="new-best" id="new-best">NEW RECORD</p>
+        </div>
+      </div>
+      <div class="over-stats">
+        <div><span>DISTANCE</span><b id="over-distance">0 m</b></div>
+        <div><span>ORBS</span><b id="over-orbs">0</b></div>
+        <div><span>BEST CHAIN</span><b id="over-combo">0</b></div>
+        <div><span>TOP SPEED</span><b id="over-speed">0 km/h</b></div>
+      </div>
+      <div class="over-skills">
+        <p class="side-label">STACK COLLECTED <span id="over-skill-count">0 / 18</span></p>
+        <div class="skill-cloud" id="over-skill-list"></div>
+      </div>
+      <div class="modal-actions over-actions">
+        <button class="btn btn-primary" type="button" data-action="restart"><span>RUN IT AGAIN</span><b aria-hidden="true">⟳</b></button>
+        <a class="btn btn-ghost" href="../index.html">BACK TO PORTFOLIO</a>
+      </div>
+      <p class="modal-foot" id="over-foot">Tip: shave the gates to bank near-miss points.</p>
+    </div>
+  </section>
+
+  <section id="screen-fallback" class="screen screen-modal screen-fallback" role="dialog" aria-modal="true" aria-labelledby="fallback-title">
+    <div class="modal-card">
+      <p class="eyebrow">RENDERER OFFLINE</p>
+      <h2 id="fallback-title" class="modal-title">NO WEBGL<span>.</span></h2>
+      <p class="modal-sub" id="fallback-copy">Neon Drift needs WebGL. Try a current Chrome, Edge, Firefox or Safari with hardware acceleration enabled, then reload the page.</p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" type="button" onclick="location.reload()"><span>RELOAD</span><b aria-hidden="true">⟳</b></button>
+        <a class="btn btn-ghost" href="../index.html">← BACK TO PORTFOLIO</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="mobile-hint" id="mobile-hint">DRAG TO FLY <span>·</span> TAP ◈ FOR SHIELD</div>
+  <noscript><div class="noscript">Neon Drift needs JavaScript enabled. The rest of the portfolio is still available.</div></noscript>
+</div>
+<script type="module" src="boot.js"></script>
+</body>
+</html>
