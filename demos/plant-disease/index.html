@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#020617">
+  <title>Leaf Triage Demo | Roshan B</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../demo.css">
+  <style>
+    .leaf-frame {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(148,163,184,.14);
+      border-radius: 18px;
+      background: radial-gradient(500px circle at 50% 20%, rgba(52,211,153,.08), transparent 60%), rgba(2,6,23,.55);
+    }
+    .leaf-frame canvas { display: block; width: 100%; height: auto; }
+    .leaf-caption { position: absolute; left: .8rem; bottom: .65rem; color: var(--dim); font-family: var(--mono); font-size: .6rem; letter-spacing: .06em; text-transform: uppercase; }
+    .condition { border: 1px solid rgba(148,163,184,.12); border-radius: 12px; background: rgba(2,6,23,.28); padding: .6rem .7rem; }
+    .condition + .condition { margin-top: .45rem; }
+    .condition .top { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-bottom: .35rem; }
+    .condition strong { font-size: .8rem; }
+    .condition .score { color: var(--cyan); font-family: var(--mono); font-size: .68rem; }
+    .condition .why { margin: .35rem 0 0; color: var(--dim); font-size: .68rem; line-height: 1.4; }
+    .symptom-grid { display: grid; grid-template-columns: 1fr; gap: .45rem; }
+    @media (min-width: 500px) { .symptom-grid { grid-template-columns: 1fr 1fr; } }
+    .symptom-btn {
+      display: flex; align-items: center; gap: .45rem; width: 100%; justify-content: flex-start;
+      border-radius: 10px; padding: .48rem .6rem; font-size: .72rem; color: var(--muted);
+    }
+    .symptom-btn.active { border-color: var(--cyan); background: rgba(34,211,238,.1); color: #67e8f9; }
+    .symptom-btn .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(148,163,184,.5); }
+    .symptom-btn.active .dot { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+    .top-result { border: 1px solid rgba(34,211,238,.22); border-radius: 14px; background: rgba(34,211,238,.05); padding: .8rem .9rem; margin-bottom: .75rem; }
+    .top-result strong { display: block; font-size: .95rem; }
+    .top-result p { margin: .2rem 0 0; color: var(--muted); font-size: .74rem; }
+  </style>
+</head>
+<body>
+  <header class="demo-top">
+    <div class="demo-top-inner">
+      <a class="back-link" href="../../index.html#projects">← All projects</a>
+      <span class="demo-brand"><span class="status-dot"></span> Leaf triage demo</span>
+      <span class="demo-source muted">Source not public</span>
+    </div>
+  </header>
+
+  <main class="demo-wrap">
+    <section class="demo-hero">
+      <p class="demo-kicker">// transparent symptom triage</p>
+      <h1>Pick the symptoms. Inspect the signal.</h1>
+      <p class="lede">A browser-native triage simulation for four crops. Select visible symptoms and a severity level, then see a rule-based ranking with the symptom overlap shown. It is not an image classifier, and it does not pretend to be one.</p>
+      <div class="demo-actions">
+        <span class="badge">no image upload</span>
+        <span class="badge">canvas render</span>
+        <span class="badge warn">not a diagnosis</span>
+      </div>
+    </section>
+
+    <div class="demo-grid sidebar">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Symptom inputs</h2>
+            <p class="panel-sub">The full project uses a ViT pipeline. This demo makes the symptom logic visible.</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="crop">Crop</label>
+          <select id="crop">
+            <option value="wheat">Wheat</option>
+            <option value="paddy">Paddy</option>
+            <option value="maize">Maize</option>
+            <option value="soybean">Soybean</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Visible symptoms</label>
+          <div class="symptom-grid" id="symptoms">
+            <button class="symptom-btn" type="button" data-symptom="yellow"><span class="dot"></span>Yellow spots</button>
+            <button class="symptom-btn" type="button" data-symptom="brown"><span class="dot"></span>Brown lesions</button>
+            <button class="symptom-btn" type="button" data-symptom="powder"><span class="dot"></span>Powdery coating</button>
+            <button class="symptom-btn" type="button" data-symptom="curl"><span class="dot"></span>Leaf curling</button>
+            <button class="symptom-btn" type="button" data-symptom="stunt"><span class="dot"></span>Stunted growth</button>
+            <button class="symptom-btn" type="button" data-symptom="wilt"><span class="dot"></span>Wilting</button>
+            <button class="symptom-btn" type="button" data-symptom="mosaic"><span class="dot"></span>Mosaic pattern</button>
+            <button class="symptom-btn" type="button" data-symptom="root"><span class="dot"></span>Root or base rot</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="severity">Severity <span id="severityLabel" class="mono">55</span></label>
+          <input id="severity" type="range" min="0" max="100" value="55">
+        </div>
+
+        <div class="btn-row">
+          <button class="primary" id="run" type="button">Run triage</button>
+          <button id="sample" type="button">Load sample</button>
+          <button id="clear" type="button">Clear</button>
+        </div>
+
+        <div class="callout warn" style="margin-top:1rem">
+          <strong>Illustrative only.</strong> This page does not inspect an image, run a trained model, or provide treatment advice. Confirm any field diagnosis with a qualified agronomist.
+        </div>
+      </section>
+
+      <div class="stack">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Symptom render</h2>
+              <p class="panel-sub">Canvas illustration changes with the selected inputs.</p>
+            </div>
+            <span class="badge" id="renderBadge">idle</span>
+          </div>
+          <div class="leaf-frame">
+            <canvas id="leafCanvas" width="760" height="420" aria-label="Illustrative leaf with selected symptom patterns"></canvas>
+            <span class="leaf-caption">illustrative render · not a leaf photo</span>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Rule-based triage</h2>
+              <p class="panel-sub" id="resultSub">Select at least one symptom to see a ranking.</p>
+            </div>
+            <span class="badge" id="resultBadge">waiting</span>
+          </div>
+          <div id="topResult"></div>
+          <div id="results"></div>
+          <div class="callout" id="advice" style="margin-top:.85rem">Pick a crop and symptoms, then run the triage. The output will show which condition overlaps most with the selected pattern.</div>
+        </section>
+      </div>
+    </div>
+
+    <p class="note">The full Plant Disease Detection project uses Vision Transformers, automated background removal and regional crop profiles. This browser demo deliberately avoids pretending that a canvas sketch is a model prediction. It demonstrates the explainable symptom-ranking layer instead.</p>
+
+    <footer class="demo-footer">
+      <a href="../../index.html#projects">← Back to projects</a>
+      <span>Leaf triage · browser-native canvas demo</span>
+    </footer>
+  </main>
+
+  <script src="../demo.js"></script>
+  <script>
+    (() => {
+      const { $, $$, clamp, round, seeded, esc } = window.Demo;
+
+      const CROPS = {
+        wheat: {
+          label: "Wheat",
+          conditions: [
+            { name: "Leaf rust", weights: { brown: 5, yellow: 2, curl: 1, wilt: 1 }, action: "Flag the block, compare lesion shape and colour, and confirm with an agronomist before any treatment decision.", note: "Brown pustules on the leaf surface." },
+            { name: "Powdery mildew", weights: { powder: 5, yellow: 2, curl: 2 }, action: "Check airflow and canopy density. Confirm the powdery coating on both leaf surfaces.", note: "White powdery growth on the leaf surface." },
+            { name: "Nitrogen stress", weights: { yellow: 3, stunt: 4, wilt: 1 }, action: "Compare with soil-test history and the field pattern before adjusting nutrition.", note: "General yellowing with reduced growth." },
+          ],
+        },
+        paddy: {
+          label: "Paddy",
+          conditions: [
+            { name: "Bacterial blight", weights: { yellow: 4, wilt: 4, curl: 3, brown: 2 }, action: "Inspect the field pattern and leaf margins. Confirm with a local extension officer before treatment.", note: "Yellowing and wilting along leaf margins." },
+            { name: "Rice blast", weights: { brown: 5, yellow: 2, wilt: 1 }, action: "Inspect lesion centres and humidity history. Confirm the pattern before acting.", note: "Spindle-shaped brown lesions." },
+            { name: "Nutrient stress", weights: { yellow: 4, stunt: 4, mosaic: 1 }, action: "Compare with soil-test records and the irrigation pattern.", note: "Uniform yellowing and slow growth." },
+          ],
+        },
+        maize: {
+          label: "Maize",
+          conditions: [
+            { name: "Leaf blight", weights: { brown: 5, yellow: 2, wilt: 2 }, action: "Check lower leaves and field humidity. Confirm lesion shape with an agronomist.", note: "Long brown lesions on the leaf blade." },
+            { name: "Common rust", weights: { brown: 4, powder: 3, yellow: 1 }, action: "Inspect the leaf surface for rust-coloured pustules. Confirm before treatment.", note: "Rust-coloured pustules with powdery spores." },
+            { name: "Nitrogen stress", weights: { yellow: 4, stunt: 4 }, action: "Compare with soil-test history and the field pattern.", note: "Pale yellow leaves and reduced growth." },
+          ],
+        },
+        soybean: {
+          label: "Soybean",
+          conditions: [
+            { name: "Septoria leaf spot", weights: { brown: 5, yellow: 3, wilt: 1 }, action: "Inspect lower-canopy leaves and lesion borders. Confirm with a local pathologist.", note: "Small brown spots with yellow halos." },
+            { name: "Mosaic virus", weights: { mosaic: 5, curl: 3, stunt: 2 }, action: "Look for patchy green and yellow patterns. Confirm with a specialist; viral symptoms need careful handling.", note: "Mottled green and yellow patches." },
+            { name: "Root rot", weights: { root: 5, wilt: 4, stunt: 3 }, action: "Check the root crown and drainage. Confirm before applying any treatment.", note: "Brown or soft tissue at the base." },
+          ],
+        },
+      };
+
+      const state = {
+        crop: "wheat",
+        symptoms: new Set(),
+        severity: 55,
+      };
+
+      const canvas = $("#leafCanvas");
+      const ctx = canvas.getContext("2d");
+      const W = canvas.width;
+      const H = canvas.height;
+
+      const has = (symptom) => state.symptoms.has(symptom);
+
+      const leafPath = (widthFactor = 1) => {
+        const length = 152;
+        const width = 78 * widthFactor;
+        ctx.beginPath();
+        ctx.moveTo(0, -length);
+        ctx.bezierCurveTo(width * 1.32, -length * 0.55, width * 1.08, length * 0.55, 0, length);
+        ctx.bezierCurveTo(-width * 1.08, length * 0.55, -width * 1.32, -length * 0.55, 0, -length);
+        ctx.closePath();
+      };
+
+      const drawLeaf = () => {
+        ctx.clearRect(0, 0, W, H);
+        const background = ctx.createLinearGradient(0, 0, W, H);
+        background.addColorStop(0, "#06121b");
+        background.addColorStop(0.55, "#081623");
+        background.addColorStop(1, "#040b12");
+        ctx.fillStyle = background;
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.strokeStyle = "rgba(148,163,184,.07)";
+        ctx.lineWidth = 1;
+        for (let x = 40; x < W; x += 40) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+        }
+        for (let y = 40; y < H; y += 40) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+        }
+
+        ctx.save();
+        ctx.translate(W / 2, H / 2 + 6);
+        ctx.rotate(-0.28 + (has("wilt") ? 0.15 : 0));
+        const scale = has("stunt") ? 0.82 : 1;
+        ctx.scale(scale, scale);
+
+        const widthFactor = has("curl") ? 0.78 : 1;
+        leafPath(widthFactor);
+        const leafGradient = ctx.createLinearGradient(0, -160, 0, 160);
+        leafGradient.addColorStop(0, has("wilt") ? "#4d7c0f" : "#65a30d");
+        leafGradient.addColorStop(0.5, "#3f8f3a");
+        leafGradient.addColorStop(1, has("root") ? "#7c4a1e" : "#166534");
+        ctx.fillStyle = leafGradient;
+        ctx.shadowColor = "rgba(34,211,238,.18)";
+        ctx.shadowBlur = 34;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = has("wilt") ? "rgba(190,242,100,.32)" : "rgba(190,242,100,.5)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.save();
+        ctx.clip();
+        ctx.strokeStyle = "rgba(190,242,100,.24)";
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(0, 142);
+        ctx.lineTo(0, -142);
+        ctx.stroke();
+        for (let index = -6; index <= 6; index += 1) {
+          const y = index * 21;
+          const direction = index % 2 === 0 ? 1 : -1;
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.quadraticCurveTo(direction * 30, y - 13, direction * 70, y - 38);
+          ctx.stroke();
+        }
+
+        const random = seeded(11 + state.severity + state.symptoms.size * 17 + state.crop.length);
+        const spotCount = Math.round(6 + state.severity * 0.35 + state.symptoms.size * 4);
+        const spotTypes = [];
+        if (has("brown")) spotTypes.push("brown");
+        if (has("yellow")) spotTypes.push("yellow");
+        if (has("powder")) spotTypes.push("powder");
+        if (has("mosaic")) spotTypes.push("mosaic");
+        if (has("root")) spotTypes.push("base");
+
+        for (let index = 0; index < spotCount; index += 1) {
+          const y = -135 + random() * 270;
+          const maxWidth = 70 * (1 - Math.abs(y) / 175);
+          const x = (random() * 2 - 1) * Math.max(5, maxWidth);
+          if (Math.abs(x) > maxWidth * 0.92) continue;
+          const type = spotTypes.length ? spotTypes[Math.floor(random() * spotTypes.length)] : "";
+          if (!type) continue;
+          if (type === "brown") {
+            ctx.beginPath();
+            ctx.ellipse(x, y, 4 + random() * 7, 3 + random() * 5, random() * Math.PI, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(124,45,18,${0.55 + random() * 0.3})`;
+            ctx.fill();
+          } else if (type === "yellow") {
+            ctx.beginPath();
+            ctx.arc(x, y, 3 + random() * 5, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(250,204,21,${0.5 + random() * 0.3})`;
+            ctx.fill();
+          } else if (type === "powder") {
+            ctx.beginPath();
+            ctx.arc(x, y, 2 + random() * 4, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(226,232,240,${0.18 + random() * 0.28})`;
+            ctx.fill();
+          } else if (type === "mosaic") {
+            ctx.beginPath();
+            ctx.ellipse(x, y, 10 + random() * 14, 8 + random() * 11, random() * Math.PI, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(163,230,53,${0.12 + random() * 0.12})`;
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(x + 8, y + 4, 6 + random() * 8, 5 + random() * 7, random() * Math.PI, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(253,224,71,${0.12 + random() * 0.16})`;
+            ctx.fill();
+          } else if (type === "base") {
+            ctx.beginPath();
+            ctx.ellipse(x * 0.35, 118 + random() * 24, 9 + random() * 14, 5 + random() * 8, random() * Math.PI, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(120,53,15,${0.35 + random() * 0.3})`;
+            ctx.fill();
+          }
+        }
+
+        if (has("wilt")) {
+          const wiltGradient = ctx.createLinearGradient(0, 30, 0, 160);
+          wiltGradient.addColorStop(0, "rgba(120,113,20,0)");
+          wiltGradient.addColorStop(1, "rgba(120,113,20,.38)");
+          ctx.fillStyle = wiltGradient;
+          ctx.fillRect(-90, 20, 180, 150);
+        }
+        if (has("curl")) {
+          ctx.strokeStyle = "rgba(6,18,27,.55)";
+          ctx.lineWidth = 11;
+          ctx.beginPath();
+          ctx.moveTo(60, -92);
+          ctx.quadraticCurveTo(86, 0, 56, 96);
+          ctx.stroke();
+        }
+        ctx.restore();
+        ctx.restore();
+
+        ctx.fillStyle = "rgba(148,163,184,.55)";
+        ctx.font = "11px 'JetBrains Mono', monospace";
+        ctx.fillText(`${CROPS[state.crop].label.toUpperCase()} · ${state.symptoms.size} symptom${state.symptoms.size === 1 ? "" : "s"}`, 24, 28);
+      };
+
+      const evaluate = () => {
+        const crop = CROPS[state.crop];
+        const selected = [...state.symptoms];
+        return crop.conditions.map((condition) => {
+          const total = Object.values(condition.weights).reduce((sum, value) => sum + value, 0);
+          const matched = selected.reduce((sum, symptom) => sum + (condition.weights[symptom] || 0), 0);
+          if (!matched) return { ...condition, score: 0, matched: [] };
+          const coverage = matched / total;
+          const score = clamp(18 + coverage * 70 + (state.severity / 100) * 8 + (selected.length >= 3 ? 4 : 0), 0, 98);
+          return {
+            ...condition,
+            score: round(score, 0),
+            matched: selected.filter((symptom) => condition.weights[symptom]),
+          };
+        }).sort((a, b) => b.score - a.score);
+      };
+
+      const symptomLabel = (id) => ({
+        yellow: "yellow spots", brown: "brown lesions", powder: "powdery coating", curl: "leaf curling",
+        stunt: "stunted growth", wilt: "wilting", mosaic: "mosaic pattern", root: "root or base rot",
+      }[id] || id);
+
+      const renderResults = () => {
+        const results = evaluate();
+        const selected = [...state.symptoms];
+        $("#resultSub").textContent = `${CROPS[state.crop].label} · ${selected.length} symptom${selected.length === 1 ? "" : "s"} · severity ${state.severity}`;
+        const badge = $("#resultBadge");
+        if (!selected.length) {
+          badge.textContent = "needs input";
+          badge.className = "badge warn";
+          $("#topResult").innerHTML = "";
+          $("#results").innerHTML = `<div class="empty">Select at least one symptom to trace a condition.</div>`;
+          $("#advice").textContent = "Pick a crop and symptoms, then run the triage. The output will show which condition overlaps most with the selected pattern.";
+          return;
+        }
+        const top = results[0];
+        badge.textContent = top.score >= 65 ? "pattern match" : "low signal";
+        badge.className = `badge ${top.score >= 65 ? "good" : "warn"}`;
+        $("#topResult").innerHTML = `
+          <div class="top-result">
+            <strong>${esc(top.name)}</strong>
+            <p>${esc(top.note)} The selected pattern overlaps ${top.matched.length} known signal${top.matched.length === 1 ? "" : "s"}. This is a rule-based match, not a confirmed diagnosis.</p>
+          </div>
+        `;
+        $("#results").innerHTML = results.map((condition, index) => `
+          <div class="condition">
+            <div class="top"><strong>${index + 1}. ${esc(condition.name)}</strong><span class="score">${condition.score}%</span></div>
+            <div class="bar ${condition.score >= 65 ? "good" : condition.score > 0 ? "warn" : ""}"><i style="width:${condition.score}%"></i></div>
+            <p class="why">${condition.matched.length ? `Matched: ${condition.matched.map(symptomLabel).join(", ")}` : "No selected symptom overlaps this condition."}</p>
+          </div>
+        `).join("");
+        $("#advice").innerHTML = `<strong>Next step:</strong> ${esc(top.action)} If the pattern is unclear, capture clear photos of the leaf surface, the underside and the field pattern, then ask a local agronomist to confirm.`;
+      };
+
+      const render = () => {
+        drawLeaf();
+        renderResults();
+        $("#renderBadge").textContent = state.symptoms.size ? "updated" : "healthy leaf";
+        $("#renderBadge").className = `badge ${state.symptoms.size ? "" : "good"}`;
+      };
+
+      const loadSample = () => {
+        state.crop = "wheat";
+        state.symptoms = new Set(["brown", "yellow"]);
+        state.severity = 62;
+        $("#crop").value = state.crop;
+        $("#severity").value = state.severity;
+        $("#severityLabel").textContent = state.severity;
+        $$("#symptoms [data-symptom]").forEach((button) => button.classList.toggle("active", state.symptoms.has(button.dataset.symptom)));
+        render();
+      };
+
+      $("#crop").addEventListener("change", (event) => {
+        state.crop = event.target.value;
+        render();
+      });
+      $("#severity").addEventListener("input", (event) => {
+        state.severity = Number(event.target.value);
+        $("#severityLabel").textContent = state.severity;
+        render();
+      });
+      $$("#symptoms [data-symptom]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const symptom = button.dataset.symptom;
+          if (state.symptoms.has(symptom)) state.symptoms.delete(symptom);
+          else state.symptoms.add(symptom);
+          button.classList.toggle("active", state.symptoms.has(symptom));
+          render();
+        });
+      });
+      $("#run").addEventListener("click", () => {
+        render();
+        window.Demo.toast(state.symptoms.size ? "Triage refreshed" : "Select a symptom first");
+      });
+      $("#sample").addEventListener("click", loadSample);
+      $("#clear").addEventListener("click", () => {
+        state.symptoms.clear();
+        $$("#symptoms [data-symptom]").forEach((button) => button.classList.remove("active"));
+        render();
+      });
+
+      loadSample();
+    })();
+  </script>
+</body>
+</html>

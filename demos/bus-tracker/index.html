@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#020617">
+  <title>Bus Tracker &amp; QR Attendance Demo | Roshan B</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../demo.css">
+  <style>
+    .map-frame {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(148,163,184,.14);
+      border-radius: 18px;
+      background:
+        radial-gradient(700px circle at 20% 0%, rgba(34,211,238,.08), transparent 55%),
+        linear-gradient(160deg, #07111d, #040b12);
+    }
+    .map-frame svg { display: block; width: 100%; height: auto; }
+    .map-badge {
+      position: absolute; top: .75rem; left: .75rem; display: inline-flex; align-items: center; gap: .35rem;
+      border: 1px solid rgba(52,211,153,.3); border-radius: 999px; background: rgba(2,6,23,.7);
+      padding: .28rem .55rem; color: #6ee7b7; font-family: var(--mono); font-size: .6rem; letter-spacing: .06em;
+    }
+    .map-badge .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 8px var(--emerald); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+    .bus-select { display: flex; gap: .4rem; }
+    .bus-select button { padding: .35rem .65rem; font-size: .7rem; }
+    .bus-select button.active { border-color: var(--cyan); color: #67e8f9; background: rgba(34,211,238,.1); }
+    .pass-card {
+      display: grid; grid-template-columns: 150px minmax(0,1fr); gap: .9rem; align-items: center;
+      border: 1px solid rgba(148,163,184,.14); border-radius: 16px; background: rgba(2,6,23,.3); padding: .8rem;
+    }
+    @media (max-width: 560px) { .pass-card { grid-template-columns: 1fr; } .pass-card canvas { margin: 0 auto; } }
+    .pass-card canvas { display: block; width: 150px; height: 150px; border-radius: 12px; background: #f8fafc; }
+    .pass-code { color: var(--dim); font-family: var(--mono); font-size: .68rem; }
+    .pass-name { margin: .15rem 0 .45rem; font-size: .92rem; font-weight: 650; }
+    .attendance { max-height: 250px; overflow: auto; }
+    .status-line { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+    .status-line .badge { font-size: .58rem; }
+    .map-controls { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; }
+    .map-controls label { margin: 0; }
+    .map-controls input[type="range"] { max-width: 150px; }
+    @media (max-width: 900px) { .pass-card { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="demo-top">
+    <div class="demo-top-inner">
+      <a class="back-link" href="../../index.html#projects">← All projects</a>
+      <span class="demo-brand"><span class="status-dot"></span> Bus tracker demo</span>
+      <span class="demo-source muted">Source not public</span>
+    </div>
+  </header>
+
+  <main class="demo-wrap">
+    <section class="demo-hero">
+      <p class="demo-kicker">// live route + boarding proof</p>
+      <h1>Watch the bus. Validate the pass.</h1>
+      <p class="lede">A browser-native route simulation with two moving buses, next-stop ETAs and a QR-style boarding validator. Trip state, duplicate-scan guards and CSV reports all run locally.</p>
+      <div class="demo-actions">
+        <span class="badge">no GPS hardware</span>
+        <span class="badge">no backend</span>
+        <span class="badge">duplicate guard</span>
+      </div>
+    </section>
+
+    <div class="demo-grid two">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Route 12 · live simulation</h2>
+            <p class="panel-sub">Buses interpolate along a route polyline.</p>
+          </div>
+          <span class="badge good" id="liveBadge">live</span>
+        </div>
+        <div class="map-frame">
+          <span class="map-badge"><span class="pulse"></span> SIMULATED GPS</span>
+          <svg id="routeMap" viewBox="0 0 1000 430" role="img" aria-label="Simulated bus route map">
+            <defs>
+              <filter id="routeGlow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="6" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <linearGradient id="routeGradient" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="55%" stop-color="#22d3ee"/>
+                <stop offset="100%" stop-color="#34d399"/>
+              </linearGradient>
+            </defs>
+            <g opacity=".25" stroke="#1e293b" stroke-width="1">
+              <path d="M0 80 H1000 M0 160 H1000 M0 240 H1000 M0 320 H1000 M0 400 H1000"/>
+              <path d="M120 0 V430 M240 0 V430 M360 0 V430 M480 0 V430 M600 0 V430 M720 0 V430 M840 0 V430 M960 0 V430"/>
+            </g>
+            <path id="routePath" d="M 80 330 C 190 300, 180 130, 340 155 S 540 380, 700 275 S 850 90, 950 155" fill="none" stroke="url(#routeGradient)" stroke-width="7" stroke-linecap="round" filter="url(#routeGlow)" opacity=".92"/>
+            <path d="M 80 330 C 190 300, 180 130, 340 155 S 540 380, 700 275 S 850 90, 950 155" fill="none" stroke="#0b1220" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round"/>
+            <g id="stops"></g>
+            <g id="busA" class="bus">
+              <rect x="-20" y="-13" width="40" height="26" rx="8" fill="#22d3ee" stroke="#0b1220" stroke-width="2"/>
+              <circle cx="-11" cy="15" r="4" fill="#0b1220"/>
+              <circle cx="11" cy="15" r="4" fill="#0b1220"/>
+              <text x="0" y="4" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#04121b" font-weight="700">A</text>
+            </g>
+            <g id="busB" class="bus">
+              <rect x="-20" y="-13" width="40" height="26" rx="8" fill="#fbbf24" stroke="#0b1220" stroke-width="2"/>
+              <circle cx="-11" cy="15" r="4" fill="#0b1220"/>
+              <circle cx="11" cy="15" r="4" fill="#0b1220"/>
+              <text x="0" y="4" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1c1203" font-weight="700">B</text>
+            </g>
+          </svg>
+        </div>
+        <div class="map-controls" style="margin-top:.8rem">
+          <button class="primary" id="play" type="button">Pause</button>
+          <div class="bus-select" role="group" aria-label="Select bus">
+            <button type="button" data-bus="A" class="active">Bus A</button>
+            <button type="button" data-bus="B">Bus B</button>
+          </div>
+          <label for="speed" class="mono tiny">Speed <span id="speedLabel">1.0×</span></label>
+          <input id="speed" type="range" min="0.4" max="2.4" step="0.1" value="1">
+        </div>
+        <div class="status-line" style="margin-top:.7rem">
+          <span class="badge" id="nextStopBadge">next stop</span>
+          <span class="tiny muted" id="etaText">Select a bus to see its ETA.</span>
+        </div>
+        <div class="metric-grid" style="margin-top:.8rem">
+          <div class="metric"><b>2</b><span>active buses</span></div>
+          <div class="metric"><b>7</b><span>stops on route</span></div>
+          <div class="metric"><b id="boardedCount">0</b><span>passes boarded</span></div>
+          <div class="metric"><b>CSV</b><span>attendance report</span></div>
+        </div>
+      </section>
+
+      <div class="stack">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Boarding pass</h2>
+              <p class="panel-sub">QR-style demo pass. The validator checks trip state, not a camera feed.</p>
+            </div>
+            <span class="badge" id="passBadge">unused</span>
+          </div>
+          <div class="pass-card">
+            <canvas id="qrCanvas" width="300" height="300" aria-label="Decorative QR-style demo pass"></canvas>
+            <div>
+              <div class="pass-code">PASS · BUS-204 · ROUTE 12</div>
+              <div class="pass-name">Student 042 · Campus Pass</div>
+              <p class="tiny dim" style="margin:.1rem 0 .5rem">Valid for one boarding on the simulated route. No camera or real QR decoder is used here.</p>
+              <div class="btn-row">
+                <button class="primary" id="scan" type="button">Scan at next stop</button>
+                <button id="duplicate" type="button">Try duplicate</button>
+                <button id="invalid" type="button">Invalid pass</button>
+              </div>
+            </div>
+          </div>
+          <div class="callout" id="scanMessage" style="margin-top:.8rem">Choose Bus A or Bus B, then scan the pass. The next stop is recorded from the live simulation.</div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Attendance log</h2>
+              <p class="panel-sub">Local-only trip events.</p>
+            </div>
+            <button id="download" type="button">Download CSV</button>
+          </div>
+          <div class="table-wrap attendance">
+            <table>
+              <thead><tr><th>Time</th><th>Pass</th><th>Bus</th><th>Stop</th><th>Status</th></tr></thead>
+              <tbody id="logBody"><tr><td colspan="5" class="muted">No scans yet.</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <p class="note">The full Smart Bus Tracker prototype uses Leaflet, Node.js/Express, real QR decoding and duplicate-scan guards. This static page replaces the map tiles with an SVG route and replaces the camera decoder with a simulated pass validator, so the whole demo stays browser-native.</p>
+
+    <footer class="demo-footer">
+      <a href="../../index.html#projects">← Back to projects</a>
+      <span>Bus tracker · route and attendance simulation</span>
+    </footer>
+  </main>
+
+  <script src="../demo.js"></script>
+  <script>
+    (() => {
+      const { $, $$, clamp, seeded, download, toast, esc } = window.Demo;
+
+      const STOPS = [
+        { name: "Central Depot", t: 0.02 },
+        { name: "Market Square", t: 0.17 },
+        { name: "City Library", t: 0.34 },
+        { name: "Tech Park", t: 0.51 },
+        { name: "Stadium", t: 0.68 },
+        { name: "North Gate", t: 0.85 },
+        { name: "Campus Terminal", t: 0.98 },
+      ];
+
+      const state = {
+        playing: true,
+        speed: 1,
+        selected: "A",
+        passUsed: false,
+        invalidUsed: false,
+        logs: [],
+        last: performance.now(),
+        statusClock: 0,
+        buses: {
+          A: { progress: 0.08, base: 0.035, name: "Bus A" },
+          B: { progress: 0.56, base: 0.03, name: "Bus B" },
+        },
+      };
+
+      const path = $("#routePath");
+      const pathLength = path.getTotalLength();
+      const svg = $("#routeMap");
+
+      const pointAt = (t) => {
+        const point = path.getPointAtLength(pathLength * clamp(t, 0, 1));
+        return { x: point.x, y: point.y };
+      };
+
+      const renderStops = () => {
+        $("#stops").innerHTML = STOPS.map((stop) => {
+          const point = pointAt(stop.t);
+          const labelLeft = point.x > 760;
+          return `
+            <g>
+              <circle cx="${point.x}" cy="${point.y}" r="8" fill="#0b1220" stroke="#34d399" stroke-width="2"/>
+              <circle cx="${point.x}" cy="${point.y}" r="2.5" fill="#a7f3d0"/>
+              <text x="${labelLeft ? point.x - 14 : point.x + 14}" y="${point.y + 4}" text-anchor="${labelLeft ? "end" : "start"}" font-family="JetBrains Mono, monospace" font-size="11" fill="#94a3b8">${esc(stop.name)}</text>
+            </g>
+          `;
+        }).join("");
+      };
+
+      const nextStopFor = (progress) => {
+        let next = STOPS.find((stop) => stop.t > progress + 0.005);
+        if (!next) next = STOPS[0];
+        return next;
+      };
+
+      const busPoint = (bus) => pointAt(bus.progress);
+
+      const renderBuses = () => {
+        Object.entries(state.buses).forEach(([key, bus]) => {
+          const point = busPoint(bus);
+          $(`#bus${key}`).setAttribute("transform", `translate(${point.x} ${point.y})`);
+        });
+        const selected = state.buses[state.selected];
+        const next = nextStopFor(selected.progress);
+        const remaining = (next.t - selected.progress + (next.t <= selected.progress ? 1 : 0));
+        const eta = Math.max(1, Math.round((remaining / (selected.base * state.speed)) * 1.4));
+        $("#nextStopBadge").textContent = `${selected.name} → ${next.name}`;
+        $("#etaText").textContent = `Approx. ${eta}s in this simulation. ${state.playing ? "Moving." : "Paused."}`;
+      };
+
+      const drawQr = () => {
+        const canvas = $("#qrCanvas");
+        const ctx = canvas.getContext("2d");
+        const size = 21;
+        const cell = canvas.width / size;
+        const random = seeded(204);
+        ctx.fillStyle = "#f8fafc";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#0f172a";
+        const finder = (x, y) => {
+          ctx.fillRect(x * cell, y * cell, 7 * cell, 7 * cell);
+          ctx.fillStyle = "#f8fafc";
+          ctx.fillRect((x + 1) * cell, (y + 1) * cell, 5 * cell, 5 * cell);
+          ctx.fillStyle = "#0f172a";
+          ctx.fillRect((x + 2) * cell, (y + 2) * cell, 3 * cell, 3 * cell);
+        };
+        finder(0, 0);
+        finder(size - 7, 0);
+        finder(0, size - 7);
+        const inFinder = (x, y) => (x < 8 && y < 8) || (x > size - 9 && y < 8) || (x < 8 && y > size - 9);
+        for (let y = 0; y < size; y += 1) {
+          for (let x = 0; x < size; x += 1) {
+            if (inFinder(x, y)) continue;
+            if (random() > 0.54) ctx.fillRect(x * cell, y * cell, cell, cell);
+          }
+        }
+        ctx.fillStyle = "#0f172a";
+        ctx.font = "bold 24px 'JetBrains Mono', monospace";
+        ctx.textAlign = "center";
+        ctx.fillText("RF", canvas.width / 2, canvas.height / 2 + 8);
+      };
+
+      const updateLog = () => {
+        $("#boardedCount").textContent = state.logs.filter((entry) => entry.status === "valid").length;
+        $("#passBadge").textContent = state.passUsed ? "boarded" : "unused";
+        $("#passBadge").className = `badge ${state.passUsed ? "good" : ""}`;
+        if (!state.logs.length) {
+          $("#logBody").innerHTML = `<tr><td colspan="5" class="muted">No scans yet.</td></tr>`;
+          return;
+        }
+        $("#logBody").innerHTML = state.logs.slice(0, 9).map((entry) => `
+          <tr>
+            <td class="num">${entry.time}</td>
+            <td>${esc(entry.code)}</td>
+            <td>${esc(entry.bus)}</td>
+            <td>${esc(entry.stop)}</td>
+            <td><span class="badge ${entry.status === "valid" ? "good" : entry.status === "duplicate" ? "warn" : "bad"}">${entry.status}</span></td>
+          </tr>
+        `).join("");
+      };
+
+      const clock = () => new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+      const addLog = (status, code = "BUS-204") => {
+        const bus = state.buses[state.selected];
+        const stop = nextStopFor(bus.progress).name;
+        state.logs.unshift({ time: clock(), code, bus: bus.name, stop, status });
+        updateLog();
+      };
+
+      const scan = () => {
+        if (state.passUsed) {
+          addLog("duplicate");
+          $("#scanMessage").innerHTML = `<strong style="color:#fda4af">Duplicate boarding blocked.</strong> This pass is already marked boarded for the current trip.`;
+          toast("Duplicate scan blocked");
+          return;
+        }
+        state.passUsed = true;
+        addLog("valid");
+        $("#scanMessage").innerHTML = `<strong style="color:#6ee7b7">Boarding recorded.</strong> Pass BUS-204 is now locked for this trip. Try the duplicate button to test the guard.`;
+        toast("Boarding recorded");
+      };
+
+      $("#scan").addEventListener("click", scan);
+      $("#duplicate").addEventListener("click", () => {
+        if (!state.passUsed) {
+          state.passUsed = true;
+          addLog("valid");
+        }
+        addLog("duplicate");
+        $("#scanMessage").innerHTML = `<strong style="color:#fcd34d">Duplicate guard fired.</strong> The same pass cannot board twice on one trip.`;
+        toast("Duplicate scan blocked");
+      });
+      $("#invalid").addEventListener("click", () => {
+        addLog("invalid", "EXPIRED-000");
+        $("#scanMessage").innerHTML = `<strong style="color:#fda4af">Invalid pass rejected.</strong> The demo code does not match an active trip.`;
+        toast("Invalid pass rejected");
+      });
+
+      $("#download").addEventListener("click", () => {
+        const lines = ["time,pass,bus,stop,status", ...state.logs.map((entry) => [entry.time, entry.code, entry.bus, entry.stop, entry.status].join(","))];
+        download("bus-attendance-demo.csv", lines.join("\n"), "text/csv;charset=utf-8");
+        toast("Attendance CSV downloaded");
+      });
+
+      $("#play").addEventListener("click", () => {
+        state.playing = !state.playing;
+        $("#play").textContent = state.playing ? "Pause" : "Play";
+        $("#liveBadge").textContent = state.playing ? "live" : "paused";
+        $("#liveBadge").className = `badge ${state.playing ? "good" : "warn"}`;
+        state.last = performance.now();
+      });
+      $("#speed").addEventListener("input", (event) => {
+        state.speed = Number(event.target.value);
+        $("#speedLabel").textContent = `${state.speed.toFixed(1)}×`;
+      });
+      $$(".bus-select button").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.selected = button.dataset.bus;
+          $$(".bus-select button").forEach((item) => item.classList.toggle("active", item === button));
+          renderBuses();
+        });
+      });
+
+      const animate = (time) => {
+        const delta = Math.min(80, time - state.last) / 1000;
+        state.last = time;
+        if (state.playing) {
+          Object.values(state.buses).forEach((bus) => {
+            bus.progress += bus.base * state.speed * delta;
+            if (bus.progress > 1) bus.progress -= 1;
+          });
+          renderBuses();
+        }
+        requestAnimationFrame(animate);
+      };
+
+      renderStops();
+      renderBuses();
+      drawQr();
+      updateLog();
+      requestAnimationFrame((time) => {
+        state.last = time;
+        requestAnimationFrame(animate);
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -8,6 +8,7 @@ A static portfolio for Roshan B with a grounded public knowledge base, an option
 - `game/`: a self-contained Three.js endless flyer at `game/index.html`. All geometry, labels, textures, and audio are generated in code; Three.js r170 is vendored locally, so the game needs no CDN or build step.
 - `game/boot.js`: checks WebGL 2 and dynamically imports the engine. The main portfolio never downloads Three.js or opens a WebGL context.
 - `game/config.js`: the tuning file for speed, difficulty, scoring, skills, spawning, and quality presets.
+- `demos/`: eight standalone browser-native project demos. Each page uses plain HTML, CSS, and JavaScript, needs no backend or API key, and links back to the Projects grid.
 - `articles/index.html`: the optional standalone Live AI and Tech Shelf. It is reachable from the compact `AI Shelf` action in the top nav but stays out of the page flow so the portfolio remains the focus.
 - `articles.js`: the shelf logic. It reads free, keyless Hacker News and DEV Community feeds, filters AI and tech, caches for 15 minutes, and falls back to a static reading list.
 - `playground/`: the Curiosity Lab experiments, responsive styles, and a page-specific snowfall atmosphere with a pause control and reduced-motion support.
@@ -30,6 +31,40 @@ python -m http.server 8765
 Open `http://127.0.0.1:8765/`.
 
 The static build uses lexical BM25 in the browser. It does not need a server, API key, embedding model, or vector database.
+
+## Browser-native project demos
+
+Every project card has a **Play demo** action. The demos live under `demos/` and run entirely in the browser:
+
+| Demo | What it shows |
+| --- | --- |
+| `demos/library/index.html` | Recommendation, demand and anomaly signals converging into one confidence score |
+| `demos/resumeforge/index.html` | ATS scoring, keyword gaps and a truth gate that blocks placeholders before export |
+| `demos/policypulse/index.html` | Deterministic eligibility rules, a visible rule trace and a document checklist |
+| `demos/synthforge/index.html` | Synthetic tabular data, Laplace privacy noise and reference/synthetic distribution comparison |
+| `demos/plant-disease/index.html` | Transparent symptom triage with a canvas leaf render; not an image classifier |
+| `demos/timetable/index.html` | A generated week plus an absence-cover plan and CSV export |
+| `demos/bus-tracker/index.html` | A moving route simulation, next-stop ETAs and a QR-style boarding validator |
+| `demos/emotion-launcher/index.html` | Lexicon-based mood readout and an adaptive Snake round |
+
+The demos deliberately label what they are and what they are not. The plant demo does not claim to run a trained vision model, the bus demo does not claim real GPS, and the ResumeForge demo is a simplified ATS check rather than the full product.
+
+Source links appear on the cards for the repositories that are published: ResumeForge, PolicyPulse, SynthForge and the timetable engine. The library, plant, bus and emotion projects do not have public repositories yet, so their cards show a muted **Source not public** label instead of a broken or invented link.
+
+## ResumeForge full app
+
+The ResumeForge card opens the browser demo first. That demo includes a local-only **Open full local app** button when the portfolio is opened at `localhost` or `127.0.0.1`; the button stays hidden on the public deployment.
+
+ResumeForge is a separate full-stack Next.js + PostgreSQL app. Start it from its own folder:
+
+```powershell
+cd ..\RESUME MAKER
+npm run dev
+```
+
+Open `http://localhost:3000`. The source is at [github.com/roshanpharoah/resumeforge](https://github.com/roshanpharoah/resumeforge).
+
+A static host cannot run the ResumeForge API routes, auth, or database. For a public demo, deploy the Next.js app separately and add its URL to the card.
 
 ## Run with the optional AI layer
 
@@ -106,7 +141,7 @@ The RAG suite covers retrieval, modes, follow-ups, privacy, unknown preferences,
 
 ## Deployment
 
-For the static fallback, deploy `index.html`, the `articles/` folder, `articles.js`, `rag/knowledge-public.js`, `rag/rag-core.js`, `api/status.json`, `api/articles.json`, the `playground/` folder, and the `game/` folder (including its vendored `game/vendor/three.module.min.js`) to any static host. The game must be served over HTTP rather than opened directly from disk because it uses ES modules. The optional Live Shelf works on GitHub Pages because it calls free public feeds directly and needs no secret.
+For the static fallback, deploy `index.html`, the `demos/` folder, the `articles/` folder, `articles.js`, `rag/knowledge-public.js`, `rag/rag-core.js`, `api/status.json`, `api/articles.json`, the `playground/` folder, and the `game/` folder (including its vendored `game/vendor/three.module.min.js`) to any static host. The game and demos must be served over HTTP rather than opened directly from disk because some pages use relative assets and browser APIs. The optional Live Shelf works on GitHub Pages because it calls free public feeds directly and needs no secret.
 
 For the AI layer, deploy the repository to a Node host, set `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` in the host environment, and set `HOST=0.0.0.0` if required. A static-only host cannot keep an API key secret.
 

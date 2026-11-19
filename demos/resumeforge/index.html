@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#020617">
+  <title>ResumeForge Browser Demo | Roshan B</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../demo.css">
+  <style>
+    .gate {
+      border: 1px solid rgba(52,211,153,.24);
+      border-radius: 14px;
+      background: rgba(52,211,153,.06);
+      padding: .75rem .85rem;
+    }
+    .gate.blocked {
+      border-color: rgba(251,113,133,.28);
+      background: rgba(251,113,133,.06);
+    }
+    .gate strong { display: block; font-size: .82rem; }
+    .gate p { margin: .18rem 0 0; color: var(--muted); font-size: .74rem; line-height: 1.45; }
+    .resume-area { min-height: 330px; }
+    .jd-area { min-height: 150px; }
+    .keyword-wrap { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .keyword {
+      border: 1px solid rgba(148,163,184,.18);
+      border-radius: 999px;
+      background: rgba(2,6,23,.3);
+      padding: .28rem .55rem;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: .65rem;
+    }
+    .keyword.missing { border-color: rgba(251,191,36,.28); color: #fcd34d; }
+    .resolve {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .5rem;
+      margin-top: .75rem;
+    }
+    .resolve input { max-width: 140px; }
+    .score-block { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 1rem; align-items: center; }
+    @media (max-width: 560px) { .score-block { grid-template-columns: 1fr; } }
+    .report-actions { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <header class="demo-top">
+    <div class="demo-top-inner">
+      <a class="back-link" href="../../index.html#projects">← All projects</a>
+      <span class="demo-brand"><span class="status-dot"></span> ResumeForge browser demo</span>
+      <a class="demo-source" href="https://github.com/roshanpharoah/resumeforge" target="_blank" rel="noopener">Source ↗</a>
+    </div>
+  </header>
+
+  <main class="demo-wrap">
+    <section class="demo-hero">
+      <p class="demo-kicker">// deterministic ATS check</p>
+      <h1>Score the resume. Inspect the gaps. Block the fiction.</h1>
+      <p class="lede">A browser-native slice of ResumeForge. Paste a resume and job description, see a deterministic ATS breakdown, and watch the truth gate block placeholders before export.</p>
+      <div class="demo-actions">
+        <a class="btn primary" data-local-app hidden href="http://localhost:3000" target="_blank" rel="noopener">Open full local app</a>
+        <a class="btn" href="https://github.com/roshanpharoah/resumeforge" target="_blank" rel="noopener">View source</a>
+        <span class="badge">no upload</span>
+        <span class="badge">no LLM required</span>
+      </div>
+    </section>
+
+    <div class="demo-grid two">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Inputs</h2>
+            <p class="panel-sub">The sample intentionally includes one placeholder.</p>
+          </div>
+          <span class="badge warn">demo data</span>
+        </div>
+
+        <div class="field">
+          <label for="resume">Resume text</label>
+          <textarea id="resume" class="resume-area" spellcheck="false"></textarea>
+        </div>
+        <div class="field">
+          <label for="jd">Job description</label>
+          <textarea id="jd" class="jd-area" spellcheck="false"></textarea>
+        </div>
+
+        <div class="btn-row">
+          <button class="primary" id="analyze" type="button">Run ATS check</button>
+          <button id="sample" type="button">Load sample</button>
+          <button id="clear" type="button">Clear</button>
+        </div>
+        <p class="note">Nothing leaves this page. The full ResumeForge app adds structured parsing, JD tailoring, versions, PDF/DOCX export and a server-side fact-check pipeline.</p>
+      </section>
+
+      <div class="stack">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">ATS snapshot</h2>
+              <p class="panel-sub" id="snapshotSub">Run the check to see the breakdown.</p>
+            </div>
+            <span class="badge" id="scoreBadge">waiting</span>
+          </div>
+
+          <div class="score-block">
+            <div class="score-ring" id="scoreRing" style="--score:0">
+              <strong id="scoreValue">0</strong>
+              <small>overall</small>
+            </div>
+            <div id="dimensions">
+              <div class="bar-row"><span>Keyword match</span><div class="bar"><i id="barKeywords" style="width:0%"></i></div><span class="value" id="valKeywords">0%</span></div>
+              <div class="bar-row"><span>Core sections</span><div class="bar"><i id="barSections" style="width:0%"></i></div><span class="value" id="valSections">0%</span></div>
+              <div class="bar-row"><span>Bullet quality</span><div class="bar"><i id="barBullets" style="width:0%"></i></div><span class="value" id="valBullets">0%</span></div>
+              <div class="bar-row"><span>Readability</span><div class="bar"><i id="barReadability" style="width:0%"></i></div><span class="value" id="valReadability">0%</span></div>
+            </div>
+          </div>
+
+          <div class="gate" id="gate" style="margin-top:1rem">
+            <strong>Truth gate</strong>
+            <p>Run the check to test the export gate.</p>
+          </div>
+
+          <div class="resolve" id="resolveRow" hidden>
+            <label class="sr-only" for="metricValue">Real value for the placeholder</label>
+            <input id="metricValue" type="text" inputmode="decimal" placeholder="Real number">
+            <button class="primary" id="resolveBtn" type="button">Confirm value</button>
+            <span class="tiny dim" id="placeholderLabel"></span>
+          </div>
+
+          <div class="report-actions">
+            <button id="export" type="button" disabled>Export blocked</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Findings</h2>
+              <p class="panel-sub">Blocking findings stop export.</p>
+            </div>
+            <span class="badge" id="findingCount">0</span>
+          </div>
+          <div class="findings" id="findings"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Missing keywords</h2>
+              <p class="panel-sub">Pulled from the job description, checked against the resume.</p>
+            </div>
+          </div>
+          <div class="keyword-wrap" id="missingKeywords"></div>
+        </section>
+      </div>
+    </div>
+
+    <p class="note">This is a simplified browser implementation for the portfolio. The full project uses deterministic scoring as the source of truth, adds LLM assistance when a key is configured, and blocks exports until every unsupported claim is resolved. The sample metric is deliberately a placeholder so you can test the gate.</p>
+
+    <footer class="demo-footer">
+      <a href="../../index.html#projects">← Back to projects</a>
+      <span>ResumeForge · browser-native ATS demo</span>
+    </footer>
+  </main>
+
+  <script src="../demo.js"></script>
+  <script>
+    (() => {
+      const { $, clamp, round, esc, download, toast } = window.Demo;
+
+      const SAMPLE_RESUME = `Jordan Lee
+Frontend Engineer
+jordan.lee@example.com | github.com/jordanlee | Chennai, India
+
+SUMMARY
+Frontend engineer focused on accessible data products and reliable design systems.
+
+EXPERIENCE
+Northwind Analytics | Frontend Engineer (2022 to Present)
+- Built React dashboards used by 40 analysts, reducing weekly reporting time from 3 days to 1 day.
+- Improved dashboard load time by [X]% by splitting bundles and caching API responses.
+- Results-driven developer who partnered with design to ship a shared component library.
+- Led accessibility reviews across 12 core screens and documented fixes.
+
+Civic Stack | Junior Developer (2021 to 2022)
+- Shipped TypeScript components for a public benefits portal used by 8,000 residents.
+- Wrote tests for forms and navigation flows, reducing regressions in release week.
+
+SKILLS
+React, TypeScript, Next.js, Tailwind CSS, accessibility, design systems, testing, Git
+
+EDUCATION
+B.S. Computer Science, State University, 2021`;
+
+      const SAMPLE_JD = `We are hiring a Frontend Engineer to build accessible, high-performance data products.
+
+You will work with React, TypeScript and modern testing tools. Experience with design systems, component libraries, accessibility, performance profiling, GraphQL and CI/CD is valued. You will partner with designers and analysts to ship reliable dashboards and improve reporting workflows.`;
+
+      const STOPWORDS = new Set("a an and are as at be been being but by can could did do does for from had has have he her here him his how i if in into is it its just like may me more most my no not of on one or our out over own same she should so some than that the their them then there these they this those through to too under up us use used using very was we were what when where which while who will with would you your".split(" "));
+      const STRONG_VERBS = new Set("built led shipped designed improved reduced launched created delivered automated partnered wrote migrated optimized streamlined developed implemented produced drove owned scaled cut accelerated introduced tested analyzed documented".split(" "));
+      const BANNED = ["results-driven", "passionate", "dynamic", "team player", "ninja", "guru", "rockstar", "synergy", "thought leader"];
+      const SECTION_PATTERNS = [
+        ["experience", /(^|\n)\s*(experience|work experience|employment)\b/i],
+        ["education", /(^|\n)\s*education\b/i],
+        ["skills", /(^|\n)\s*(skills|technical skills)\b/i],
+        ["projects or summary", /(^|\n)\s*(projects|selected projects|summary|profile)\b/i],
+      ];
+
+      const sample = () => {
+        $("#resume").value = SAMPLE_RESUME;
+        $("#jd").value = SAMPLE_JD;
+        analyze();
+      };
+
+      const tokenize = (text) => text.toLowerCase().match(/[a-z][a-z0-9+#./-]{2,}/g) || [];
+
+      const extractKeywords = (jd) => {
+        const tokens = tokenize(jd).filter((token) => !STOPWORDS.has(token) && !/^\d+$/.test(token));
+        const counts = new Map();
+        tokens.forEach((token) => counts.set(token, (counts.get(token) || 0) + 1));
+        return [...counts.entries()]
+          .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+          .slice(0, 14)
+          .map(([token]) => token);
+      };
+
+      const getBullets = (text) => text.split(/\r?\n/).map((line) => line.trim()).filter((line) => /^[-•*]\s+/.test(line)).map((line) => line.replace(/^[-•*]\s+/, ""));
+
+      const bulletScore = (bullet) => {
+        const words = bullet.split(/\s+/).filter(Boolean);
+        const first = (words[0] || "").toLowerCase().replace(/[^a-z]/g, "");
+        const hasNumber = /\d/.test(bullet);
+        const hasPronoun = /\b(i|me|my|we|our)\b/i.test(bullet);
+        const banned = BANNED.find((phrase) => bullet.toLowerCase().includes(phrase));
+        const long = words.length > 30;
+        const short = words.length < 7;
+        let score = 58;
+        if (STRONG_VERBS.has(first)) score += 20;
+        if (hasNumber) score += 15;
+        if (long) score -= 20;
+        if (short) score -= 14;
+        if (hasPronoun) score -= 10;
+        if (banned) score -= 18;
+        return { score: clamp(score, 0, 100), words: words.length, hasNumber, hasPronoun, banned, long, short, first };
+      };
+
+      const analyze = () => {
+        const resume = $("#resume").value.trim();
+        const jd = $("#jd").value.trim();
+        if (!resume) {
+          toast("Add resume text first");
+          return;
+        }
+
+        const keywords = extractKeywords(jd);
+        const lower = resume.toLowerCase();
+        const missing = keywords.filter((keyword) => !lower.includes(keyword));
+        const coverage = keywords.length ? ((keywords.length - missing.length) / keywords.length) * 100 : 0;
+        const sectionHits = SECTION_PATTERNS.filter(([, pattern]) => pattern.test(resume));
+        const sectionScore = (sectionHits.length / SECTION_PATTERNS.length) * 100;
+        const bullets = getBullets(resume).map(bulletScore);
+        const bulletAverage = bullets.length ? bullets.reduce((total, item) => total + item.score, 0) / bullets.length : 0;
+        const longBullets = bullets.filter((item) => item.long).length;
+        const passiveCount = (resume.match(/\b(was|were|is|are|been|being)\s+\w+ed\b/gi) || []).length;
+        const averageWords = bullets.length ? bullets.reduce((total, item) => total + item.words, 0) / bullets.length : 0;
+        const readability = clamp(100 - Math.max(0, averageWords - 24) * 3 - passiveCount * 7 - longBullets * 5, 0, 100);
+        const overall = Math.round(coverage * 0.35 + sectionScore * 0.2 + bulletAverage * 0.3 + readability * 0.15);
+
+        const findings = [];
+        const placeholders = resume.match(/\[[^\]]+\]/g) || [];
+        if (placeholders.length) {
+          findings.push({ type: "blocking", title: `${placeholders.length} placeholder${placeholders.length > 1 ? "s" : ""} found`, detail: `${placeholders.join(", ")} must be replaced with a real value from your own experience before export.` });
+        }
+        const bannedHits = BANNED.filter((phrase) => lower.includes(phrase));
+        if (bannedHits.length) {
+          findings.push({ type: "warning", title: "Filler phrase detected", detail: `Remove or rewrite: ${bannedHits.join(", ")}.` });
+        }
+        const pronounBullets = bullets.filter((item) => item.hasPronoun).length;
+        if (pronounBullets) {
+          findings.push({ type: "warning", title: "First-person bullet phrasing", detail: `${pronounBullets} bullet${pronounBullets > 1 ? "s" : ""} use pronouns. Resume bullets usually read stronger without them.` });
+        }
+        if (longBullets) {
+          findings.push({ type: "tip", title: "Long bullets", detail: `${longBullets} bullet${longBullets > 1 ? "s" : ""} exceed 30 words. Split them into one idea per line.` });
+        }
+        if (bullets.some((item) => !item.hasNumber)) {
+          findings.push({ type: "tip", title: "Metric coverage", detail: "Some bullets have no measurable result. Add a real number only when you can support it." });
+        }
+        if (missing.length) {
+          findings.push({ type: "tip", title: "Keyword gaps", detail: `The job description mentions ${missing.slice(0, 6).join(", ")}. Add only the ones you have actually used.` });
+        }
+        if (passiveCount) {
+          findings.push({ type: "tip", title: "Passive phrasing", detail: `${passiveCount} passive construction${passiveCount > 1 ? "s" : ""} detected. Prefer active verbs.` });
+        }
+        if (!findings.length) {
+          findings.push({ type: "tip", title: "No blocking findings", detail: "The text passes this simplified gate. The full app still checks every claim against your answers." });
+        }
+
+        $("#scoreRing").style.setProperty("--score", overall);
+        $("#scoreValue").textContent = overall;
+        $("#scoreBadge").textContent = overall >= 80 ? "strong" : overall >= 65 ? "needs work" : "weak";
+        $("#scoreBadge").className = `badge ${overall >= 80 ? "good" : overall >= 65 ? "warn" : "bad"}`;
+        $("#snapshotSub").textContent = `${keywords.length} keywords · ${bullets.length} bullets · ${sectionHits.length}/4 sections`;
+
+        const dimensions = [
+          ["barKeywords", "valKeywords", coverage],
+          ["barSections", "valSections", sectionScore],
+          ["barBullets", "valBullets", bulletAverage],
+          ["barReadability", "valReadability", readability],
+        ];
+        dimensions.forEach(([bar, value, score]) => {
+          $("#" + bar).style.width = `${clamp(score, 0, 100)}%`;
+          $("#" + value).textContent = `${Math.round(score)}%`;
+        });
+
+        $("#findingCount").textContent = `${findings.length} finding${findings.length > 1 ? "s" : ""}`;
+        $("#findings").innerHTML = findings.map((finding) => `
+          <div class="finding ${finding.type}">
+            <span class="dot"></span>
+            <div><strong>${esc(finding.title)}</strong><p>${esc(finding.detail)}</p></div>
+          </div>
+        `).join("");
+
+        $("#missingKeywords").innerHTML = missing.length
+          ? missing.map((keyword) => `<span class="keyword missing">${esc(keyword)}</span>`).join("")
+          : `<span class="keyword">no gaps in this sample</span>`;
+
+        const blocking = placeholders.length > 0;
+        const gate = $("#gate");
+        gate.className = `gate${blocking ? " blocked" : ""}`;
+        gate.innerHTML = blocking
+          ? `<strong>Export blocked by the truth gate</strong><p>${esc(placeholders.join(", "))} cannot become a claim without your input. Enter a real value below.</p>`
+          : `<strong>Truth gate passed</strong><p>No placeholders remain in this text. The full app still verifies every metric against your source answers.</p>`;
+        $("#export").disabled = blocking;
+        $("#export").textContent = blocking ? "Export blocked" : "Download report";
+        $("#resolveRow").hidden = !blocking;
+        $("#resolveRow").dataset.placeholder = placeholders[0] || "";
+        $("#placeholderLabel").textContent = blocking ? `Replace ${placeholders[0]}` : "";
+
+        $("#export").onclick = () => {
+          if (blocking) return;
+          const report = [
+            "ResumeForge browser demo report",
+            `Overall score: ${overall}/100`,
+            `Keyword match: ${Math.round(coverage)}%`,
+            `Core sections: ${Math.round(sectionScore)}%`,
+            `Bullet quality: ${Math.round(bulletAverage)}%`,
+            `Readability: ${Math.round(readability)}%`,
+            "",
+            "Missing keywords: " + (missing.join(", ") || "none"),
+            "",
+            "Findings:",
+            ...findings.map((finding) => `- [${finding.type}] ${finding.title}: ${finding.detail}`),
+            "",
+            "This is a simplified browser demo. Nothing was uploaded.",
+          ].join("\n");
+          download("resumeforge-demo-report.txt", report);
+          toast("Report downloaded");
+        };
+      };
+
+      $("#analyze").addEventListener("click", analyze);
+      $("#sample").addEventListener("click", sample);
+      $("#clear").addEventListener("click", () => {
+        $("#resume").value = "";
+        $("#jd").value = "";
+        analyze();
+      });
+      $("#resolveBtn").addEventListener("click", () => {
+        const value = $("#metricValue").value.trim();
+        const placeholder = $("#resolveRow").dataset.placeholder;
+        if (!placeholder) return;
+        if (!/^\d{1,3}(\.\d+)?$/.test(value)) {
+          toast("Enter a real number, for example 18");
+          return;
+        }
+        $("#resume").value = $("#resume").value.replace(placeholder, value);
+        $("#metricValue").value = "";
+        analyze();
+        toast("Value confirmed from your input");
+      });
+
+      sample();
+    })();
+  </script>
+</body>
+</html>

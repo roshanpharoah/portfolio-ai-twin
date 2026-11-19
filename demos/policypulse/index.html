@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#020617">
+  <title>PolicyPulse Eligibility Demo | Roshan B</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../demo.css">
+  <style>
+    .scheme-card { cursor: pointer; }
+    .scheme-card:hover { border-color: rgba(34,211,238,.35); background: rgba(34,211,238,.04); }
+    .scheme-card.active { border-color: var(--cyan); background: rgba(34,211,238,.08); }
+    .rule-list { display: grid; gap: .45rem; }
+    .rule {
+      display: grid;
+      grid-template-columns: 20px minmax(0,1fr) auto;
+      align-items: start;
+      gap: .55rem;
+      border: 1px solid rgba(148,163,184,.12);
+      border-radius: 12px;
+      background: rgba(2,6,23,.28);
+      padding: .55rem .65rem;
+      font-size: .76rem;
+    }
+    .rule .mark { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; font-family: var(--mono); font-size: .62rem; background: rgba(52,211,153,.12); color: #6ee7b7; }
+    .rule.fail .mark { background: rgba(251,113,133,.12); color: #fda4af; }
+    .rule strong { display: block; font-weight: 550; }
+    .rule p { margin: .12rem 0 0; color: var(--dim); font-size: .7rem; line-height: 1.4; }
+    .rule .state { font-family: var(--mono); font-size: .62rem; color: #6ee7b7; }
+    .rule.fail .state { color: #fda4af; }
+    .docs { display: grid; gap: .45rem; }
+    .doc { display: flex; align-items: flex-start; gap: .5rem; color: var(--muted); font-size: .76rem; }
+    .doc input { width: auto; margin-top: .18rem; accent-color: var(--cyan); }
+    .summary {
+      margin: 0;
+      max-height: 290px;
+      overflow: auto;
+      border: 1px solid rgba(148,163,184,.14);
+      border-radius: 14px;
+      background: rgba(2,6,23,.5);
+      padding: .85rem;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: .7rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+    .status-wide { border: 1px solid rgba(148,163,184,.14); border-radius: 14px; padding: .8rem .9rem; background: rgba(2,6,23,.28); }
+    .status-wide strong { display: block; font-size: .9rem; }
+    .status-wide p { margin: .15rem 0 0; color: var(--dim); font-size: .72rem; }
+  </style>
+</head>
+<body>
+  <header class="demo-top">
+    <div class="demo-top-inner">
+      <a class="back-link" href="../../index.html#projects">← All projects</a>
+      <span class="demo-brand"><span class="status-dot"></span> PolicyPulse eligibility demo</span>
+      <a class="demo-source" href="https://github.com/roshanpharoah/policypulse" target="_blank" rel="noopener">Source ↗</a>
+    </div>
+  </header>
+
+  <main class="demo-wrap">
+    <section class="demo-hero">
+      <p class="demo-kicker">// deterministic rule trace</p>
+      <h1>Eligibility you can inspect, not guess.</h1>
+      <p class="lede">Change a profile and see exactly which rule passes or fails for each sample scheme. No LLM decides eligibility here. The demo runs a transparent rule engine in your browser.</p>
+      <div class="demo-actions">
+        <span class="badge">no PII sent</span>
+        <span class="badge">deterministic</span>
+        <span class="badge">rule trace</span>
+      </div>
+    </section>
+
+    <div class="demo-grid sidebar">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Applicant profile</h2>
+            <p class="panel-sub">Sample values only. Nothing is stored.</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="state">State</label>
+          <select id="state">
+            <option>Tamil Nadu</option>
+            <option>Maharashtra</option>
+            <option>Karnataka</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="category">Category</label>
+          <select id="category">
+            <option>OBC</option>
+            <option>General</option>
+            <option>SC</option>
+            <option>ST</option>
+            <option>EWS</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="income">Annual family income (INR)</label>
+          <input id="income" type="number" min="0" step="10000" value="180000">
+        </div>
+        <div class="field">
+          <label for="level">Course level</label>
+          <select id="level">
+            <option>UG</option>
+            <option>PG</option>
+            <option>Diploma</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="marks">Latest marks (%)</label>
+          <input id="marks" type="number" min="0" max="100" step="1" value="78">
+        </div>
+        <div class="field">
+          <label class="checkline"><input id="first" type="checkbox" checked> First-generation learner</label>
+          <label class="checkline" style="margin-top:.35rem"><input id="disability" type="checkbox"> Disability support requested</label>
+        </div>
+
+        <div class="btn-row">
+          <button class="primary" id="check" type="button">Check eligibility</button>
+          <button id="sample" type="button">Load sample</button>
+        </div>
+
+        <div class="callout warn" style="margin-top:1rem">
+          <strong>Demo rules only.</strong> These thresholds are illustrative and simplified. They are not official scheme guidelines or eligibility advice. Always verify with the issuing authority.
+        </div>
+      </section>
+
+      <div class="stack">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Scheme matches</h2>
+              <p class="panel-sub">Select a scheme to inspect its rule trace.</p>
+            </div>
+            <span class="badge" id="matchCount">3 schemes</span>
+          </div>
+          <div class="card-list" id="schemes"></div>
+        </section>
+
+        <section class="panel" id="detailPanel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title" id="detailTitle">Scheme detail</h2>
+              <p class="panel-sub" id="detailSub">Pick a scheme above.</p>
+            </div>
+            <span class="badge" id="detailBadge">waiting</span>
+          </div>
+          <div class="rule-list" id="ruleList"></div>
+          <hr class="hr">
+          <div class="panel-head" style="margin-bottom:.6rem">
+            <div>
+              <h2 class="panel-title">Document checklist</h2>
+              <p class="panel-sub">Tick what you already have. In a real system this would be encrypted and access-controlled.</p>
+            </div>
+          </div>
+          <div class="docs" id="docs"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Application summary</h2>
+              <p class="panel-sub">A plain-text draft with the rule trace attached.</p>
+            </div>
+            <span class="badge">local draft</span>
+          </div>
+          <pre class="summary" id="summary">Select a scheme and run the check to generate a summary.</pre>
+          <div class="btn-row" style="margin-top:.8rem">
+            <button class="primary" id="download" type="button" disabled>Download summary</button>
+            <button id="copy" type="button" disabled>Copy text</button>
+          </div>
+          <p class="note">The full PolicyPulse project adds hybrid intake extraction, PII guards, TF-IDF retrieval over official policy chunks, verification checklists and generated PDFs. This static page only demonstrates the deterministic eligibility layer.</p>
+        </section>
+      </div>
+    </div>
+
+    <p class="note">Built as a browser-native portfolio demo. The rules are deliberately simple so the decision logic stays readable. No profile data leaves this page, and no claim here should be treated as official policy guidance.</p>
+
+    <footer class="demo-footer">
+      <a href="../../index.html#projects">← Back to projects</a>
+      <span>PolicyPulse · deterministic eligibility demo</span>
+    </footer>
+  </main>
+
+  <script src="../demo.js"></script>
+  <script>
+    (() => {
+      const { $, $$, esc, fmt, download, toast } = window.Demo;
+
+      const SCHEMES = [
+        {
+          id: "csss",
+          name: "CSSS (demo rule)",
+          tag: "income-linked",
+          description: "Sample income-linked support for eligible categories.",
+          rules: [
+            { label: "Annual family income at or below ₹2,50,000", test: (p) => p.income <= 250000, value: (p) => `₹${fmt(p.income)}` },
+            { label: "Category is SC, ST, OBC or EWS", test: (p) => ["SC", "ST", "OBC", "EWS"].includes(p.category), value: (p) => p.category },
+            { label: "Latest marks at or above 60%", test: (p) => p.marks >= 60, value: (p) => `${p.marks}%` },
+            { label: "Course level is UG or PG", test: (p) => ["UG", "PG"].includes(p.level), value: (p) => p.level },
+          ],
+          docs: ["Income certificate", "Caste or category certificate", "Latest mark sheet", "Bank account details", "Institution verification letter"],
+        },
+        {
+          id: "pmsss",
+          name: "PMSSS (demo rule)",
+          tag: "merit + access",
+          description: "Sample merit and access support with a wider income ceiling.",
+          rules: [
+            { label: "Annual family income at or below ₹8,00,000", test: (p) => p.income <= 800000, value: (p) => `₹${fmt(p.income)}` },
+            { label: "Latest marks at or above 50%", test: (p) => p.marks >= 50, value: (p) => `${p.marks}%` },
+            { label: "Course level is UG, PG or Diploma", test: (p) => ["UG", "PG", "Diploma"].includes(p.level), value: (p) => p.level },
+            { label: "Applicant is enrolled in a recognised institution", test: () => true, value: () => "confirmed in demo profile" },
+          ],
+          docs: ["Income certificate", "Admission or enrolment proof", "Latest mark sheet", "Bank account details", "Identity document"],
+        },
+        {
+          id: "firstgen",
+          name: "First-Gen Support (demo rule)",
+          tag: "first-generation",
+          description: "Sample support for first-generation learners.",
+          rules: [
+            { label: "First-generation learner is marked true", test: (p) => p.first, value: (p) => (p.first ? "yes" : "no") },
+            { label: "Annual family income at or below ₹5,00,000", test: (p) => p.income <= 500000, value: (p) => `₹${fmt(p.income)}` },
+            { label: "Latest marks at or above 55%", test: (p) => p.marks >= 55, value: (p) => `${p.marks}%` },
+            { label: "Course level is UG or Diploma", test: (p) => ["UG", "Diploma"].includes(p.level), value: (p) => p.level },
+          ],
+          docs: ["First-generation declaration", "Income certificate", "Latest mark sheet", "Admission proof", "Bank account details"],
+        },
+      ];
+
+      const state = {
+        profile: null,
+        selected: "csss",
+        checkedDocs: new Set(),
+        summary: "",
+      };
+
+      const readProfile = () => ({
+        state: $("#state").value,
+        category: $("#category").value,
+        income: Number($("#income").value) || 0,
+        level: $("#level").value,
+        marks: Number($("#marks").value) || 0,
+        first: $("#first").checked,
+        disability: $("#disability").checked,
+      });
+
+      const evaluate = (scheme, profile) => {
+        const trace = scheme.rules.map((rule) => ({
+          label: rule.label,
+          pass: Boolean(rule.test(profile)),
+          value: rule.value ? rule.value(profile) : "",
+        }));
+        const eligible = trace.every((item) => item.pass);
+        return { scheme, trace, eligible };
+      };
+
+      const renderSchemes = () => {
+        const profile = state.profile || readProfile();
+        const results = SCHEMES.map((scheme) => evaluate(scheme, profile));
+        $("#matchCount").textContent = `${results.filter((result) => result.eligible).length} of ${results.length} eligible`;
+        $("#schemes").innerHTML = results.map((result) => {
+          const active = state.selected === result.scheme.id ? " active" : "";
+          return `
+            <div class="mini-card scheme-card${active}" data-scheme="${result.scheme.id}" role="button" tabindex="0">
+              <div class="mini-title">
+                <div>
+                  <h3>${esc(result.scheme.name)}</h3>
+                  <p>${esc(result.scheme.description)}</p>
+                </div>
+                <span class="badge ${result.eligible ? "good" : "bad"}">${result.eligible ? "eligible" : "not eligible"}</span>
+              </div>
+              <p class="tiny dim" style="margin:.45rem 0 0">${esc(result.scheme.tag)} · ${result.trace.filter((item) => item.pass).length}/${result.trace.length} rules pass</p>
+            </div>
+          `;
+        }).join("");
+        $$("#schemes [data-scheme]").forEach((card) => {
+          const choose = () => {
+            state.selected = card.dataset.scheme;
+            state.checkedDocs = new Set();
+            state.summary = "";
+            renderSchemes();
+            renderDetail();
+          };
+          card.addEventListener("click", choose);
+          card.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              choose();
+            }
+          });
+        });
+        renderDetail();
+      };
+
+      const renderDetail = () => {
+        const scheme = SCHEMES.find((item) => item.id === state.selected) || SCHEMES[0];
+        const profile = state.profile || readProfile();
+        const result = evaluate(scheme, profile);
+        $("#detailTitle").textContent = scheme.name;
+        $("#detailSub").textContent = scheme.description;
+        const badge = $("#detailBadge");
+        badge.textContent = result.eligible ? "eligible" : "not eligible";
+        badge.className = `badge ${result.eligible ? "good" : "bad"}`;
+        $("#ruleList").innerHTML = result.trace.map((rule) => `
+          <div class="rule ${rule.pass ? "" : "fail"}">
+            <span class="mark">${rule.pass ? "✓" : "×"}</span>
+            <div><strong>${esc(rule.label)}</strong><p>Profile value: ${esc(rule.value)}</p></div>
+            <span class="state">${rule.pass ? "PASS" : "FAIL"}</span>
+          </div>
+        `).join("");
+
+        $("#docs").innerHTML = scheme.docs.map((doc) => `
+          <label class="doc"><input type="checkbox" data-doc="${esc(doc)}" ${state.checkedDocs.has(doc) ? "checked" : ""}> <span>${esc(doc)}</span></label>
+        `).join("");
+        $$("#docs [data-doc]").forEach((checkbox) => {
+          checkbox.addEventListener("change", () => {
+            if (checkbox.checked) state.checkedDocs.add(checkbox.dataset.doc);
+            else state.checkedDocs.delete(checkbox.dataset.doc);
+            state.summary = "";
+            renderSummary();
+          });
+        });
+        renderSummary();
+      };
+
+      const buildSummary = () => {
+        const scheme = SCHEMES.find((item) => item.id === state.selected) || SCHEMES[0];
+        const profile = state.profile || readProfile();
+        const result = evaluate(scheme, profile);
+        const docs = scheme.docs.map((doc) => `${state.checkedDocs.has(doc) ? "[x]" : "[ ]"} ${doc}`);
+        return [
+          "PolicyPulse demo application summary",
+          "====================================",
+          "",
+          `Scheme: ${scheme.name}`,
+          `Status: ${result.eligible ? "Eligible under the demo rule set" : "Not eligible under the demo rule set"}`,
+          "",
+          "Applicant profile",
+          "-----------------",
+          `State: ${profile.state}`,
+          `Category: ${profile.category}`,
+          `Annual family income: INR ${fmt(profile.income)}`,
+          `Course level: ${profile.level}`,
+          `Latest marks: ${profile.marks}%`,
+          `First-generation learner: ${profile.first ? "yes" : "no"}`,
+          `Disability support requested: ${profile.disability ? "yes" : "no"}`,
+          "",
+          "Rule trace",
+          "----------",
+          ...result.trace.map((rule) => `${rule.pass ? "[pass]" : "[fail]"} ${rule.label} (profile: ${rule.value})`),
+          "",
+          "Document checklist",
+          "------------------",
+          ...docs,
+          "",
+          "This is a browser-native demo summary. The rules are illustrative, not official policy.",
+          "Verify every detail with the issuing authority before submitting anything.",
+        ].join("\n");
+      };
+
+      const renderSummary = () => {
+        state.summary = buildSummary();
+        $("#summary").textContent = state.summary;
+        $("#download").disabled = false;
+        $("#copy").disabled = false;
+      };
+
+      const run = () => {
+        const profile = readProfile();
+        if (!profile.income && profile.income !== 0) {
+          toast("Enter an annual income");
+          return;
+        }
+        state.profile = profile;
+        state.summary = "";
+        renderSchemes();
+        toast("Eligibility recalculated");
+      };
+
+      const loadSample = () => {
+        $("#state").value = "Tamil Nadu";
+        $("#category").value = "OBC";
+        $("#income").value = "180000";
+        $("#level").value = "UG";
+        $("#marks").value = "78";
+        $("#first").checked = true;
+        $("#disability").checked = false;
+        state.checkedDocs = new Set();
+        state.selected = "csss";
+        run();
+      };
+
+      $("#check").addEventListener("click", run);
+      $("#sample").addEventListener("click", loadSample);
+      $("#download").addEventListener("click", () => {
+        if (!state.summary) return;
+        download("policypulse-demo-summary.txt", state.summary);
+        toast("Summary downloaded");
+      });
+      $("#copy").addEventListener("click", async () => {
+        if (!state.summary) return;
+        try {
+          await navigator.clipboard.writeText(state.summary);
+          toast("Summary copied");
+        } catch {
+          toast("Copy failed in this browser");
+        }
+      });
+
+      loadSample();
+    })();
+  </script>
+</body>
+</html>

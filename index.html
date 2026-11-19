@@ -61,6 +61,24 @@
   .tilt-card:hover .spotlight, .bento:hover .spotlight { opacity: 1; }
   .chip { font-family: 'JetBrains Mono', monospace; font-size: .78rem; padding: .35rem .8rem; border-radius: 9999px; background: rgba(99,102,241,.12); border: 1px solid rgba(99,102,241,.3); color: #c7d2fe; transition: all .25s; }
   .chip:hover { background: rgba(34,211,238,.15); border-color: #22d3ee; color: #67e8f9; }
+  #projects .tilt-card { display: flex; flex-direction: column; }
+  #projects .tilt-card .tilt-inner { display: flex; flex-direction: column; flex: 1; }
+  #projects .tilt-card .tilt-inner > p { line-height: 1.65; }
+  #projects .tilt-card .tilt-inner > div:last-child { margin-top: auto; padding-top: 1.25rem; }
+  .project-badge { flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: .65rem; line-height: 1; color: #67e8f9; border: 1px solid rgba(34,211,238,.35); border-radius: 9999px; padding: .35rem .65rem; }
+  .project-links { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+  .project-link { display: inline-flex; align-items: center; gap: .35rem; padding: .5rem .85rem; border-radius: 9999px; border: 1px solid rgba(148,163,184,.3); background: rgba(15,23,42,.45); color: #cbd5e1; font-size: .75rem; font-weight: 600; transition: transform .25s, border-color .25s, background .25s, color .25s, box-shadow .25s; }
+  .project-link:hover { transform: translateY(-2px); border-color: #22d3ee; background: rgba(34,211,238,.08); color: #67e8f9; }
+  .project-link-primary { background: linear-gradient(135deg,#6366f1,#0e7490); color: #fff; border-color: rgba(103,232,249,.35); box-shadow: 0 14px 34px -16px rgba(34,211,238,.55); }
+  .project-link-primary:hover { color: #fff; box-shadow: 0 18px 44px -14px rgba(34,211,238,.7); }
+  .project-link.is-muted { color: #64748b; border-color: rgba(100,116,139,.2); background: transparent; cursor: default; }
+  .project-link.is-muted:hover { transform: none; border-color: rgba(100,116,139,.2); background: transparent; color: #64748b; box-shadow: none; }
+  html.light .project-badge { color: #0e7490; border-color: rgba(8,145,178,.3); }
+  html.light .project-link { background: rgba(255,255,255,.55); border-color: rgba(100,116,139,.25); color: #334155; }
+  html.light .project-link:hover { background: rgba(8,145,178,.08); border-color: #0891b2; color: #0e7490; }
+  html.light .project-link-primary { color: #fff; }
+  html.light .project-link-primary:hover { color: #fff; }
+  html.light .project-link.is-muted { color: #94a3b8; border-color: transparent; background: transparent; }
   .timeline-line { background: linear-gradient(to bottom,#6366f1,#22d3ee,transparent); }
   .nav-btn { font-family: 'JetBrains Mono', monospace; font-size: .7rem; padding: .4rem .75rem; border-radius: 9999px; border: 1px solid rgba(148,163,184,.25); color: #94a3b8; transition: all .25s; white-space: nowrap; }
   .nav-btn:hover { border-color: #22d3ee; color: #67e8f9; }
@@ -101,9 +119,11 @@
   .step-btn b { color: #6366f1; margin-right: .5rem; }
   .step-btn:hover, .step-btn.on { border-color: #22d3ee; color: #e2e8f0; background: rgba(34,211,238,.08); }
   .step-btn.on b { color: #22d3ee; }
-  /* robot */
+  /* robot — calm, purposeful flight */
   #bot { position: fixed; left: 0; bottom: 6px; width: 86px; z-index: 55; pointer-events: none; will-change: transform; }
-  #bot-svg { display: block; width: 100%; height: auto; overflow: visible; pointer-events: auto; transform-origin: 50% 100%; }
+  #bot-svg { --jet: .35; --trail: 0; display: block; width: 100%; height: auto; overflow: visible; pointer-events: auto;
+    transform-origin: 50% 50%; }
+  #bot-main { transform-box: fill-box; transform-origin: 50% 48%; will-change: transform; }
   #bot-bubble { position: absolute; bottom: 100%; left: 0; margin-bottom: 4px; width: max-content; max-width: 210px; padding: .5rem .75rem;
     border-radius: 14px 14px 14px 4px; background: rgba(15,23,42,.94); border: 1px solid rgba(34,211,238,.4); color: #e2e8f0;
     font: 500 .8rem/1.35 'Space Grotesk', sans-serif; opacity: 0; transform: translateY(6px) scale(.96); transition: opacity .25s, transform .25s;
@@ -123,9 +143,18 @@
   #core { animation: pulse 2.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
   #zzz text { font: 700 11px 'JetBrains Mono', monospace; fill: #67e8f9; animation: zz 2s ease-in-out infinite; }
   #zzz text:nth-child(2) { animation-delay: .6s; font-size: 8px; }
+  .jet { transform-box: fill-box; transform-origin: 50% 0%; transform: scaleY(var(--jet)); }
+  .repulsor { opacity: var(--repulsor, .85); }
+  #flight-trail { opacity: var(--trail); }
+  #bot-shadow { transform-box: fill-box; transform-origin: center; }
   @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.25); } }
   @keyframes zz { 0% { transform: translate(0,6px); opacity: 0; } 40% { opacity: 1; } 100% { transform: translate(8px,-10px); opacity: 0; } }
   @media (max-width: 640px) { #bot { width: 64px; } }
+  @media (prefers-reduced-motion: reduce) {
+    #core, #zzz text { animation: none; }
+    .jet { transform: scaleY(.4); }
+    #flight-trail { opacity: 0; }
+  }
   /* cartoon portrait */
   #avatar-stage { position: relative; width: min(100%, 392px); perspective: 1100px; transform-style: preserve-3d; cursor: none; touch-action: manipulation; }
   .avatar-aura { position: absolute; inset: -42px; z-index: 0; border-radius: 50%;
@@ -1042,69 +1071,135 @@
     <div class="reveal mb-14">
       <p class="font-mono text-neon-cyan text-sm mb-3">// 04 · PROJECTS</p>
       <h2 class="rx text-4xl md:text-5xl font-bold">Things I've built.</h2>
+      <p class="mt-4 max-w-2xl text-slate-400 text-sm">Every card includes a browser-native demo. No install, backend, or API key required.</p>
     </div>
     <div class="grid md:grid-cols-2 gap-6" style="perspective:1200px">
-      <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable md:col-span-2 overflow-hidden" data-bot="Ten models, one confidence score. The flagship!">
+      <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="Ten models, one confidence score. The flagship!">
         <div class="spotlight"></div><div class="tilt-inner">
-          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-            <h3 class="text-2xl md:text-3xl font-bold">AI-Powered Library Management System</h3>
-            <span class="font-mono text-xs text-neon-emerald border border-neon-emerald/40 rounded-full px-3 py-1">FLAGSHIP</span>
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <h3 class="text-xl font-bold leading-snug">AI-Powered Library Management System</h3>
+            <span class="project-badge">FLAGSHIP</span>
           </div>
-          <p class="text-slate-400 max-w-3xl">Full-stack library platform fusing custom deep-learning modules: GraphSAGE book recommendations, Demand LSTM borrow forecasting, DistilBERT/MiniLM semantic search and an autoencoder anomaly detector for overdue transactions. A weighted Convergence Engine merges every signal into one explainable confidence score on an interactive React dashboard.</p>
-          <div class="mt-6 flex flex-wrap gap-8">
-            <div><div class="text-3xl font-bold glow-text">10</div><div class="text-xs text-slate-400">custom DL modules</div></div>
-            <div><div class="text-3xl font-bold glow-text">4</div><div class="text-xs text-slate-400">model families fused</div></div>
-            <div><div class="text-3xl font-bold glow-text">1</div><div class="text-xs text-slate-400">unified confidence score</div></div>
+          <p class="text-slate-400 text-sm">Full-stack library platform fusing custom deep-learning modules: GraphSAGE recommendations, Demand LSTM forecasting, DistilBERT/MiniLM semantic search, and an autoencoder anomaly detector. A weighted Convergence Engine merges every signal into one explainable confidence score on a React dashboard.</p>
+          <div class="mt-5 flex flex-wrap gap-x-8 gap-y-3">
+            <div><div class="text-2xl font-bold glow-text">10</div><div class="text-xs text-slate-400">custom DL modules</div></div>
+            <div><div class="text-2xl font-bold glow-text">4</div><div class="text-xs text-slate-400">model families fused</div></div>
+            <div><div class="text-2xl font-bold glow-text">1</div><div class="text-xs text-slate-400">unified confidence score</div></div>
           </div>
-          <div class="mt-6 flex flex-wrap gap-2"><span class="chip">FastAPI</span><span class="chip">PyTorch</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">SQLite</span></div>
+          <div class="mt-5 flex flex-wrap gap-2"><span class="chip">FastAPI</span><span class="chip">PyTorch</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">SQLite</span></div>
+          <div class="project-links">
+            <a class="project-link project-link-primary" href="demos/library/index.html">Play demo <span aria-hidden="true">↗</span></a>
+            <span class="project-link is-muted" title="Repository not published yet">Source not public</span>
+          </div>
+        </div>
+      </article>
+      <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="Eight scoring dimensions, eleven templates, and a fact-check gate that refuses to export invented claims.">
+        <div class="spotlight"></div><div class="tilt-inner">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <h3 class="text-xl font-bold leading-snug">ResumeForge: Truthful ATS Resume Studio</h3>
+            <span class="project-badge">FULL-STACK</span>
+          </div>
+          <p class="text-slate-400 text-sm">ATS analyzer and job-description tailor with deterministic scoring, one-click fixes, diff-reviewed edits, skills-gap plans, and a truthfulness gate that blocks unsupported claims and placeholders before export.</p>
+          <div class="mt-5 flex flex-wrap gap-x-8 gap-y-3">
+            <div><div class="text-2xl font-bold glow-text">8</div><div class="text-xs text-slate-400">ATS scoring dimensions</div></div>
+            <div><div class="text-2xl font-bold glow-text">11</div><div class="text-xs text-slate-400">resume templates</div></div>
+            <div><div class="text-2xl font-bold glow-text">3</div><div class="text-xs text-slate-400">export formats</div></div>
+          </div>
+          <div class="mt-5 flex flex-wrap gap-2"><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">PostgreSQL</span><span class="chip">Prisma</span><span class="chip">Tailwind CSS</span><span class="chip">OpenRouter</span></div>
+          <div class="project-links">
+            <a class="project-link project-link-primary" href="demos/resumeforge/index.html">Play demo <span aria-hidden="true">↗</span></a>
+            <a class="project-link" href="https://github.com/roshanpharoah/resumeforge" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
       </article>
       <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="Eligibility rules are deterministic. No hallucinated schemes.">
         <div class="spotlight"></div><div class="tilt-inner">
-          <h3 class="text-xl font-bold mb-3">PolicyPulse: Scholarship Assistant</h3>
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <h3 class="text-xl font-bold leading-snug">PolicyPulse: Scholarship Assistant</h3>
+            <span class="project-badge">RAG</span>
+          </div>
           <p class="text-slate-400 text-sm">Modular-monolith assistant with a hybrid intake extractor (regex + PII-guarded LLM parsing), TF-IDF RAG over official policy chunks, and a deterministic eligibility engine. Generates application summary PDFs with verification checklists.</p>
-          <div class="mt-5 flex gap-8"><div><div class="text-2xl font-bold glow-text">2+</div><div class="text-xs text-slate-400">schemes (CSSS, PMSSS)</div></div><div><div class="text-2xl font-bold glow-text">PDF</div><div class="text-xs text-slate-400">auto-generated summaries</div></div></div>
+          <div class="mt-5 flex flex-wrap gap-x-8 gap-y-3"><div><div class="text-2xl font-bold glow-text">2+</div><div class="text-xs text-slate-400">schemes (CSSS, PMSSS)</div></div><div><div class="text-2xl font-bold glow-text">PDF</div><div class="text-xs text-slate-400">auto-generated summaries</div></div></div>
           <div class="mt-5 flex flex-wrap gap-2"><span class="chip">FastAPI</span><span class="chip">SQLAlchemy</span><span class="chip">ReportLab</span><span class="chip">React</span></div>
+          <div class="project-links">
+            <a class="project-link project-link-primary" href="demos/policypulse/index.html">Play demo <span aria-hidden="true">↗</span></a>
+            <a class="project-link" href="https://github.com/roshanpharoah/policypulse" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
       </article>
       <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="Synthetic data, with differential privacy. Fancy.">
         <div class="spotlight"></div><div class="tilt-inner">
-          <h3 class="text-xl font-bold mb-3">Unified Synthetic Data Platform</h3>
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <h3 class="text-xl font-bold leading-snug">Unified Synthetic Data Platform</h3>
+            <span class="project-badge">GENAI</span>
+          </div>
           <p class="text-slate-400 text-sm">Enterprise platform for tabular/relational data (banking, healthcare) and image data. CTGAN and TVAE with differential privacy, validated via Kolmogorov-Smirnov tests and correlation matrices; DiffuseGAN for stable image synthesis.</p>
-          <div class="mt-5 flex gap-8"><div><div class="text-2xl font-bold glow-text">3</div><div class="text-xs text-slate-400">generative models</div></div><div><div class="text-2xl font-bold glow-text">DP</div><div class="text-xs text-slate-400">privacy-constrained</div></div></div>
+          <div class="mt-5 flex flex-wrap gap-x-8 gap-y-3"><div><div class="text-2xl font-bold glow-text">3</div><div class="text-xs text-slate-400">generative models</div></div><div><div class="text-2xl font-bold glow-text">DP</div><div class="text-xs text-slate-400">privacy-constrained</div></div></div>
           <div class="mt-5 flex flex-wrap gap-2"><span class="chip">PyTorch</span><span class="chip">CTGAN</span><span class="chip">TVAE</span><span class="chip">DiffuseGAN</span><span class="chip">SQL</span></div>
+          <div class="project-links">
+            <a class="project-link project-link-primary" href="demos/synthforge/index.html">Play demo <span aria-hidden="true">↗</span></a>
+            <a class="project-link" href="https://github.com/roshanpharoah/SynthForge" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
       </article>
       <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="Wheat, paddy, maize, soybean. Leaves, but make it ViT.">
         <div class="spotlight"></div><div class="tilt-inner">
-          <h3 class="text-xl font-bold mb-3">Plant Disease Detection &amp; Leaf Classification</h3>
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <h3 class="text-xl font-bold leading-snug">Plant Disease Detection &amp; Leaf Classification</h3>
+            <span class="project-badge">VISION</span>
+          </div>
           <p class="text-slate-400 text-sm">Lightweight computer-vision pipeline with Vision Transformers and automated background removal, optimized for regional agricultural profiles without heavy object-detection models.</p>
-          <div class="mt-5"><div class="text-2xl font-bold glow-text">4</div><div class="text-xs text-slate-400">crops: wheat, paddy, maize, soybean</div></div>
+          <div class="mt-5 flex flex-wrap gap-x-8 gap-y-3"><div><div class="text-2xl font-bold glow-text">4</div><div class="text-xs text-slate-400">crops: wheat, paddy, maize, soybean</div></div></div>
           <div class="mt-5 flex flex-wrap gap-2"><span class="chip">PyTorch</span><span class="chip">ViT</span><span class="chip">OpenCV</span></div>
+          <div class="project-links">
+            <a class="project-link project-link-primary" href="demos/plant-disease/index.html">Play demo <span aria-hidden="true">↗</span></a>
+            <span class="project-link is-muted" title="Repository not published yet">Source not public</span>
+          </div>
         </div>
       </article>
       <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="A whole timetable solver with no backend. Respect.">
         <div class="spotlight"></div><div class="tilt-inner">
-          <h3 class="text-xl font-bold mb-3">College Timetable &amp; Absence Manager</h3>
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <h3 class="text-xl font-bold leading-snug">College Timetable &amp; Absence Manager</h3>
+            <span class="project-badge">CLIENT</span>
+          </div>
           <p class="text-slate-400 text-sm">100% client-side SPA with a constraint-satisfaction timetable generator (backtracking + greedy fallback), automated faculty-absence substitution, and a BM25 RAG chatbot with voice I/O for scheduling and Anna University regulation queries.</p>
-          <div class="mt-5 flex gap-8"><div><div class="text-2xl font-bold glow-text">30+</div><div class="text-xs text-slate-400">chatbot intents</div></div><div><div class="text-2xl font-bold glow-text">0</div><div class="text-xs text-slate-400">backend required</div></div></div>
+          <div class="mt-5 flex flex-wrap gap-x-8 gap-y-3"><div><div class="text-2xl font-bold glow-text">30+</div><div class="text-xs text-slate-400">chatbot intents</div></div><div><div class="text-2xl font-bold glow-text">0</div><div class="text-xs text-slate-400">backend required</div></div></div>
           <div class="mt-5 flex flex-wrap gap-2"><span class="chip">JavaScript</span><span class="chip">CSP Solver</span><span class="chip">BM25 RAG</span><span class="chip">Web Speech API</span></div>
+          <div class="project-links">
+            <a class="project-link project-link-primary" href="demos/timetable/index.html">Play demo <span aria-hidden="true">↗</span></a>
+            <a class="project-link" href="https://github.com/roshanpharoah/timetable-generation-engine" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
       </article>
       <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="Little buses crawling along a map. I love that one.">
         <div class="spotlight"></div><div class="tilt-inner">
-          <h3 class="text-xl font-bold mb-3">Smart Bus Tracker &amp; QR Attendance</h3>
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <h3 class="text-xl font-bold leading-snug">Smart Bus Tracker &amp; QR Attendance</h3>
+            <span class="project-badge">IOT</span>
+          </div>
           <p class="text-slate-400 text-sm">Bus-tracking prototype with real-time GPS simulation interpolated along route polylines on a Leaflet map, plus a cryptographic QR attendance pipeline with duplicate-scan guards, trip validation and CSV reports.</p>
-          <div class="mt-5 flex gap-8"><div><div class="text-2xl font-bold glow-text">Live</div><div class="text-xs text-slate-400">GPS simulation</div></div><div><div class="text-2xl font-bold glow-text">CSV</div><div class="text-xs text-slate-400">automated reports</div></div></div>
+          <div class="mt-5 flex flex-wrap gap-x-8 gap-y-3"><div><div class="text-2xl font-bold glow-text">Live</div><div class="text-xs text-slate-400">GPS simulation</div></div><div><div class="text-2xl font-bold glow-text">CSV</div><div class="text-xs text-slate-400">automated reports</div></div></div>
           <div class="mt-5 flex flex-wrap gap-2"><span class="chip">Node.js</span><span class="chip">Express</span><span class="chip">Leaflet</span><span class="chip">HTML5-QR</span></div>
+          <div class="project-links">
+            <a class="project-link project-link-primary" href="demos/bus-tracker/index.html">Play demo <span aria-hidden="true">↗</span></a>
+            <span class="project-link is-muted" title="Repository not published yet">Source not public</span>
+          </div>
         </div>
       </article>
       <article class="tilt-card reveal relative glass rounded-3xl p-8 hoverable overflow-hidden" data-bot="A Snake game that reads your mood. Wild.">
         <div class="spotlight"></div><div class="tilt-inner">
-          <h3 class="text-xl font-bold mb-3">Emotion-Driven Activity Launcher</h3>
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <h3 class="text-xl font-bold leading-snug">Emotion-Driven Activity Launcher</h3>
+            <span class="project-badge">NLP</span>
+          </div>
           <p class="text-slate-400 text-sm">Desktop app running sentiment analysis on journal entries to classify emotional state and recommend activities, playlists or chatbot interactions, with an adaptive Snake game whose speed scales to your mood.</p>
-          <div class="mt-5"><div class="text-2xl font-bold glow-text">Real-time</div><div class="text-xs text-slate-400">adaptive difficulty</div></div>
+          <div class="mt-5 flex flex-wrap gap-x-8 gap-y-3"><div><div class="text-2xl font-bold glow-text">Real-time</div><div class="text-xs text-slate-400">adaptive difficulty</div></div></div>
           <div class="mt-5 flex flex-wrap gap-2"><span class="chip">Python</span><span class="chip">NLP</span><span class="chip">CustomTkinter</span><span class="chip">Pygame</span></div>
+          <div class="project-links">
+            <a class="project-link project-link-primary" href="demos/emotion-launcher/index.html">Play demo <span aria-hidden="true">↗</span></a>
+            <span class="project-link is-muted" title="Repository not published yet">Source not public</span>
+          </div>
         </div>
       </article>
     </div>
@@ -1217,9 +1312,9 @@
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="relative py-32 px-6 overflow-hidden">
-  <div class="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-neon-indigo/20 to-transparent"></div>
-  <div class="relative max-w-3xl mx-auto text-center reveal">
+<section id="contact" class="relative py-20 px-6 overflow-hidden">
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-neon-indigo/20 to-transparent"></div>
+  <div class="relative z-10 max-w-3xl mx-auto text-center reveal">
     <p class="font-mono text-neon-cyan text-sm mb-3">// 08 · CONTACT</p>
     <h2 class="rx text-5xl md:text-7xl font-bold leading-tight">Let's build something <span class="glow-text">intelligent</span>.</h2>
     <p class="lit mt-6 text-lg">Open to placements, internships, collaborations and ideas at the edge of AI, biology and space.</p>
@@ -1229,13 +1324,15 @@
       <a href="tel:+918072552456" class="px-7 py-3 rounded-full border border-slate-700 hover:border-neon-emerald hover:text-neon-emerald transition">+91 80725 52456</a>
       <button data-open-chat class="px-7 py-3 rounded-full border border-neon-indigo/60 text-indigo-200 hover:bg-neon-indigo/20 transition">Ask my notes ✦</button>
     </div>
-    <div class="mt-16 pb-20 flex flex-col items-center justify-center gap-3 font-mono text-xs text-slate-500 sm:flex-row">
+    <div class="mt-10 pb-4 flex flex-col items-center justify-center gap-3 font-mono text-xs text-slate-500 sm:flex-row">
       <p>Trichy, India · © 2026 Roshan B</p>
       <span class="hidden sm:inline opacity-40" aria-hidden="true">·</span>
       <div class="footer-audio" role="group" aria-label="Audio controls">
         <button id="sfx-btn" type="button" class="footer-audio-btn" aria-pressed="false" title="Toggle sound effects">♪ SFX off</button>
         <span class="opacity-30" aria-hidden="true">·</span>
         <button id="amb-btn" type="button" class="footer-audio-btn" aria-pressed="false" title="Toggle ambient sound">≈ Ambient off</button>
+        <span class="opacity-30" aria-hidden="true">·</span>
+        <button id="atlas-btn" type="button" class="footer-audio-btn atlas-trigger" data-open-atlas aria-haspopup="dialog" aria-expanded="false" aria-label="Open the hidden world atlas" title="Open world atlas (G)"><span aria-hidden="true">◎</span> Atlas</button>
       </div>
     </div>
   </div>
@@ -1245,17 +1342,26 @@
 <!-- ROBOT -->
 <div id="bot">
   <div id="bot-bubble" role="status" aria-live="polite"></div>
-  <svg id="bot-svg" viewBox="0 0 100 130" role="button" tabindex="0" aria-label="Bit the robot. Click to open the chat" data-hover data-bot="That tickles. Click me for the notes.">
+  <svg id="bot-svg" viewBox="0 0 100 130" role="button" tabindex="0" aria-label="Bit the flying robot. Click to open the chat" data-hover data-bot="Repulsors warm. Click me for the notes.">
     <defs>
       <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1e293b"/><stop offset="1" stop-color="#0b1222"/></linearGradient>
+      <linearGradient id="jet" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#e0fbff" stop-opacity=".95"/>
+        <stop offset=".42" stop-color="#22d3ee" stop-opacity=".78"/>
+        <stop offset="1" stop-color="#6366f1" stop-opacity="0"/>
+      </linearGradient>
       <filter id="glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     </defs>
-    <ellipse cx="50" cy="125" rx="24" ry="3.5" fill="#000" opacity=".45"/>
+    <ellipse id="bot-shadow" cx="50" cy="125" rx="24" ry="3.5" fill="#000" opacity=".45"/>
+    <g id="flight-trail" filter="url(#glow)" aria-hidden="true">
+      <path d="M22 82 C9 84 1 91 -11 96" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+      <path d="M28 99 C15 104 7 111 -5 114" fill="none" stroke="#818cf8" stroke-width="1.6" stroke-linecap="round" opacity=".45"/>
+    </g>
     <g id="bot-main">
-      <g id="legL" class="limb"><rect x="35" y="96" width="10" height="22" rx="5" fill="#334155" stroke="#22d3ee" stroke-opacity=".5"/><rect x="32" y="114" width="16" height="8" rx="4" fill="#1e293b" stroke="#22d3ee" stroke-opacity=".5"/></g>
-      <g id="legR" class="limb"><rect x="55" y="96" width="10" height="22" rx="5" fill="#334155" stroke="#22d3ee" stroke-opacity=".5"/><rect x="52" y="114" width="16" height="8" rx="4" fill="#1e293b" stroke="#22d3ee" stroke-opacity=".5"/></g>
-      <g id="armL" class="limb"><rect x="13" y="62" width="10" height="28" rx="5" fill="#334155" stroke="#6366f1" stroke-opacity=".7"/></g>
-      <g id="armR" class="limb"><rect x="77" y="62" width="10" height="28" rx="5" fill="#334155" stroke="#6366f1" stroke-opacity=".7"/></g>
+      <g id="legL" class="limb"><rect x="35" y="96" width="10" height="22" rx="5" fill="#334155" stroke="#22d3ee" stroke-opacity=".5"/><rect x="32" y="114" width="16" height="8" rx="4" fill="#1e293b" stroke="#22d3ee" stroke-opacity=".5"/><g class="jet"><path d="M36 120 Q40 142 44 120 Z" fill="url(#jet)"/></g></g>
+      <g id="legR" class="limb"><rect x="55" y="96" width="10" height="22" rx="5" fill="#334155" stroke="#22d3ee" stroke-opacity=".5"/><rect x="52" y="114" width="16" height="8" rx="4" fill="#1e293b" stroke="#22d3ee" stroke-opacity=".5"/><g class="jet"><path d="M56 120 Q60 142 64 120 Z" fill="url(#jet)"/></g></g>
+      <g id="armL" class="limb"><rect x="13" y="62" width="10" height="28" rx="5" fill="#334155" stroke="#6366f1" stroke-opacity=".7"/><circle class="repulsor" cx="18" cy="92" r="3.6" fill="#22d3ee" filter="url(#glow)"/></g>
+      <g id="armR" class="limb"><rect x="77" y="62" width="10" height="28" rx="5" fill="#334155" stroke="#6366f1" stroke-opacity=".7"/><circle class="repulsor" cx="82" cy="92" r="3.6" fill="#22d3ee" filter="url(#glow)"/></g>
       <rect x="26" y="58" width="48" height="42" rx="14" fill="url(#g1)" stroke="#6366f1" stroke-width="1.5"/>
       <circle id="core" cx="50" cy="79" r="6" fill="#22d3ee" filter="url(#glow)"/>
       <g id="head">
@@ -1791,18 +1897,31 @@ const STEPS = [
 // ================= Robot =================
 const Bot = (() => {
   const wrap = $('#bot'), svg = $('#bot-svg'), bubble = $('#bot-bubble');
+  const main = $('#bot-main'), shadow = $('#bot-shadow');
   const legL = $('#legL'), legR = $('#legR'), armL = $('#armL'), armR = $('#armR'), eyes = $('#eyes'), head = $('#head');
-  const S = { x: 16, target: 16, face: 1, w: 0, phase: 0, wave: 0, lookX: null, lookY: 0, lookUntil: 0, sleeping: false,
-    nextDecision: performance.now() + 1400, nextThought: performance.now() + 16000, lastReact: 0, walks: 0 };
-  const J = { y: 0 };
+  const S = { x: 16, y: 0, vx: 0, vy: 0, targetX: 16, targetY: 0, face: 1, wave: 0,
+    lookX: null, lookY: 0, lookUntil: 0, sleeping: false, route: 0, inTransit: true, boostUntil: 0,
+    nextDecision: performance.now() + 1300, nextThought: performance.now() + 16000 };
   let lastSay = 0, hideT, moodT, mood = 'idle';
   const size = () => innerWidth < 640 ? 64 : 86;
+  const flightY = () => -Math.min(112, innerHeight * .16, Math.max(0, innerHeight - size() - 52));
+  function routePoints() {
+    const sz = size(), min = 14, max = Math.max(min, innerWidth - sz - 14), span = max - min;
+    const high = flightY(), mid = high * .55;
+    return [
+      { x: min + span * .08, y: 0 },
+      { x: min + span * .30, y: mid },
+      { x: min + span * .56, y: high },
+      { x: min + span * .82, y: mid },
+      { x: min + span * .46, y: high * .3 }
+    ];
+  }
   const THOUGHTS = [
     "I wonder what's in the lab.",
     "This page has good bones.",
-    "I'm going for a little walk.",
+    "Taking a lap. Routine matters.",
     "Hmm. That heading is doing something.",
-    "I should stretch my legs.",
+    "Flight check: repulsors smooth.",
     "You can ask the notes anything, you know.",
     "I'm keeping an eye on that cursor.",
     "Seven projects, one flagship. I counted.",
@@ -1822,94 +1941,123 @@ const Bot = (() => {
     clearTimeout(hideT); hideT = setTimeout(() => bubble.classList.remove('show'), ms);
     if (m) setMood(m, ms * .6); SFX.voice(text.length); return true;
   }
-  function jump() { gsap.fromTo(J, { y: 0 }, { y: -34, duration: .2, ease: 'power2.out', yoyo: true, repeat: 1 }); }
-  function doWave() { gsap.fromTo(S, { wave: 0 }, { wave: -150, duration: .22, yoyo: true, repeat: 5, ease: 'sine.inOut', onComplete: () => { S.wave = 0; } }); }
-  function wake() { if (!S.sleeping) return; S.sleeping = false; setMood('wow', 900); SFX.wake(); say("Oh, hi again!", { force: true, m: 'wow' }); jump(); S.nextDecision = performance.now() + 1200; S.nextThought = performance.now() + 14000; }
-  function lookAt(x, y, ms) { S.lookX = x; S.lookY = y; S.lookUntil = performance.now() + ms; }
-  function pickWanderTarget() {
-    const sz = size(), min = 14, max = Math.max(min, innerWidth - sz - 14);
-    let t = min + Math.random() * (max - min);
-    if (Math.abs(t - S.x) < innerWidth * .16) t = S.x + (Math.random() < .5 ? -1 : 1) * (innerWidth * .16 + Math.random() * innerWidth * .22);
-    return clamp(t, min, max);
+  function jump() {
+    if (RM) return;
+    S.vy -= 170;
+    S.vx += S.face * 70;
+    S.boostUntil = performance.now() + 520;
   }
+  function doWave() { gsap.fromTo(S, { wave: 0 }, { wave: -150, duration: .22, yoyo: true, repeat: 5, ease: 'sine.inOut', onComplete: () => { S.wave = 0; } }); }
+  function wake() {
+    if (!S.sleeping) return;
+    S.sleeping = false; setMood('wow', 900); SFX.wake(); say("Oh, hi again!", { force: true, m: 'wow' });
+    jump(); S.inTransit = true; S.nextDecision = performance.now() + 700; S.nextThought = performance.now() + 14000;
+  }
+  function lookAt(x, y, ms) { S.lookX = x; S.lookY = y; S.lookUntil = performance.now() + ms; }
   // blink
   (function blink() { svg.classList.add('blink'); setTimeout(() => svg.classList.remove('blink'), 120); setTimeout(blink, 2200 + Math.random() * 3200); })();
-  // main loop
-  let walkSfxT = 0;
+  // main loop — a calm patrol with intent, not a darting insect
   ticks.push((dt, time) => {
     const W = innerWidth, sz = size(), now = performance.now();
     const minX = 14, maxX = Math.max(minX, W - sz - 14);
-    const cx = S.x + sz / 2, cy = innerHeight - 6 - sz * .72;
-    // The chat panel is the only thing that gets right of way.
-    if (State.chatOpen && W >= 640) {
-      S.target = clamp(W - 380 - 16 - sz - 6, minX, maxX);
-      S.nextDecision = now + 900;
-    } else if (!S.sleeping) {
-      // Autonomous roaming: a new decision every few seconds, plus curiosity about the cursor.
-      const cursorNear = FINE && Math.hypot(State.mx - cx, State.my - cy) < 150;
-      if (cursorNear && now - S.lastReact > 9000) {
-        S.lastReact = now;
-        S.target = clamp(State.mx - sz / 2, minX, maxX);
-        S.nextDecision = now + 2600;
-        setMood('wow', 900);
-        if (Math.random() < .35) say("I see you.", { ms: 1800, m: 'wow' });
-      } else if (now > S.nextDecision) {
-        const r = Math.random();
-        if (r < .52) {
-          S.target = pickWanderTarget(); S.walks++;
-          S.nextDecision = now + 1700 + Math.abs(S.target - S.x) * 4.2 + Math.random() * 2400;
-          if (Math.random() < .2) say(THOUGHTS[Math.floor(Math.random() * THOUGHTS.length)], { ms: 2600, m: 'think' });
-        } else if (r < .72) {
-          S.target = S.x; S.nextDecision = now + 1800 + Math.random() * 3200;
-        } else if (r < .88) {
-          S.target = S.x; lookAt(14 + Math.random() * (W - 28), innerHeight * (.4 + Math.random() * .5), 1100);
-          S.nextDecision = now + 1300 + Math.random() * 1000;
+    if (!S.sleeping) {
+      const points = routePoints();
+      // The chat panel is the only thing that gets right of way.
+      if (State.chatOpen && W >= 640) {
+        S.targetX = clamp(W - 380 - 16 - sz - 6, minX, maxX);
+        S.targetY = flightY() * .45;
+        S.nextDecision = now + 900;
+      } else {
+        const point = points[S.route];
+        if (!S.inTransit) {
+          S.targetX = point.x; S.targetY = point.y;
+          if (now >= S.nextDecision) {
+            S.route = (S.route + 1) % points.length;
+            S.inTransit = true;
+          }
         } else {
-          S.target = S.x; doWave(); S.nextDecision = now + 2200;
+          S.targetX = point.x; S.targetY = point.y;
+          if (Math.hypot(S.targetX - S.x, S.targetY - S.y) < 14) {
+            S.inTransit = false;
+            S.nextDecision = now + 1700 + Math.random() * 1700;
+            if (Math.random() < .22) say(THOUGHTS[Math.floor(Math.random() * THOUGHTS.length)], { ms: 2600, m: 'think' });
+          }
         }
       }
     } else {
-      S.target = S.x;
+      S.targetX = S.x; S.targetY = 0;
+      S.vx *= Math.exp(-dt / 180); S.vy *= Math.exp(-dt / 180);
     }
-    S.target = clamp(S.target, minX, maxX);
-    const diff = S.target - S.x;
-    S.x += diff * (1 - Math.exp(-dt / (Math.abs(diff) > 180 ? 620 : 430)));
-    if (Math.abs(S.target - S.x) < 1.2) S.x = S.target;
-    const moving = Math.abs(diff) > 6;
-    S.w += ((moving ? 1 : 0) - S.w) * (1 - Math.exp(-dt / 120));
-    S.phase += dt * .014 * S.w;
-    const dir = moving ? Math.sign(diff) : S.face;
-    S.face += (dir - S.face) * (1 - Math.exp(-dt / (moving ? 160 : 400)));
-    if (moving && Math.sin(S.phase) > .98 && now - walkSfxT > 180) { walkSfxT = now; SFX.tick(); }
-    const sw = Math.sin(S.phase), bob = -Math.abs(sw) * 4 * S.w;
-    wrap.style.transform = `translate3d(${S.x.toFixed(1)}px,${(J.y + bob).toFixed(1)}px,0)`;
+    S.targetX = clamp(S.targetX, minX, maxX);
+    S.targetY = clamp(S.targetY, flightY(), 0);
+
+    if (RM) {
+      S.x = clamp(16, minX, maxX); S.y = 0; S.vx = 0; S.vy = 0; S.face = 1;
+    } else {
+      const dts = Math.min(dt, 42) / 1000;
+      const k = S.sleeping ? 18 : 9.5;
+      const damp = 2 * Math.sqrt(k) * (S.sleeping ? 1 : .92);
+      S.vx += ((S.targetX - S.x) * k - S.vx * damp) * dts;
+      S.vy += ((S.targetY - S.y) * k - S.vy * damp) * dts;
+      S.x += S.vx * dts; S.y += S.vy * dts;
+      if (S.x < minX || S.x > maxX) { S.x = clamp(S.x, minX, maxX); S.vx *= -.18; }
+      if (S.y < flightY() || S.y > 0) { S.y = clamp(S.y, flightY(), 0); S.vy *= -.18; }
+    }
+
+    const speed = Math.hypot(S.vx, S.vy);
+    const dir = speed > 28 ? Math.sign(S.vx || S.face) : S.face;
+    S.face += (dir - S.face) * (1 - Math.exp(-dt / (speed > 28 ? 150 : 520)));
+    const bank = RM ? 0 : clamp(S.vx * S.face * .034, -13, 13);
+    const thrust = RM ? .4 : clamp(.28 + speed / 520 + (now < S.boostUntil ? .18 : 0), .28, 1);
+    const bob = RM ? 0 : Math.sin(time * 2.1) * (S.sleeping ? 1.1 : 2.6) * (1 - clamp(speed / 420, 0, .72));
+
+    wrap.style.transform = `translate3d(${S.x.toFixed(1)}px,${(S.y + bob).toFixed(1)}px,0)`;
     svg.style.transform = `scaleX(${S.face.toFixed(3)})`;
+    main.style.transform = `rotate(${bank.toFixed(2)}deg)`;
+    svg.style.setProperty('--jet', thrust.toFixed(2));
+    svg.style.setProperty('--repulsor', (.55 + thrust * .4).toFixed(2));
+    svg.style.setProperty('--trail', RM ? '0' : clamp((speed - 70) / 320, 0, .8).toFixed(2));
+    const lift = clamp(-S.y / 150, 0, .8);
+    shadow.style.opacity = (.45 * (1 - lift)).toFixed(2);
+    shadow.style.transform = `scale(${(1 - lift * .5).toFixed(2)})`;
     bubble.classList.toggle('right', S.x > W * .5);
-    legL.style.transform = `rotate(${sw * 30 * S.w}deg)`; legR.style.transform = `rotate(${-sw * 30 * S.w}deg)`;
-    const idleSway = Math.sin(time * 1.4) * 3;
-    armL.style.transform = `rotate(${-sw * 26 * S.w + idleSway}deg)`; armR.style.transform = `rotate(${sw * 26 * S.w - idleSway + S.wave}deg)`;
-    // eyes follow cursor (or a look target)
-    let tX = State.mx, tY = State.my; if (S.lookX !== null && now < S.lookUntil) { tX = S.lookX; tY = S.lookY; }
+
+    const tuck = clamp(speed / 460, 0, 1);
+    legL.style.transform = `rotate(${(-11 - bank * .2 - tuck * 7).toFixed(1)}deg)`;
+    legR.style.transform = `rotate(${(11 - bank * .2 + tuck * 7).toFixed(1)}deg)`;
+    const idleSway = RM ? 0 : Math.sin(time * 1.3) * 2.2;
+    armL.style.transform = `rotate(${(-26 + bank * .3 + idleSway + S.wave).toFixed(1)}deg)`;
+    armR.style.transform = `rotate(${(26 + bank * .3 - idleSway - S.wave).toFixed(1)}deg)`;
+
+    const cx = S.x + sz / 2, cy = innerHeight - 6 - sz * .72 + S.y;
+    let tX = State.mx, tY = State.my;
+    if (S.lookX !== null && now < S.lookUntil) { tX = S.lookX; tY = S.lookY; }
     let ex = clamp((tX - cx) / 90, -1, 1) * 3.4 * Math.sign(S.face || 1), ey = clamp((tY - cy) / 220, -1, 1) * 3;
-    if (mood === 'think') { ex = -2; ey = -3.2; } if (S.sleeping) { ex = 0; ey = 2; }
+    if (mood === 'think') { ex = -2; ey = -3.2; }
+    if (S.sleeping) { ex = 0; ey = 2; }
     eyes.style.transform = `translate(${ex.toFixed(2)}px,${ey.toFixed(2)}px)`;
-    head.style.transform = `rotate(${(S.sleeping ? 9 : clamp((tX - cx) / 400, -1, 1) * 6 * Math.sign(S.face || 1) + (moving ? dir * 3 : 0)).toFixed(2)}deg)`;
+    head.style.transform = `rotate(${(S.sleeping ? 9 : clamp((tX - cx) / 400, -1, 1) * 6 * Math.sign(S.face || 1) + bank * .35).toFixed(2)}deg)`;
+
     // idle → sleep
-    if (!S.sleeping && now - State.lastInput > 14000 && !State.chatOpen) { S.sleeping = true; setMood('sleep'); SFX.sleep(); bubble.classList.remove('show'); }
+    if (!S.sleeping && now - State.lastInput > 14000 && !State.chatOpen) {
+      S.sleeping = true; setMood('sleep'); SFX.sleep(); bubble.classList.remove('show');
+    }
     // occasional, quiet inner monologue
     if (!S.sleeping && !State.chatOpen && now > S.nextThought) {
       S.nextThought = now + 20000 + Math.random() * 18000;
       if (Math.random() < .65) say(THOUGHTS[Math.floor(Math.random() * THOUGHTS.length)], { ms: 2800, m: 'think' });
     }
     // cursor very close → personal-space hello
-    if (FINE && Math.hypot(State.mx - cx, State.my - cy) < 70 && now - lastSay > 14000 && !S.sleeping) { say("Hey you! Click me. I do chat.", { ms: 3200 }); doWave(); }
+    if (FINE && Math.hypot(State.mx - cx, State.my - cy) < 66 && now - lastSay > 12000 && !S.sleeping && !State.chatOpen) {
+      say("Hey you. Flight's good, isn't it?", { ms: 3200 }); doWave(); jump();
+    }
   });
   svg.addEventListener('click', () => { jump(); SFX.voice(20); Chat.toggle(); });
   svg.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); Chat.toggle(); } });
   addEventListener('pointerdown', e => { if (!svg.contains(e.target)) lookAt(e.clientX, e.clientY, 700); });
   // sections
   const LINES = {
-    home: ["Hi! I'm Bit. I'll roam around while you read.", "Welcome. I'll keep an eye on your cursor."],
+    home: ["Hi! I'm Bit. I'll patrol while you read.", "Welcome. I'll keep an eye on your cursor."],
     about: ["That's the short version of Roshan. The chat knows more.", "Curious mind, as you can see."],
     now: ["Placement season. He's grinding ~4 hours a day.", "This is what he's up to right now."],
     skills: ["Python is the big one. PyTorch right behind.", "Bento box of skills. Hover them!"],
@@ -1936,7 +2084,7 @@ const Bot = (() => {
   });
   // fast scroll
   let fastAt = 0;
-  ticks.push(() => { if (Math.abs(State.vel) > 3000 && performance.now() - fastAt > 12000 && !S.sleeping) { fastAt = performance.now(); say("Whoa, slow down, I'm walking!", { ms: 2600, m: 'wow' }); } });
+  ticks.push(() => { if (Math.abs(State.vel) > 3000 && performance.now() - fastAt > 12000 && !S.sleeping) { fastAt = performance.now(); say("Whoa, slow down, I'm flying!", { ms: 2600, m: 'wow' }); } });
   return { say, setMood, jump, wave: doWave, wake, section, lookAt };
 })();
 
@@ -2504,5 +2652,7 @@ const Chat = (() => {
   }
 })();
 </script>
+<script type="module" src="beyond/beyond.js"></script>
+<script type="module" src="atlas/atlas.js"></script>
 </body>
 </html>

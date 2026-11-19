@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#020617">
+  <title>Library Intelligence Demo | Roshan B</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../demo.css">
+  <style>
+    .book-card {
+      display: block;
+      width: 100%;
+      padding: .8rem .9rem;
+      border: 1px solid rgba(148,163,184,.14);
+      border-radius: 14px;
+      background: rgba(2,6,23,.32);
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      transform: none;
+      transition: border-color .2s, background .2s, transform .2s;
+    }
+    .book-card:hover { border-color: rgba(34,211,238,.35); background: rgba(34,211,238,.04); transform: translateY(-1px); }
+    .book-card.active { border-color: var(--cyan); background: rgba(34,211,238,.08); }
+    .book-meta { margin: .15rem 0 0; color: var(--dim); font-size: .72rem; }
+    .book-note { margin: .45rem 0 0; color: var(--muted); font-size: .72rem; line-height: 1.45; }
+    .engine { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 1rem; align-items: center; }
+    @media (max-width: 560px) { .engine { grid-template-columns: 1fr; } }
+    .price { color: var(--muted); font-size: .72rem; }
+  </style>
+</head>
+<body>
+  <header class="demo-top">
+    <div class="demo-top-inner">
+      <a class="back-link" href="../../index.html#projects">← All projects</a>
+      <span class="demo-brand"><span class="status-dot"></span> Library intelligence demo</span>
+      <span class="demo-source muted">Source not public</span>
+    </div>
+  </header>
+
+  <main class="demo-wrap">
+    <section class="demo-hero">
+      <p class="demo-kicker">// browser-native simulation</p>
+      <h1>One borrower. Four signals. One explainable pick.</h1>
+      <p class="lede">Explore how the library platform combines recommendation, demand, semantic and anomaly signals into a single confidence score. Everything here is deterministic sample data running in your browser.</p>
+      <div class="demo-actions">
+        <span class="badge">4 signals</span>
+        <span class="badge">no backend</span>
+        <span class="badge">sample catalogue</span>
+      </div>
+    </section>
+
+    <div class="demo-grid sidebar">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Borrower profile</h2>
+            <p class="panel-sub">Change a preference and the score recalculates.</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="genre">Favourite genre</label>
+          <select id="genre">
+            <option>AI &amp; Data</option>
+            <option>Science Fiction</option>
+            <option>Business</option>
+            <option>Design</option>
+            <option>History</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Current interests</label>
+          <div class="pill-row" id="interests">
+            <button class="pill active" type="button" data-interest="Explainable AI">Explainable AI</button>
+            <button class="pill" type="button" data-interest="Systems">Systems</button>
+            <button class="pill" type="button" data-interest="Statistics">Statistics</button>
+            <button class="pill" type="button" data-interest="Design">Design</button>
+            <button class="pill" type="button" data-interest="Space">Space</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="risk">Risk tolerance <span id="riskLabel" class="mono">55</span></label>
+          <input id="risk" type="range" min="0" max="100" value="55">
+        </div>
+
+        <div class="btn-row">
+          <button class="primary" id="refresh" type="button">Refresh signals</button>
+          <button id="randomize" type="button">New borrower</button>
+        </div>
+
+        <hr class="hr">
+        <div class="metric-grid">
+          <div class="metric"><b>7</b><span>sample titles</span></div>
+          <div class="metric"><b>4</b><span>input signals</span></div>
+          <div class="metric"><b>1</b><span>confidence score</span></div>
+        </div>
+        <p class="note">Profile changes only affect this local demo. Nothing is stored or sent anywhere.</p>
+      </section>
+
+      <div class="stack">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Top matches</h2>
+              <p class="panel-sub">Click a title to inspect its signal breakdown.</p>
+            </div>
+            <span class="badge" id="matchCount">3 matches</span>
+          </div>
+          <div class="card-list" id="books"></div>
+        </section>
+
+        <div class="demo-grid two" style="gap:1rem">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title">Convergence engine</h2>
+                <p class="panel-sub" id="selectedTitle">Select a book</p>
+              </div>
+            </div>
+            <div class="engine">
+              <div class="score-ring" id="scoreRing" style="--score:0">
+                <strong id="scoreValue">0</strong>
+                <small>confidence</small>
+              </div>
+              <div>
+                <div class="bar-row"><span>Profile match</span><div class="bar"><i id="barProfile" style="width:0%"></i></div><span class="value" id="valProfile">0</span></div>
+                <div class="bar-row"><span>Demand pulse</span><div class="bar"><i id="barDemand" style="width:0%"></i></div><span class="value" id="valDemand">0</span></div>
+                <div class="bar-row"><span>Semantic fit</span><div class="bar"><i id="barSemantic" style="width:0%"></i></div><span class="value" id="valSemantic">0</span></div>
+                <div class="bar-row"><span>Anomaly guard</span><div class="bar good"><i id="barAnomaly" style="width:0%"></i></div><span class="value" id="valAnomaly">0</span></div>
+              </div>
+            </div>
+            <p class="callout" id="why" style="margin-top:1rem">Pick a title to see why it ranks here.</p>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title">Demand pulse</h2>
+                <p class="panel-sub">Last 7 sample periods</p>
+              </div>
+              <span class="badge good" id="trendBadge">steady</span>
+            </div>
+            <div class="chart" id="demandChart" aria-label="Sample demand trend"></div>
+            <div class="legend" style="margin-top:.65rem"><span><i></i>synthetic borrow demand</span></div>
+            <hr class="hr">
+            <div class="panel-head" style="margin-bottom:.6rem">
+              <div>
+                <h2 class="panel-title">Anomaly queue</h2>
+                <p class="panel-sub">Unusual patterns flagged for review.</p>
+              </div>
+            </div>
+            <div class="card-list" id="anomalies"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">This is a browser-native simulation of the product logic. The full project uses trained GraphSAGE, LSTM, transformer and autoencoder models behind a FastAPI service. The demo uses the same weighted-convergence idea with hand-built sample signals.</p>
+
+    <footer class="demo-footer">
+      <a href="../../index.html#projects">← Back to projects</a>
+      <span>Built by Roshan B · deterministic demo data</span>
+    </footer>
+  </main>
+
+  <script src="../demo.js"></script>
+  <script>
+    (() => {
+      const { $, $$, clamp, round, fmt, esc, seeded, shuffle } = window.Demo;
+
+      const BOOKS = [
+        { id: 1, title: "The Alignment Problem", author: "Brian Christian", genre: "AI & Data", tags: ["Explainable AI", "Systems", "Statistics"], demand: [42, 45, 52, 58, 63, 71, 78], anomaly: 0.08, note: "High overlap with responsible-AI and systems interests." },
+        { id: 2, title: "Designing Data-Intensive Applications", author: "Martin Kleppmann", genre: "AI & Data", tags: ["Systems", "Statistics", "Design"], demand: [61, 64, 68, 72, 79, 84, 88], anomaly: 0.04, note: "Strong demand and a clean anomaly profile." },
+        { id: 3, title: "Project Hail Mary", author: "Andy Weir", genre: "Science Fiction", tags: ["Space", "Systems"], demand: [35, 42, 48, 55, 66, 72, 80], anomaly: 0.06, note: "Fast-rising demand with a space and systems overlap." },
+        { id: 4, title: "The Three-Body Problem", author: "Cixin Liu", genre: "Science Fiction", tags: ["Space", "Statistics"], demand: [30, 34, 38, 44, 53, 62, 70], anomaly: 0.22, note: "Popular, but the anomaly guard lowers its confidence." },
+        { id: 5, title: "Thinking in Systems", author: "Donella Meadows", genre: "Business", tags: ["Systems", "Design", "Statistics"], demand: [25, 28, 30, 34, 37, 41, 44], anomaly: 0.03, note: "Stable demand and a broad conceptual fit." },
+        { id: 6, title: "The Design of Everyday Things", author: "Don Norman", genre: "Design", tags: ["Design", "Explainable AI"], demand: [18, 21, 23, 26, 30, 35, 39], anomaly: 0.05, note: "Good fit for human-centred AI and product design." },
+        { id: 7, title: "Sapiens", author: "Yuval Noah Harari", genre: "History", tags: ["Systems", "History"], demand: [50, 48, 46, 44, 41, 39, 36], anomaly: 0.12, note: "Demand is cooling; useful as a comparison point." },
+      ];
+
+      const state = {
+        genre: "AI & Data",
+        interests: new Set(["Explainable AI"]),
+        risk: 55,
+        selected: null,
+        reviewed: new Set(),
+      };
+
+      const random = seeded(17);
+
+      const demandScore = (book) => {
+        const recent = book.demand.slice(-3);
+        const baseline = book.demand.slice(0, 3);
+        const lift = (recent.reduce((a, b) => a + b, 0) / 3) - (baseline.reduce((a, b) => a + b, 0) / 3);
+        return clamp(48 + lift * 1.35, 0, 100);
+      };
+
+      const signalsFor = (book) => {
+        const genre = book.genre === state.genre ? 100 : 28;
+        const overlap = book.tags.filter((tag) => state.interests.has(tag)).length;
+        const semantic = state.interests.size ? clamp((overlap / state.interests.size) * 100, 0, 100) : 0;
+        const demand = demandScore(book);
+        const anomaly = clamp((1 - book.anomaly) * 100, 0, 100);
+        const riskPenalty = state.risk < 45 ? book.anomaly * 24 : book.anomaly * 8;
+        const confidence = clamp(0.34 * semantic + 0.26 * demand + 0.22 * genre + 0.18 * anomaly - riskPenalty, 0, 99);
+        return { genre, semantic, demand, anomaly, confidence };
+      };
+
+      const sorted = () => BOOKS.map((book) => ({ book, signals: signalsFor(book) })).sort((a, b) => b.signals.confidence - a.signals.confidence);
+
+      const renderBooks = () => {
+        const ranked = sorted();
+        const visible = ranked.slice(0, 3);
+        if (!state.selected || !visible.some((entry) => entry.book.id === state.selected.book.id)) {
+          state.selected = visible[0];
+        }
+        $("#matchCount").textContent = `${visible.length} matches`;
+        $("#books").innerHTML = visible.map(({ book, signals }) => {
+          const active = state.selected && state.selected.book.id === book.id ? " active" : "";
+          return `
+            <button class="book-card${active}" type="button" data-book="${book.id}">
+              <div class="mini-title">
+                <div>
+                  <h3>${esc(book.title)}</h3>
+                  <p>${esc(book.author)} · ${esc(book.genre)}</p>
+                </div>
+                <span class="badge good">${Math.round(signals.confidence)}%</span>
+              </div>
+              <p class="book-note">${esc(book.note)}</p>
+            </button>
+          `;
+        }).join("");
+        $$("#books [data-book]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const id = Number(button.dataset.book);
+            state.selected = ranked.find((entry) => entry.book.id === id) || ranked[0];
+            renderBooks();
+            renderEngine();
+          });
+        });
+        renderEngine();
+      };
+
+      const renderEngine = () => {
+        if (!state.selected) return;
+        const { book, signals } = state.selected;
+        $("#selectedTitle").textContent = `${book.title} · ${book.author}`;
+        $("#scoreRing").style.setProperty("--score", signals.confidence.toFixed(1));
+        $("#scoreValue").textContent = Math.round(signals.confidence);
+        const rows = [
+          ["barProfile", "valProfile", signals.genre],
+          ["barDemand", "valDemand", signals.demand],
+          ["barSemantic", "valSemantic", signals.semantic],
+          ["barAnomaly", "valAnomaly", signals.anomaly],
+        ];
+        rows.forEach(([bar, value, score]) => {
+          $("#" + bar).style.width = `${clamp(score, 0, 100)}%`;
+          $("#" + value).textContent = `${Math.round(score)}%`;
+        });
+        const trend = signals.demand >= 58 ? "rising" : signals.demand >= 45 ? "steady" : "cooling";
+        const trendBadge = $("#trendBadge");
+        trendBadge.textContent = trend;
+        trendBadge.className = `badge ${trend === "rising" ? "good" : trend === "cooling" ? "warn" : ""}`;
+        $("#demandChart").innerHTML = book.demand.map((value) => `<i style="height:${clamp((value - 10) * 1.5, 8, 100)}%"></i>`).join("");
+        $("#why").textContent = `Selected because the profile overlaps on ${book.tags.filter((tag) => state.interests.has(tag)).join(", ") || "no tracked interests"}. Demand is ${trend}, and the anomaly guard contributes ${Math.round(signals.anomaly)}% with a ${(book.anomaly * 100).toFixed(0)}% sample risk signal.`;
+      };
+
+      const renderAnomalies = () => {
+        const flagged = BOOKS.filter((book) => book.anomaly >= 0.1).sort((a, b) => b.anomaly - a.anomaly);
+        $("#anomalies").innerHTML = flagged.map((book) => {
+          const cleared = state.reviewed.has(book.id);
+          return `
+            <div class="mini-card">
+              <div class="spread">
+                <div><strong style="font-size:.82rem">${esc(book.title)}</strong><p class="book-meta">Sample risk ${(book.anomaly * 100).toFixed(0)}%</p></div>
+                <span class="badge ${cleared ? "good" : "warn"}">${cleared ? "cleared" : "review"}</span>
+              </div>
+              <button class="ghost" type="button" data-review="${book.id}" style="margin-top:.5rem">${cleared ? "Reopen flag" : "Mark reviewed"}</button>
+            </div>
+          `;
+        }).join("");
+        $$("#anomalies [data-review]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const id = Number(button.dataset.review);
+            if (state.reviewed.has(id)) state.reviewed.delete(id);
+            else state.reviewed.add(id);
+            renderAnomalies();
+          });
+        });
+      };
+
+      const randomize = () => {
+        const genres = ["AI & Data", "Science Fiction", "Business", "Design", "History"];
+        const interests = ["Explainable AI", "Systems", "Statistics", "Design", "Space"];
+        state.genre = genres[Math.floor(random() * genres.length)];
+        state.interests = new Set(shuffle(interests, random).slice(0, 1 + Math.floor(random() * 3)));
+        state.risk = Math.round(20 + random() * 70);
+        $("#genre").value = state.genre;
+        $("#risk").value = state.risk;
+        $("#riskLabel").textContent = state.risk;
+        $$("#interests .pill").forEach((pill) => pill.classList.toggle("active", state.interests.has(pill.dataset.interest)));
+        state.selected = null;
+        renderBooks();
+        renderAnomalies();
+      };
+
+      $("#genre").addEventListener("change", (event) => { state.genre = event.target.value; state.selected = null; renderBooks(); });
+      $("#risk").addEventListener("input", (event) => { state.risk = Number(event.target.value); $("#riskLabel").textContent = state.risk; state.selected = null; renderBooks(); });
+      $$("#interests .pill").forEach((pill) => {
+        pill.addEventListener("click", () => {
+          const interest = pill.dataset.interest;
+          if (state.interests.has(interest)) state.interests.delete(interest);
+          else state.interests.add(interest);
+          pill.classList.toggle("active", state.interests.has(interest));
+          state.selected = null;
+          renderBooks();
+        });
+      });
+      $("#refresh").addEventListener("click", () => { state.selected = null; renderBooks(); window.Demo.toast("Signals refreshed locally"); });
+      $("#randomize").addEventListener("click", randomize);
+
+      renderBooks();
+      renderAnomalies();
+    })();
+  </script>
+</body>
+</html>
